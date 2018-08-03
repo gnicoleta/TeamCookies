@@ -9,8 +9,5 @@
         <module name="TeamCookies" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="TeamCookies" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>
