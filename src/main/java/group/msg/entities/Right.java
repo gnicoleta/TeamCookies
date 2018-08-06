@@ -7,7 +7,7 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table
+@Table(name = "rights")
 public class Right {
 
     @Id
@@ -15,7 +15,7 @@ public class Right {
     private Integer id;
 
 
-    private RightType right;
+    private RightType type;
 
 
     @ManyToMany

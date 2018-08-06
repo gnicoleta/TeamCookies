@@ -11,7 +11,17 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table
+@Table(name = "user")
+@NamedQueries({
+        @NamedQuery(name = "JPAExample.findAll",
+                query = "select e from User e order by e.id desc"),
+        @NamedQuery(name = "JPAExample.findById",
+                query = "select e from User e where e.id = :id")
+})
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "JPAExample.findIdByName",
+                query = "select sp.id from user sp where sp.user_name like ?1")
+})
 public class User implements Serializable {
 
     @Id

@@ -18,7 +18,7 @@ public class Notification {
     private NotificationType notificationType;
 
     @ManyToMany
-    @JoinTable(name = "user_notifacation",
+    @JoinTable(name = "user_notification",
             joinColumns = @JoinColumn(name = "notification_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<User> users;
