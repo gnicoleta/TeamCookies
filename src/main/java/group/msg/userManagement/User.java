@@ -20,5 +20,17 @@ public class User {
 
     private List<Role> roles;
 
+    private String userName;
 
+    public User() {
+    }
+
+    public User(String familyName, String givenName, String mobileNumber, String email) {
+        this.familyName = familyName;
+        this.givenName = givenName;
+        this.mobileNumber = mobileNumber;
+        this.email = email;
+    }
+
+    
 }
