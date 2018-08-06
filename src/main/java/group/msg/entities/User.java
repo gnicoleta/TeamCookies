@@ -1,5 +1,7 @@
 package group.msg.entities;
 
+import group.msg.validator.emailValidation.emailValidation;
+import group.msg.validator.mobileNumberValidation.mobileNumberValidation;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,6 +27,9 @@ public class User implements Serializable {
 
     private String username;
 
+    @mobileNumberValidation
+    private String mobileNumber;
+
     @ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -32,7 +37,7 @@ public class User implements Serializable {
     private Collection<Role> userRoles;
 
     @NotNull
-    @Email
+    @emailValidation
     private String email;
 
 
