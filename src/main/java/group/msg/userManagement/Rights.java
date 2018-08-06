@@ -3,6 +3,7 @@ package group.msg.userManagement;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -10,11 +11,6 @@ import java.util.List;
 @Table
 public class Rights {
 
-    enum RightType {
-
-        PERMISSION_MANAGEMENT, USER_MANAGEMENT, BUG_MANAGEMENT,
-        BUG_CLOSE, BUG_EXPORT_PDF
-    }
 
     @Id
     @GeneratedValue
@@ -26,7 +22,9 @@ public class Rights {
     @JoinTable(name = "role_right",
             joinColumns = @JoinColumn(name = "right_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Collection<Role> roles;
+
+
 
     public Rights() {
     }

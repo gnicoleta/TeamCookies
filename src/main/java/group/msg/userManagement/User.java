@@ -3,7 +3,8 @@ package group.msg.userManagement;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Collection;
+
 import group.msg.userManagement.validator.emailValidation.emailValidation;
 import group.msg.userManagement.validator.mobileNumberValidation.mobileNumberValidation;
 import lombok.NonNull;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Table
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "JPAExample.findStudents",
+        @NamedQuery(name = "JPAExample.findUsers",
                 query = "select e from User e order by e.ID desc"),
         @NamedQuery(name = "JPAExample.findID",
                 query = "select e from User e where e.ID = :ID")
@@ -49,7 +50,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @NonNull
-    private List<Role> roles;
+    private Collection<Role> roles;
 
     private String userName;
 
