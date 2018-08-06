@@ -1,0 +1,38 @@
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+/* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+    margin:0;
+    background-color: deepskyblue;
+}
+.title{
+    color: white;
+    font-family: Calibri;
+    font-size: 30px;
+    position: center;
+}
+.myFont{
+    font-family: Calibri;
+    color:white;
+    font-size: 20px;
+}
+
+.myOtherFont{
+    font-family: "Calibri Light";
+    color:greenyellow;
+    font-size: 40px;
+}
+.aButton{
+    width: 200px;
+    height: 30px;
+}
+form{
+    text-align: center;
+}
