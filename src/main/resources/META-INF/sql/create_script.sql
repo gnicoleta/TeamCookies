@@ -1,0 +1,1 @@
+create table create_example (ID int not null primary key, NAME varchar(255))
