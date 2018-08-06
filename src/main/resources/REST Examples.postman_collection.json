@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "1ae92c3f-27fa-415c-a59f-4209cf909613",
+		"name": "REST Examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET - Count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/RESTExamples/rest/count",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RESTExamples",
+						"rest",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - PathParam",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/RESTExamples/rest/insert/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RESTExamples",
+						"rest",
+						"insert",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - QueryParam",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/RESTExamples/rest/insertQuery?numberOfEntries=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RESTExamples",
+						"rest",
+						"insertQuery"
+					],
+					"query": [
+						{
+							"key": "numberOfEntries",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - FormParam",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "numberOfEntries",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/RESTExamples/rest/insertForm",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RESTExamples",
+						"rest",
+						"insertForm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - CookieParam",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/RESTExamples/rest/insertCookie",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RESTExamples",
+						"rest",
+						"insertCookie"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
