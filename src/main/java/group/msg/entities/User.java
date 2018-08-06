@@ -1,5 +1,6 @@
 package group.msg.entities;
 
+import group.msg.validator.emailValidation.emailValidation;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -43,8 +44,8 @@ public class User implements Serializable {
 
     @NotNull
     @Email
+    @emailValidation
     private String email;
-
 
     @ManyToMany
     @JoinTable(name = "user_notifacation",

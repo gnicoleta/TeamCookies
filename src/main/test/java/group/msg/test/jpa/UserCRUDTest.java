@@ -45,7 +45,6 @@ public class UserCRUDTest extends JPABaseTest {
 
 
   @Override
-  //@Test
   public void insertData() throws Exception {
     utx.begin();
     em.joinTransaction();
