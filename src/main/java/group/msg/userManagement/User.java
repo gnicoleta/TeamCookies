@@ -51,7 +51,6 @@ public class User {
     @NonNull
     private List<Role> roles;
 
-    @NonNull
     private String userName;
 
     public User() {
