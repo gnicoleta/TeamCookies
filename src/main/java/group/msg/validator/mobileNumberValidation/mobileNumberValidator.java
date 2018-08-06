@@ -5,6 +5,15 @@ import javax.validation.ConstraintValidatorContext;
 
 public class mobileNumberValidator implements ConstraintValidator<mobileNumberValidation, String> {
 
+    private boolean isEveryCharacterDigit(String string){
+        for(int i=0;i<string.length();i++){
+            if(!Character.isDigit(string.charAt(i))){
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     private boolean isRomanianPhoneNumber(String mobileNumber){
         String startingPathRO="+40";
@@ -12,7 +21,9 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
 
         if(mobileNumber.startsWith(startingPathRO)){
             if(mobileNumber.length()==romanianPhoneNumberLength){
-                return true;
+                if(isEveryCharacterDigit(mobileNumber)) {
+                    return true;
+                }
             }
         }
 
@@ -25,7 +36,9 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
 
         if(mobileNumber.startsWith(startingPathDe)){
             if(mobileNumber.length()==germanPhoneNumberLength){
-                return true;
+                if(isEveryCharacterDigit(mobileNumber)){
+                    return true;
+                }
             }
         }
 
