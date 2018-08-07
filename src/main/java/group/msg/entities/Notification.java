@@ -3,12 +3,13 @@ package group.msg.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Data
 @Entity
 @Table
-public class Notification {
+public class Notification implements Serializable {
 
     @Id
     @GeneratedValue
@@ -25,4 +26,10 @@ public class Notification {
 
     @OneToMany(mappedBy = "notification")
     private Collection<Bug> bugs;
+    public Notification(){
+
+    }
+    public Notification(NotificationType notificationType){
+        this.notificationType=notificationType;
+    }
 }
