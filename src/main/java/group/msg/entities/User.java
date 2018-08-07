@@ -23,7 +23,7 @@ import java.util.Collection;
 })
 @NamedNativeQueries({
         @NamedNativeQuery(name = "JPAExample.findIdByName",
-                query = "select sp.id from user sp where sp.user_name like ?1")
+                query = "select sp.id from user sp where sp.USERNAME like ?1")
 })
 public class User implements Serializable {
 
