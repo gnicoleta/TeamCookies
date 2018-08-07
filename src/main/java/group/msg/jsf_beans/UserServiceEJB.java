@@ -18,17 +18,17 @@ public class UserServiceEJB {
         return em.find(User.class, id);
     }
 
-    public Integer save(User book) {
-        em.persist(book);
-        return book.getId();
+    public Integer save(User user) {
+        em.persist(user);
+        return user.getId();
     }
 
-    public void update(User book) {
-        em.merge(book);
+    public void update(User user) {
+        em.merge(user);
     }
 
-    public void delete(User book) {
-        em.remove(em.contains(book) ? book : em.merge(book));
+    public void delete(User user) {
+        em.remove(em.contains(user) ? user : em.merge(user));
     }
 
     public boolean findUserByUsername(String username) {
