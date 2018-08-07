@@ -25,49 +25,21 @@ import java.util.List;
 @SessionScoped
 public class RegisterUserBean implements Serializable {
 
-//    @Inject
-//    PasswordEncryptor passwordEncryptor;
-//
-//    @Inject
-//    UsernameGenerator usernameGenerator;
-//
-//    @EJB
-//    UserServiceEJB serviceEJB;
-//
-//    private String firstName;
-//    private String lastName;
-//
-//    private String email;
-//    private String password;
-//
-//    private String mobileNumber;
-//
-//    private LinkedList<String> selectedRolesStrings;
-//
-//    private LinkedList<Role> selectedRoles;
-//
-//
-//    private User user;
-//    private List<User> users;
-//
-//    @PostConstruct
-//    public void init() {
-//        user = new User();
-//    }
-//
-//    public String registerUser() {
-//
-//        user.setFirstName(firstName);
-//        user.setLastName(lastName);
-//
-//        serviceEJB.save(user);
-//
-//        return "homepage";
-//
-//    }
+
+    @Inject
+    PasswordEncryptor passwordEncryptor;
+
+    @Inject
+    UsernameGenerator usernameGenerator;
 
     private String firstName;
     private String lastName;
+    private String password;
+    private String email;
+    private String mobileNumber;
+    private LinkedList<String> selectedRolesStrings;
+    private LinkedList<Role> seletectedRoles=new LinkedList<>();
+
     private User user;
     private List<User> users;
 
@@ -81,23 +53,28 @@ public class RegisterUserBean implements Serializable {
 
     public String registerUser() {
 
-        //for the moment the db is empty so to check if my method works, I'm adding a user here
+
         User user1 = new User();
         user1.setFirstName(firstName);
         user1.setLastName(lastName);
+        user1.setUsername(service.generateUsername(firstName, lastName));
+        user1.setEmail(email);
+        user1.setMobileNumber(mobileNumber);
+        user1.setPassword(passwordEncryptor.passwordEncryption(password));
+        for(String roleString:selectedRolesStrings){
+            Role role=new Role(RoleType.valueOf(roleString));
+            seletectedRoles.add(role);
+            service.save(role);
+
+        }
+        user1.setUserRoles(seletectedRoles);
+
         service.save(user1);
 
-        return "homepage";
+        return "register";
 
-//        if ( service.findUserByUsername(username)) {
-//            WebHelper.getSession().setAttribute("loggedIn",true);
-//            return "homepage";
-//        }else{
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Invalid credentials."));
-//            return "";
-//        }
+
     }
-
 
 
 }

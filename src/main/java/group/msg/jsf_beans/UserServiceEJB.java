@@ -1,27 +1,47 @@
 package group.msg.jsf_beans;
 
+import group.msg.beans.PasswordEncryptor;
+import group.msg.beans.UsernameGenerator;
+import group.msg.entities.Role;
 import group.msg.entities.User;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.LinkedList;
 import java.util.List;
 
 @Stateless
 public class UserServiceEJB {
 
+
+    @Inject
+    PasswordEncryptor passwordEncryptor;
+
+    @Inject
+    UsernameGenerator usernameGenerator;
+
     @PersistenceContext
     private EntityManager em;
+
+    public String generateUsername(String firstname,String lastName){
+        return usernameGenerator.generateUsername(firstname,lastName,em);
+    }
 
     public User find(Integer id) {
         return em.find(User.class, id);
     }
 
-    public Integer save(User user) {
+    public void save(User user) {
         em.persist(user);
-        return user.getId();
+
     }
+    public void save(Role role){
+        em.persist(role);
+    }
+
 
     public void update(User user) {
         em.merge(user);

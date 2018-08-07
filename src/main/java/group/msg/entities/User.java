@@ -1,10 +1,14 @@
 package group.msg.entities;
 
+import group.msg.validator.emailValidation.emailValidation;
+import group.msg.validator.mobileNumberValidation.mobileNumberValidation;
 import lombok.Data;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.io.BufferedReader;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -36,10 +40,9 @@ public class User implements Serializable {
     private String lastName;
 
     private String username;
-    private boolean userStatus=true;
 
-//    @mobileNumberValidation
-//    @NonNull
+   // @mobileNumberValidation
+   // @NonNull
     private String mobileNumber;
 
     @ManyToMany
@@ -48,8 +51,8 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> userRoles;
 
-//    @NotNull
-//    @emailValidation
+   // @NotNull
+    //@emailValidation
     private String email;
 
 
