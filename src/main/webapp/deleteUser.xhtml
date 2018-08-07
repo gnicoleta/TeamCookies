@@ -14,17 +14,17 @@
 
             <h:panelGrid columns="4" cellpadding="5">
                 <h:outputLabel for="txt1" value="Insert Username"/>
-                <p:inputText id="txt1" value="#{userManagement.userName}" required="true" label="Text 1">
+                <p:inputText id="txt1" value="#{userEditBean.userName}" required="true" label="Text 1">
                     <f:validateLength minimum="2"/>
                 </p:inputText>
             </h:panelGrid>
         </p:panel>
 
         <h:panelGrid columns="2">
-            <p:commandButton value="Deactivate user" action="#{userManagement.ifExistsDelete}"/>
+            <p:commandButton value="Deactivate user" action="#{userEditBean.ifExistsDelete}"/>
         </h:panelGrid>
         <h:panelGrid columns="2">
-            <p:commandButton value="Activate user" action="#{userManagement.ifExistsActivate}"/>
+            <p:commandButton value="Activate user" action="#{userEditBean.ifExistsActivate}"/>
         </h:panelGrid>
         <h:commandButton value="Back" action="homepage" ajax="false"/>
     </h:form>

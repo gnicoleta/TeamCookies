@@ -7,6 +7,8 @@ import group.msg.entities.Role;
 import group.msg.entities.User;
 
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -69,5 +71,42 @@ public class UserServiceEJB {
         }
 
     }
+    public String ifExistsDelete(String userName){
+        Query q = em.createQuery("select u from User u where u.username like ?1");
+        q.setParameter(1,userName);
+        User result =(User) q.getSingleResult();
+        if (this.findUserByUsername(userName)) {
+            result.setUserStatus(false);
+            this.update(result);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
+            return "";
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+            return "";
+        }
+    }
+    public void ifExistsActivate(String userName){
+        Query q = em.createQuery("select u from User u where u.username like ?1");
+        q.setParameter(1,userName);
+        User result =(User) q.getSingleResult();
+        if (this.findUserByUsername(userName)) {
+            result.setUserStatus(true);
+            this.update(result);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+        }
+    }
+    /*
+    public void editUser(String userName){
+        Query q = em.createQuery("select u from User u where u.username like ?1");
+        q.setParameter(1,userName);
+        User result =(User) q.getSingleResult();
+        if (this.findUserByUsername(userName)) {
+
+        }
+    }
+    */
+
 
 }
