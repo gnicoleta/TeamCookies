@@ -41,7 +41,7 @@ public class UserCRUDTest extends JPABaseTest {
     public void testCreateSimpleEntity() {
         System.out.println("Checking number of created entities...");
 
-        Query q = em.createNamedQuery("JPAExample.findAll");
+        Query q = em.createNamedQuery("User.findAll");
         Assert.assertEquals("Entities not found in the database!", NUMBER_OF_ENTITIES, q.getResultList().size());
     }
 

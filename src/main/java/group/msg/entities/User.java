@@ -16,14 +16,17 @@ import java.util.Collection;
 @Entity
 @Table(name = "user")
 @NamedQueries({
-        @NamedQuery(name = "JPAExample.findAll",
+        @NamedQuery(name = "User.findAll",
                 query = "select e from User e order by e.id desc"),
-        @NamedQuery(name = "JPAExample.findById",
+        @NamedQuery(name = "User.findById",
                 query = "select e from User e where e.id = :id")
+
 })
 @NamedNativeQueries({
-        @NamedNativeQuery(name = "JPAExample.findIdByName",
-                query = "select sp.id from user sp where sp.USERNAME like ?1")
+        @NamedNativeQuery(name = "User.findIdByName",
+                query = "select sp.id from user sp where sp.USERNAME like ?1"),
+        @NamedNativeQuery(name = "User.findByUsername",
+                query = "select sp.username from STUDENT_ENTITY sp where sp.username like ?1")
 })
 public class User implements Serializable {
 
@@ -38,8 +41,8 @@ public class User implements Serializable {
 
     private String username;
 
-    @mobileNumberValidation
-    @NonNull
+    //@mobileNumberValidation
+    //@NonNull
     private String mobileNumber;
 
     @ManyToMany
@@ -48,8 +51,8 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> userRoles;
 
-    @NotNull
-    @emailValidation
+    //@NotNull
+    //@emailValidation
     private String email;
 
 
