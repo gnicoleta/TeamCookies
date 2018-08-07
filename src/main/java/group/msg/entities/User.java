@@ -58,4 +58,22 @@ public class User implements Serializable {
 
     @OneToOne(mappedBy = "createdBy")
     private Bug createdBug;
+
+    private String password;
+
+    public  User(){
+
+    }
+    public User(String firstName, String lastName, String username,
+                Collection<Role> userRoles, @NotNull @Email String email,String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.userRoles = userRoles;
+        this.email = email;
+        this.password=password;
+        notifications.add(new Notification(NotificationType.WELCOME_NEW_USER));
+    }
+
+
 }
