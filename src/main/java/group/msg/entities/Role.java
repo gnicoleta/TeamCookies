@@ -4,12 +4,13 @@ package group.msg.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Data
 @Entity
 @Table
-public class Role {
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue
@@ -30,6 +31,13 @@ public class Role {
             inverseJoinColumns = @JoinColumn(name = "right_id"))
     private Collection<Right> roleRights;
 
+    public Role() {
 
+    }
+
+    public Role(RoleType role) {
+        this.role = role;
+
+    }
 
 }

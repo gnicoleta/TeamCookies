@@ -4,8 +4,9 @@ import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.io.Serializable;
 
-public class UsernameGenerator {
+public class UsernameGenerator implements Serializable {
     public   String generateUsername(String firstName,String lastName){
 
         StringBuilder result=new StringBuilder();

@@ -37,7 +37,7 @@ public class User implements Serializable {
 
     private String username;
 
-    @mobileNumberValidation
+    //@mobileNumberValidation
     private String mobileNumber;
 
     @ManyToMany
@@ -46,8 +46,8 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> userRoles;
 
-    @NotNull
-    @emailValidation
+
+    //@emailValidation
     private String email;
 
 
@@ -70,13 +70,15 @@ public class User implements Serializable {
 
     }
     public User(String firstName, String lastName, String username,
-                Collection<Role> userRoles, @NotNull @Email String email,String password) {
+                Collection<Role> userRoles, @NotNull @Email String email,String password,String mobileNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.userRoles = userRoles;
         this.email = email;
         this.password=password;
+        this.mobileNumber=mobileNumber;
+
         notifications.add(new Notification(NotificationType.WELCOME_NEW_USER));
     }
 

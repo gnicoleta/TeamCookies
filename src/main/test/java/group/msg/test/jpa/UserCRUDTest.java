@@ -57,7 +57,7 @@ public class UserCRUDTest extends JPABaseTest {
       } else {
         e.setLastName("Pulbere");
       }
-      e.setEmail("wtv@gmail.com");
+      e.setEmail("wtv@msg.com");
       em.persist(e);
     }
     utx.commit();
