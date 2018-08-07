@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 @Data

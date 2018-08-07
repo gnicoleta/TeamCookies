@@ -1,9 +1,10 @@
 package group.msg.beans;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
-public class UsernameGenerator {
+public class UsernameGenerator implements Serializable {
 
     @PersistenceContext
     private EntityManager em;
