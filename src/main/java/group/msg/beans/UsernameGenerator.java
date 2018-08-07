@@ -31,13 +31,13 @@ public class UsernameGenerator implements Serializable {
         }
 
         try {
-            TypedQuery<Integer> q = em.createNamedQuery("JPAExample.findIdByName", Integer.class);
+            TypedQuery<Integer> q = em.createNamedQuery("User.findIdByName", Integer.class);
             q.setParameter(1, result.toString());
 
             while (!q.getResultList().isEmpty()) {
                 result.append(firstName.charAt((int) (Math.random() * firstName.length())));
 
-                q = em.createNamedQuery("JPAExample.findIdByName", Integer.class);
+                q = em.createNamedQuery("User.findIdByName", Integer.class);
                 q.setParameter(1, result.toString());
 
             }

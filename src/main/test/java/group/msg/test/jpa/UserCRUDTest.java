@@ -152,6 +152,7 @@ public class UserCRUDTest extends JPABaseTest {
             } else {
                 e.setMobileNumber(germanNumber);
                 bug.setStatusType(StatusType.NEW);
+                bug.setSeverityType(SeverityType.LOW);
             }
 
             Notification n=new Notification();
