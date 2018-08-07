@@ -44,7 +44,7 @@ public class Bug implements Serializable {
     @JoinColumn(name = "assigned_user")
     private User assignedTo;
 
-    private StatusType statusType;
+    private StatusType statusType=StatusType.NEW;
 
     @ManyToOne
     @JoinColumn(name = "attachement")
