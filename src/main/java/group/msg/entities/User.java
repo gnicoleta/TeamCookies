@@ -37,7 +37,7 @@ public class User implements Serializable {
 
     private String username;
 
-    @mobileNumberValidation
+    //@mobileNumberValidation
     private String mobileNumber;
 
     @ManyToMany
@@ -47,7 +47,7 @@ public class User implements Serializable {
     private Collection<Role> userRoles;
 
     @NotNull
-    @emailValidation
+    //@emailValidation
     private String email;
 
 
