@@ -55,6 +55,7 @@ public class User implements Serializable {
     //@emailValidation
     private String email;
 
+    private boolean userStatus=true;
 
     @ManyToMany
     @JoinTable(name = "user_notifacation",
