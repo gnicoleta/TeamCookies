@@ -7,27 +7,29 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <f:view>
+    <h:body>
+        <h:form>
+            <p:panel id="panel" header="Search Form" style="margin-bottom:10px;">
+                <p:messages id="messages"/>
 
-    <h:form>
-        <p:panel id="panel" header="Search Form" style="margin-bottom:10px;">
-            <p:messages id="messages"/>
+                <h:panelGrid columns="4" cellpadding="5">
+                    <h:outputLabel for="txt1" value="Insert Username"/>
+                    <p:inputText id="txt1" value="#{userEditBean.userName}" required="true" label="Text 1">
+                        <f:validateLength minimum="2"/>
+                    </p:inputText>
+                </h:panelGrid>
+            </p:panel>
 
-            <h:panelGrid columns="4" cellpadding="5">
-                <h:outputLabel for="txt1" value="Insert Username"/>
-                <p:inputText id="txt1" value="#{userEditBean.userName}" required="true" label="Text 1">
-                    <f:validateLength minimum="2"/>
-                </p:inputText>
+            <h:panelGrid columns="2">
+                <p:commandButton value="Deactivate user" action="#{userEditBean.ifExistsDelete}"/>
             </h:panelGrid>
-        </p:panel>
-
-        <h:panelGrid columns="2">
-            <p:commandButton value="Deactivate user" action="#{userEditBean.ifExistsDelete}"/>
-        </h:panelGrid>
-        <h:panelGrid columns="2">
-            <p:commandButton value="Activate user" action="#{userEditBean.ifExistsActivate}"/>
-        </h:panelGrid>
-        <h:commandButton value="Back" action="homepage" ajax="false"/>
-    </h:form>
-
+            <h:panelGrid columns="2">
+                <p:commandButton value="Activate user" action="#{userEditBean.ifExistsActivate}"/>
+            </h:panelGrid>
+        </h:form>
+        <h:form>
+            <h:commandButton value="Back" action="homepage" ajax="false"/>
+        </h:form>
+    </h:body>
 </f:view>
 </html>
