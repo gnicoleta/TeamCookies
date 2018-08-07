@@ -3,12 +3,13 @@ package group.msg.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Data
 @Entity
 @Table(name = "rights")
-public class Right {
+public class Right implements Serializable {
 
     @Id
     @GeneratedValue

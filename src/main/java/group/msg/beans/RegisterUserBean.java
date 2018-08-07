@@ -6,9 +6,6 @@ import group.msg.entities.User;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.bind.DatatypeConverter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
 public class RegisterUserBean {
@@ -32,7 +29,7 @@ public class RegisterUserBean {
 
     public void registerUser() {
 
-        User user = new User(firstName, lastName, usernameGenerator.generateUsername(firstName, lastName),
+        User user = new User(firstName, lastName, usernameGenerator.generateUsername(firstName, lastName,entityManager),
                 selectedRoles, email, passwordEncryptor.passwordEncryption(password));
         entityManager.persist(user);
 
