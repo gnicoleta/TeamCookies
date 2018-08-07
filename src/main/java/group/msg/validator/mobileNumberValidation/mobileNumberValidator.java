@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 public class mobileNumberValidator implements ConstraintValidator<mobileNumberValidation, String> {
 
     private boolean isEveryCharacterDigit(String string){
-        for(int i=0;i<string.length();i++){
+        for(int i=1;i<string.length();i++){
             if(!Character.isDigit(string.charAt(i))){
                 return false;
             }
@@ -17,7 +17,7 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
 
     private boolean isRomanianPhoneNumber(String mobileNumber){
         String startingPathRO="+40";
-        int romanianPhoneNumberLength=10;
+        int romanianPhoneNumberLength=12;
 
         if(mobileNumber.startsWith(startingPathRO)){
             if(mobileNumber.length()==romanianPhoneNumberLength){
@@ -32,7 +32,7 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
 
     private boolean isGermanPhoneNumber(String mobileNumber){
         String startingPathDe="+49";
-        int germanPhoneNumberLength=12;
+        int germanPhoneNumberLength=14;
 
         if(mobileNumber.startsWith(startingPathDe)){
             if(mobileNumber.length()==germanPhoneNumberLength){
