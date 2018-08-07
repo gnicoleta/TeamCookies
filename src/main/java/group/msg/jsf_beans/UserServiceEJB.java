@@ -2,6 +2,7 @@ package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
+import group.msg.entities.Notification;
 import group.msg.entities.Role;
 import group.msg.entities.User;
 
@@ -40,6 +41,9 @@ public class UserServiceEJB {
     }
     public void save(Role role){
         em.persist(role);
+    }
+    public void save(Notification notification){
+        em.persist(notification);
     }
 
 

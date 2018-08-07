@@ -2,9 +2,7 @@ package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
-import group.msg.entities.Role;
-import group.msg.entities.RoleType;
-import group.msg.entities.User;
+import group.msg.entities.*;
 import lombok.Data;
 
 import javax.annotation.PostConstruct;
@@ -67,6 +65,9 @@ public class RegisterUserBean implements Serializable {
             service.save(role);
 
         }
+        Notification notification=new Notification(NotificationType.WELCOME_NEW_USER);
+        service.save(notification);
+
         user1.setUserRoles(seletectedRoles);
 
         service.save(user1);
