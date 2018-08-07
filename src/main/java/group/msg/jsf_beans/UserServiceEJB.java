@@ -5,9 +5,11 @@ import group.msg.entities.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
-public class T1 {
+public class UserServiceEJB {
 
     @PersistenceContext
     private EntityManager em;
@@ -27,6 +29,21 @@ public class T1 {
 
     public void delete(User book) {
         em.remove(em.contains(book) ? book : em.merge(book));
+    }
+
+    public boolean findUserByUsername(String username) {
+        Query q = em.createNamedQuery("User.findByUsername", String.class);
+        q.setParameter(1, username);
+        List<String> result = q.getResultList();
+
+        if (result.isEmpty()) {
+            return false;
+        } else if (result.get(0).equals(username)) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }
