@@ -19,7 +19,7 @@
                           datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource">
         <property name="databaseName" value="jbugger"/>
         <property name="serverName" value="localhost"/>
-        <property name="user" value="admin"/>
+        <property name="user" value="root"/>
         <property name="portNumber" value="3306"/>
         <property name="verifyServerCertificate" value="false"/>
         <property name="useSSL" value="false"/>
