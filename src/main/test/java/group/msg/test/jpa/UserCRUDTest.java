@@ -17,7 +17,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 
 @RunWith(Arquillian.class)
@@ -64,21 +66,34 @@ public class UserCRUDTest extends JPABaseTest {
 
             RightType rightType = RightType.BUG_MANAGEMENT;
             RoleType roleType = RoleType.ADM;
+            Bug bug=new Bug();
+            bug.setDescription("Description "+i);
+            bug.setTitle("Title "+i);
+            bug.setVersion("a.1."+i%10);
+
+            LocalDateTime localDateTime=LocalDateTime.now().plusDays(i);
+            bug.setTargetDate(localDateTime);
+
+
             if ((int) (Math.random()) * 100 < 20) {
                 rightType = RightType.BUG_CLOSE;
                 roleType = RoleType.PM;
+                bug.setSeverityType(SeverityType.CRITICAL);
             } else {
                 if ((int) (Math.random()) * 100 < 40) {
                     rightType = RightType.BUG_EXPORT_PDF;
                     roleType = RoleType.TEST;
+                    bug.setSeverityType(SeverityType.HIGH);
                 } else {
                     if ((int) (Math.random()) * 100 < 60) {
                         rightType = RightType.BUG_MANAGEMENT;
                         roleType = RoleType.TM;
+                        bug.setSeverityType(SeverityType.MEDIUM);
                     } else {
                         if ((int) (Math.random()) * 100 < 80) {
                             rightType = RightType.PERMISSION_MANAGEMENT;
                             roleType = RoleType.DEV;
+                            bug.setSeverityType(SeverityType.LOW);
                         } else {
                             if ((int) (Math.random()) * 100 < 100) {
                                 rightType = RightType.USER_MANAGEMENT;
@@ -128,13 +143,21 @@ public class UserCRUDTest extends JPABaseTest {
             e.setFirstName(firstName);
             e.setEmail(mail);
 
+            bug.setCreatedBy(e);
 
             if (Math.random() > 0.5) {
                 e.setMobileNumber(mobileNumber);
+                bug.setAssignedTo(e);
+                bug.setStatusType(StatusType.IN_PROGRESS);
             } else {
                 e.setMobileNumber(germanNumber);
+                bug.setStatusType(StatusType.NEW);
+                bug.setSeverityType(SeverityType.LOW);
             }
 
+            Notification n=new Notification();
+            n.setNotificationType(NotificationType.BUG_STATUS_UPDATED);
+            bug.setNotification(n);
 
             e.setUserRoles(roles);
 
@@ -143,6 +166,9 @@ public class UserCRUDTest extends JPABaseTest {
             em.persist(role1);
             em.persist(right);
             em.persist(right1);
+            em.persist(bug);
+            em.persist(n);
+
         }
         utx.commit();
 
@@ -154,6 +180,7 @@ public class UserCRUDTest extends JPABaseTest {
         em.createQuery("delete from User ").executeUpdate();
         em.createQuery("delete from Role ").executeUpdate();
         em.createQuery("delete from Right").executeUpdate();
+        em.createQuery("delete from Notification ").executeUpdate();
     }
 
 

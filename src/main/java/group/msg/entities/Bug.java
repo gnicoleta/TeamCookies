@@ -3,6 +3,9 @@ package group.msg.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.swing.text.Document;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import group.msg.validator.bugInfoValidator.descriptionValidation;
 import group.msg.validator.bugInfoValidator.revisionValidation;
@@ -10,7 +13,7 @@ import group.msg.validator.bugInfoValidator.revisionValidation;
 @Data
 @Entity
 @Table
-public class Bug {
+public class Bug implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
@@ -27,7 +30,7 @@ public class Bug {
     private String fixedInVersion;
 
     @Column(name = "TARGET_DATE")
-    private Date targetDate;
+    private LocalDateTime targetDate;
 
     @Column(name = "SEVERITY")
     private SeverityType severityType;
@@ -50,4 +53,6 @@ public class Bug {
     @ManyToOne
     @JoinColumn(name = "notification")
     private Notification notification;
+
+
 }

@@ -14,7 +14,7 @@ public class Attachment {
     private Integer id;
 
     @Column(name = "ATTACHEMENT_TYPE")
-    private AttachementType attachementType;
+    private AttachmentType attachmentType;
 
     @OneToMany(mappedBy = "attachment")
     private Collection<Bug> bugs;

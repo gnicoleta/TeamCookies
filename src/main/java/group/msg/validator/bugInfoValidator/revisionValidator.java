@@ -23,7 +23,7 @@ public class revisionValidator implements ConstraintValidator<revisionValidation
                 }
             } else {
                 if (charArray[i] == '.') {
-                    if (i + 1 < size && !Character.isLetterOrDigit(charArray[i])) {
+                    if (i + 1 < size && !Character.isLetterOrDigit(charArray[i+1])) {
                         return false;
                     }
                 } else {
