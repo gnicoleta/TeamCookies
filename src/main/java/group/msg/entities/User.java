@@ -26,7 +26,7 @@ import java.util.Collection;
         @NamedNativeQuery(name = "User.findIdByName",
                 query = "select sp.id from user sp where sp.USERNAME like ?1"),
         @NamedNativeQuery(name = "User.findByUsername",
-                query = "select sp.username from STUDENT_ENTITY sp where sp.username like ?1")
+                query = "select sp.username from user sp where sp.username like ?1")
 })
 public class User implements Serializable {
 
