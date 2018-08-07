@@ -82,6 +82,8 @@ public class User implements Serializable {
         this.userRoles = userRoles;
         this.email = email;
         this.password=password;
+        this.mobileNumber=mobileNumber;
+
         notifications.add(new Notification(NotificationType.WELCOME_NEW_USER));
     }
 

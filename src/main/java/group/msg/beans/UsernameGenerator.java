@@ -1,12 +1,16 @@
 package group.msg.beans;
 
-import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
+import javax.persistence.*;
+import java.io.Serializable;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
-public class UsernameGenerator {
-    public String generateUsername(String firstName, String lastName) {
+public class UsernameGenerator implements Serializable {
+
+    @PersistenceContext
+    private EntityManager em;
+
+    public String generateUsername(String firstName, String lastName, EntityManager entityManager) {
+        em=entityManager;
 
         StringBuilder result = new StringBuilder();
         if (lastName.length() < 5) {
@@ -26,17 +30,23 @@ public class UsernameGenerator {
             result.append(firstName.charAt(0));
         }
 
-        EntityManager em = new EntityManagerImpl("This session");
-        TypedQuery<Integer> q = em.createNamedQuery("JPAExample.findIdByName", Integer.class);
-        q.setParameter(1, result);
+        try {
+            TypedQuery<Integer> q = em.createNamedQuery("JPAExample.findIdByName", Integer.class);
+            q.setParameter(1, result.toString());
 
-        while (!q.getResultList().isEmpty()) {
-            result.append(firstName.charAt((int) (Math.random() * firstName.length())));
+            while (!q.getResultList().isEmpty()) {
+                result.append(firstName.charAt((int) (Math.random() * firstName.length())));
 
-            q = em.createNamedQuery("JPAExample.findIdByName", Integer.class);
-            q.setParameter(1, result);
+                q = em.createNamedQuery("JPAExample.findIdByName", Integer.class);
+                q.setParameter(1, result.toString());
 
+            }
+        }catch (NullPointerException e){
+
+            e.printStackTrace();
+            System.out.println("Hello "+em);
         }
+
 
         return result.toString();
 

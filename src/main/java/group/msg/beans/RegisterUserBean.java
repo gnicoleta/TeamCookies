@@ -1,17 +1,22 @@
 package group.msg.beans;
 
 import group.msg.entities.Role;
+import group.msg.entities.RoleType;
 import group.msg.entities.User;
+import lombok.Data;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.bind.DatatypeConverter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class RegisterUserBean {
+@Data
+@Named
+@SessionScoped
+public class RegisterUserBean implements Serializable {
 
     @Inject
     PasswordEncryptor passwordEncryptor;
@@ -25,6 +30,10 @@ public class RegisterUserBean {
     private String email;
     private String password;
 
+    private String mobileNumber;
+
+    private LinkedList<String> selectedRolesStrings;
+
     private LinkedList<Role> selectedRoles;
 
     @PersistenceContext
@@ -32,7 +41,16 @@ public class RegisterUserBean {
 
     public void registerUser() {
 
-        User user = new User(firstName, lastName, usernameGenerator.generateUsername(firstName, lastName),
+
+        for(String roleString:selectedRolesStrings){
+            Role role=new Role(RoleType.valueOf(roleString));
+            selectedRoles.add(role);
+            entityManager.persist(role);
+
+        }
+
+
+        User user = new User(firstName, lastName, usernameGenerator.generateUsername(firstName, lastName,entityManager),
                 selectedRoles, email, passwordEncryptor.passwordEncryption(password));
         entityManager.persist(user);
 

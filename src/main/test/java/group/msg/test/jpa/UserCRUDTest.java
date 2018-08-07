@@ -1,6 +1,8 @@
 package group.msg.test.jpa;
 
-import group.msg.entities.User;
+import group.msg.beans.PasswordEncryptor;
+import group.msg.beans.UsernameGenerator;
+import group.msg.entities.*;
 import group.msg.test.MavenArtifactResolver;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -15,11 +17,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.File;
+import java.util.Collection;
+import java.util.LinkedList;
 
 @RunWith(Arquillian.class)
 public class UserCRUDTest extends JPABaseTest {
 
-    private static final int NUMBER_OF_ENTITIES = 5;
+    private static final int NUMBER_OF_ENTITIES = 30;
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -47,14 +51,98 @@ public class UserCRUDTest extends JPABaseTest {
         System.out.println("Inserting records...");
         for (int i = 1; i <= NUMBER_OF_ENTITIES; i++) {
             User e = new User();
-            if (i % 2 == 0) {
-                e.setFirstName("Praf");
+            UsernameGenerator usernameGenerator = new UsernameGenerator();
+            PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
+
+            String lastName = "Popescu" ;
+            String firstName = "Ion" ;
+            String password = "admin" + i;
+            String mail = "re" + i + "@msggroup.com";
+            String mobileNumber = "+4045678901" + i%10;
+            String germanNumber = "+494567890123" + i%10;
+
+
+            RightType rightType = RightType.BUG_MANAGEMENT;
+            RoleType roleType = RoleType.ADM;
+            if ((int) (Math.random()) * 100 < 20) {
+                rightType = RightType.BUG_CLOSE;
+                roleType = RoleType.PM;
             } else {
-                e.setLastName("Pulbere");
+                if ((int) (Math.random()) * 100 < 40) {
+                    rightType = RightType.BUG_EXPORT_PDF;
+                    roleType = RoleType.TEST;
+                } else {
+                    if ((int) (Math.random()) * 100 < 60) {
+                        rightType = RightType.BUG_MANAGEMENT;
+                        roleType = RoleType.TM;
+                    } else {
+                        if ((int) (Math.random()) * 100 < 80) {
+                            rightType = RightType.PERMISSION_MANAGEMENT;
+                            roleType = RoleType.DEV;
+                        } else {
+                            if ((int) (Math.random()) * 100 < 100) {
+                                rightType = RightType.USER_MANAGEMENT;
+                                roleType = RoleType.ADM;
+                            }
+                        }
+                    }
+                }
             }
-            e.setEmail("das@msggroup.com");
-            e.setMobileNumber("+40123456789");
+
+            RightType rightType1 = RightType.BUG_MANAGEMENT;
+            RoleType roleType1 = RoleType.DEV;
+
+            if (rightType.equals(RightType.BUG_MANAGEMENT)) {
+                rightType1 = RightType.USER_MANAGEMENT;
+            }
+
+            if (roleType.equals(RoleType.DEV)) {
+                roleType1 = RoleType.ADM;
+            }
+
+
+            Right right = new Right();
+            right.setType(rightType);
+            Right right1 = new Right();
+            right1.setType(rightType1);
+
+            Collection<Right> rights = new LinkedList<>();
+            rights.add(right);
+            rights.add(right1);
+
+            Role role = new Role();
+            role.setRole(roleType);
+            role.setRoleRights(rights);
+
+            Role role1 = new Role();
+            role1.setRole(roleType1);
+            role1.setRoleRights(rights);
+
+            Collection<Role> roles = new LinkedList<>();
+            roles.add(role);
+            roles.add(role1);
+
+            e.setUsername(usernameGenerator.generateUsername(firstName,lastName,em));
+            e.setPassword(passwordEncryptor.passwordEncryption(password));
+            e.setLastName(lastName);
+            e.setFirstName(firstName);
+            e.setEmail(mail);
+
+
+            if (Math.random() > 0.5) {
+                e.setMobileNumber(mobileNumber);
+            } else {
+                e.setMobileNumber(germanNumber);
+            }
+
+
+            e.setUserRoles(roles);
+
             em.persist(e);
+            em.persist(role);
+            em.persist(role1);
+            em.persist(right);
+            em.persist(right1);
         }
         utx.commit();
 
@@ -64,5 +152,9 @@ public class UserCRUDTest extends JPABaseTest {
     @Override
     protected void internalClearData() {
         em.createQuery("delete from User ").executeUpdate();
+        em.createQuery("delete from Role ").executeUpdate();
+        em.createQuery("delete from Right").executeUpdate();
     }
+
+
 }
