@@ -49,6 +49,10 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
     @Override
     public boolean isValid(String mobileNumber, ConstraintValidatorContext constraintValidatorContext) {
 
+        if(mobileNumber==null) {
+            return false;
+        }
+
         if(isRomanianPhoneNumber(mobileNumber)){
             return true;
         }

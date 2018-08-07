@@ -10,6 +10,10 @@ public class emailValidator implements ConstraintValidator<emailValidation, Stri
 
         String path="@msggroup.com";
 
+        if(null==email){
+            return false;
+        }
+
         if(email.endsWith(path)){
             return true;
         }

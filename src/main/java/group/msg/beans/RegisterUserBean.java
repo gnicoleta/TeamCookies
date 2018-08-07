@@ -10,10 +10,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.bind.DatatypeConverter;
-import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
 @Data
@@ -51,9 +47,10 @@ public class RegisterUserBean implements Serializable {
             entityManager.persist(role);
 
         }
-        User user = new User(firstName, lastName, usernameGenerator.generateUsername(firstName, lastName),
-                selectedRoles, email, passwordEncryptor.passwordEncryption(password),mobileNumber);
 
+
+        User user = new User(firstName, lastName, usernameGenerator.generateUsername(firstName, lastName,entityManager),
+                selectedRoles, email, passwordEncryptor.passwordEncryption(password));
         entityManager.persist(user);
 
     }

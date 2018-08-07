@@ -3,6 +3,7 @@ package group.msg.entities;
 import group.msg.validator.emailValidation.emailValidation;
 import group.msg.validator.mobileNumberValidation.mobileNumberValidation;
 import lombok.Data;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -22,7 +23,7 @@ import java.util.Collection;
 })
 @NamedNativeQueries({
         @NamedNativeQuery(name = "JPAExample.findIdByName",
-                query = "select sp.id from user sp where sp.user_name like ?1")
+                query = "select sp.id from user sp where sp.USERNAME like ?1")
 })
 public class User implements Serializable {
 
@@ -37,7 +38,8 @@ public class User implements Serializable {
 
     private String username;
 
-    //@mobileNumberValidation
+    @mobileNumberValidation
+    @NonNull
     private String mobileNumber;
 
     @ManyToMany
@@ -46,8 +48,8 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> userRoles;
 
-
-    //@emailValidation
+    @NotNull
+    @emailValidation
     private String email;
 
 
@@ -70,7 +72,7 @@ public class User implements Serializable {
 
     }
     public User(String firstName, String lastName, String username,
-                Collection<Role> userRoles, @NotNull @Email String email,String password,String mobileNumber) {
+                Collection<Role> userRoles, @NotNull @Email String email,String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
