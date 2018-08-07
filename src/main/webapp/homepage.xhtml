@@ -18,13 +18,13 @@
                 <p:selectOneMenu id="selectOneMenu" value="#{userManagement.outcome}" ajax="true">
                     <f:selectItem itemLabel="User Management" />
                     <f:selectItem itemValue="register" itemLabel="Add User" />
-                    <f:selectItem itemValue="editareReactivareUtilizator" itemLabel="Edit/Reactivate User" />
-                    <f:selectItem itemValue="stergereUtilizator" itemLabel="Delete User" />
+                    <f:selectItem itemValue="editareReactivareUtilizator" itemLabel="Edit User" />
+                    <f:selectItem itemValue="deleteUser" itemLabel="Activate/Deactivate User" />
                     <f:selectItem itemValue="adaugareEditarePermisiuni" itemLabel="Add/Edit User Permissions" />
                     <f:selectItem itemValue="stergerePermisiuni" itemLabel="Delete User Permissions" />
                     <p:ajax event="change" listener="#{userManagement.navigate()}"   />
                 </p:selectOneMenu>
-                <p:commandButton value="Bug Management" action='bugJSF' ajax="false" styleClass="aButton"/>
+                <p:commandButton value="Bug Management" action='bugManagement' ajax="false" styleClass="aButton"/>
                 <br/>
             </div>
             </p:panel>
