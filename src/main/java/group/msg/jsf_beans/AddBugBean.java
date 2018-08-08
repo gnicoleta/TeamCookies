@@ -51,6 +51,7 @@ public class AddBugBean implements Serializable {
 
         User user=userServiceEJB.getUserByUsername(username);
 
+       bug.setCreatedBy((User) WebHelper.getSession().getAttribute("currentUser"));
         bug.setAssignedTo(user);
 
         bugServiceEJB.save(bug);
