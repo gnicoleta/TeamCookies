@@ -25,34 +25,35 @@
                 <p:inputText id="version" value="#{addBugBean.version}" required="true" label="version"/>
                 <br/>
                 <h:outputText styleClass="myFont" value="Assigned to user" style="display:block;"/>
-                <p:inputText id="assignedTo" value="#{addBugBean.username}"  label="assignedTo"/>
+                <p:inputText id="assignedTo" value="#{addBugBean.username}" label="assignedTo"/>
                 <br/>
                 <br/>
                 <p:outputLabel for="inline" styleClass="myFont" value="Target Date" style="display:block;"/>
                 <p:calendar id="inline" navigator="true" value="#{addBugBean.targetDate}" mode="inline"/>
                 <br/>
-                <p:outputLabel for="console" styleClass="myFont"  value="Severity Type" style="display:block;" />
+                <p:outputLabel for="console" styleClass="myFont" value="Severity Type" style="display:block;"/>
 
                 <p:selectOneMenu id="console" value="#{addBugBean.severityTypeString}" style="width:125px">
-                    <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL" />
-                    <f:selectItem itemLabel="HIGH" itemValue="HIGH" />
-                    <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM" />
-                    <f:selectItem itemLabel="LOW" itemValue="LOW" />
+                    <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL"/>
+                    <f:selectItem itemLabel="HIGH" itemValue="HIGH"/>
+                    <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM"/>
+                    <f:selectItem itemLabel="LOW" itemValue="LOW"/>
                 </p:selectOneMenu>
                 <br/>
                 <br/>
                 <br/>
-                <p:commandButton value="Add Bug" action="#{addBugBean.addBug()}"
+                <p:commandButton value="Save" action="#{addBugBean.addBug()}"
                                  ajax="false"
                                  styleClass="aButton"/>
                 <br/>
             </h:form>
+            <h:form>
+                <h:commandButton value="Back" action="bugManagement" ajax="false"/>
+            </h:form>
 
         </div>
         <br/>
-        <h:form>
-            <h:commandButton value="Back" action="homepage" ajax="false"/>
-        </h:form>
+
     </h:body>
 </f:view>
 </html>

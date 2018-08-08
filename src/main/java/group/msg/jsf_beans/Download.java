@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Download implements Serializable {
 
-    private Path pdfPath;
+    private File pdfPath;
 
     private float leading;
 
@@ -76,8 +76,8 @@ public class Download implements Serializable {
 
     public void bugPDF(List<Bug> bugs, String filename) throws IOException {
 
-        pdfPath=Paths.get(filename);
-        document=new PDDocument();
+        pdfPath=new File(filename);
+        document=PDDocument.load(pdfPath);
 
         Iterator it=bugs.iterator();
 
@@ -104,14 +104,14 @@ public class Download implements Serializable {
             contentStream.close();
         }
 
-        document.save(filename);
+        document.save(pdfPath);
         document.close();
 
     }
 
 
     public StreamedContent getFile() throws IOException {
-        InputStream stream =new FileInputStream(pdfPath.toFile().getAbsolutePath());
+        InputStream stream =new FileInputStream(pdfPath.getAbsolutePath());
         StreamedContent file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug.pdf");
 
 
