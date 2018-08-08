@@ -16,15 +16,15 @@
         </f:metadata>
         <h:form>
             <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="24"
+                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                         rowsPerPageTemplate="24" lazy="true" editable="true" editMode="cell">
+                          lazy="true" editable="true" editMode="cell">
 
-                <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}" update=":form:outputLabel"/>
+                <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}"/>
 
-                <p:column sortBy="#{bug.id}" filterBy="#{bug.id}" filterMatchMode="contains">
+                <p:column sortBy="#{bug.id-1}" filterBy="#{bug.id-1}" filterMatchMode="contains">
                     <f:facet name="header">Id</f:facet>
-                    #{bug.id}
+                    #{bug.id-1}
                 </p:column>
 
                 <p:column sortBy="#{bug.title}" filterBy="#{bug.title}" filterMatchMode="contains">
@@ -116,13 +116,12 @@
                 </p:column>
             </p:dataTable>
             <br/>
-
-            <h:commandButton value = "Save bug" action = "#{bugBean.updateBugs}" update="table" />
         </h:form>
 
         <h:form id="form">
-            <p:outputLabel id="outputLabel" value="#{bugBean.onCLickMsg}"/>
             <h:commandButton value="Back" action="homepage" ajax="false"/>
+            <h:commandButton value="Add bug" action="AddBug" ajax="false"/>
+
         </h:form>
     </h:body>
 </f:view>
