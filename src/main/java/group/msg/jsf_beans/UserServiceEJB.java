@@ -51,7 +51,7 @@ public class UserServiceEJB {
         em.persist(notification);
     }
 
-    public  void  clear(){
+    public void clear() {
         em.clear();
     }
 
@@ -62,11 +62,12 @@ public class UserServiceEJB {
     public void updateBug(Bug bug) {
         em.merge(bug);
     }
+
     public void delete(User user) {
         em.remove(em.contains(user) ? user : em.merge(user));
     }
 
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
@@ -86,7 +87,7 @@ public class UserServiceEJB {
         }
 
     }
-    
+
     public List<User> getAllUsers() {
         Query q = em.createNamedQuery("User.findAll", User.class);
         List<User> result = q.getResultList();
@@ -99,31 +100,33 @@ public class UserServiceEJB {
         return result;
     }
 
-    public String ifExistsDelete(String username) {
+    public boolean ifExistsDelete(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
         if (result != null) {
             result.setUserStatus(false);
             this.update(result);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
-            return "";
+           // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
+            return true;
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
-            return "";
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+            return false;
         }
     }
 
-    public void ifExistsActivate(String username) {
+    public boolean ifExistsActivate(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
         if (result != null) {
             result.setUserStatus(true);
             this.update(result);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
+            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
+            return true;
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+            return false;
         }
     }
     /*

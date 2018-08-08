@@ -63,12 +63,25 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     }
 
 
-    public String ifExistsDelete() {
-        return service.ifExistsDelete(userName);
+    public void ifExistsDelete() {
+        //return service.ifExistsDelete(userName);
+
+        if (service.ifExistsDelete(userName)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
+
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+        }
     }
 
     public void ifExistsActivate() {
-        service.ifExistsActivate(userName);
+        //service.ifExistsActivate(userName);
+        if (service.ifExistsActivate(userName)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
+
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+        }
     }
 
     @Override
@@ -156,7 +169,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         outputMessage = selectedUser.getUsername();
 
         //selectedUser.setUsername("bbbb");
-       // service.update(selectedUser);
+        // service.update(selectedUser);
         this.updateUsername(selectedUser.getUsername());
 
 
@@ -169,7 +182,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     }
 
     public void onEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Item Edited",((User) event.getObject()).getUsername());
+        FacesMessage msg = new FacesMessage("Item Edited", ((User) event.getObject()).getUsername());
         FacesContext.getCurrentInstance().addMessage(null, msg);
         this.updateUsername(((User) event.getObject()).getUsername());
     }
