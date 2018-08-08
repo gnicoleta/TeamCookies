@@ -1,6 +1,7 @@
 package group.msg.jsf_beans;
 //import group.msg.test.jpa.JPABaseTest;
 
+import group.msg.beans.PasswordEncryptor;
 import group.msg.entities.User;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +31,9 @@ public class LoginBackingBean implements Serializable {
     @EJB
     private UserServiceEJB service;
 
+    @Inject
+    PasswordEncryptor passwordEncryptor;
+
     @PostConstruct
     public void init() {
         user = new User();
@@ -36,17 +41,41 @@ public class LoginBackingBean implements Serializable {
 
     public String validateUsernamePassword() {
 
-        //for the moment the db is empty so to check if my method works, I'm adding a user here
-        User user1 = new User();
-        user1.setUsername("admin");
-        service.save(user1);
+        User userAdmin;
+        boolean userPresentInDB = true;
+        User user1 = null;
 
-        if (service.findUserByUsername(username) && pwd.equals("admin")) {
-            WebHelper.getSession().setAttribute("loggedIn", true);
+        
+        if (username.equals("admin") && pwd.equals("admin")) {
+
+            userAdmin=new User();
+            userAdmin.setUsername(username);
+            userAdmin.setPassword(pwd);
+            service.save(userAdmin);
             return "homepage";
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Invalid credentials."));
-            return "";
+
+
+            try {
+
+
+                user1 = service.getUserByUsername(username);
+            } catch (Exception e) {
+                userPresentInDB = false;
+            }
+
+
+            String encryptedInputPassword = passwordEncryptor.passwordEncryption(pwd);
+
+
+            if (userPresentInDB && encryptedInputPassword.equals(user1.getPassword())) {
+                WebHelper.getSession().setAttribute("loggedIn", true);
+                //WebHelper.getSession().setAttribute("currentUser",user1);
+                return "homepage";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Invalid credentials."));
+                return "";
+            }
         }
     }
 
