@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <h:head>
+        <h:outputStylesheet library="css" name="styles.css"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:dataTable id="table" value="#{bugBean.bugList}" var="bug" selectionMode="single"
+                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="25" lazy="false">
+
+                <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}"/>
+
+                <p:column sortBy="#{bug.id}" filterBy="#{bug.id}" filterMatchMode="contains">
+                    <f:facet name="header">Id</f:facet>
+                    #{bug.id}
+                </p:column>
+
+                <p:column sortBy="#{bug.title}" filterBy="#{bug.title}" filterMatchMode="contains">
+                    <f:facet name="header">Title</f:facet>
+                    #{bug.title}
+                </p:column>
+
+                <p:column sortBy="#{bug.description}" filterBy="#{bug.description}" filterMatchMode="contains">
+                    <f:facet name="header">Description</f:facet>
+                    #{bug.description}
+                </p:column>
+
+                <p:column sortBy="#{bug.version}" filterBy="#{bug.version}" filterMatchMode="contains">
+                    <f:facet name="header">Version</f:facet>
+                    #{bug.version}
+                </p:column>
+
+                <p:column sortBy="#{bug.fixedInVersion}" filterBy="#{bug.fixedInVersion}" filterMatchMode="contains">
+                    <f:facet name="header">Fixed in version</f:facet>
+                    #{bug.fixedInVersion}
+                </p:column>
+                <p:column sortBy="#{bug.targetDate}" filterBy="#{bug.targetDate}" filterMatchMode="contains">
+                    <f:facet name="header">Target date</f:facet>
+                    #{bug.targetDate}
+                </p:column>
+                <p:column sortBy="#{bug.severityType}" filterBy="#{bug.severityType}" filterMatchMode="contains">
+                    <f:facet name="header">Severity type</f:facet>
+                    #{bug.severityType}
+                </p:column>
+                <p:column sortBy="#{bug.createdBy}" filterBy="#{bug.createdBy}" filterMatchMode="contains">
+                    <f:facet name="header">Created by</f:facet>
+                    #{bug.createdBy}
+                </p:column>
+                <p:column sortBy="#{bug.statusType}" filterBy="#{bug.statusType}" filterMatchMode="contains">
+                    <f:facet name="header">Status type</f:facet>
+                    #{bug.statusType}
+                </p:column>
+                <p:column sortBy="#{bug.attachment}" filterBy="#{bug.attachment}" filterMatchMode="contains">
+                    <f:facet name="header">Attachment</f:facet>
+                    #{bug.attachment}
+                </p:column>
+                <p:column sortBy="#{bug.notification}" filterBy="#{bug.notification}" filterMatchMode="contains">
+                    <f:facet name="header">Notification</f:facet>
+                    #{bug.notification}
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+        <h:form>
+            <h:commandButton value="Back" action="homepage" ajax="false"/>
+        </h:form>
+    </h:body>
+</f:view>
+</html>

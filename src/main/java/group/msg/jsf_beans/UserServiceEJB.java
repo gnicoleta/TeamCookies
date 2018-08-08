@@ -1,27 +1,53 @@
 package group.msg.jsf_beans;
 
+import group.msg.beans.PasswordEncryptor;
+import group.msg.beans.UsernameGenerator;
+import group.msg.entities.Notification;
+import group.msg.entities.Role;
 import group.msg.entities.User;
 
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.LinkedList;
 import java.util.List;
 
 @Stateless
 public class UserServiceEJB {
 
+
+    @Inject
+    PasswordEncryptor passwordEncryptor;
+
+    @Inject
+    UsernameGenerator usernameGenerator;
+
     @PersistenceContext
     private EntityManager em;
+
+    public String generateUsername(String firstname,String lastName){
+        return usernameGenerator.generateUsername(firstname,lastName,em);
+    }
 
     public User find(Integer id) {
         return em.find(User.class, id);
     }
 
-    public Integer save(User user) {
+    public void save(User user) {
         em.persist(user);
-        return user.getId();
+
     }
+    public void save(Role role){
+        em.persist(role);
+    }
+    public void save(Notification notification){
+        em.persist(notification);
+    }
+
 
     public void update(User user) {
         em.merge(user);
@@ -45,5 +71,42 @@ public class UserServiceEJB {
         }
 
     }
+    public String ifExistsDelete(String userName){
+        Query q = em.createQuery("select u from User u where u.username like ?1");
+        q.setParameter(1,userName);
+        User result =(User) q.getSingleResult();
+        if (this.findUserByUsername(userName)) {
+            result.setUserStatus(false);
+            this.update(result);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
+            return "";
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+            return "";
+        }
+    }
+    public void ifExistsActivate(String userName){
+        Query q = em.createQuery("select u from User u where u.username like ?1");
+        q.setParameter(1,userName);
+        User result =(User) q.getSingleResult();
+        if (this.findUserByUsername(userName)) {
+            result.setUserStatus(true);
+            this.update(result);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+        }
+    }
+    /*
+    public void editUser(String userName){
+        Query q = em.createQuery("select u from User u where u.username like ?1");
+        q.setParameter(1,userName);
+        User result =(User) q.getSingleResult();
+        if (this.findUserByUsername(userName)) {
+
+        }
+    }
+    */
+
 
 }

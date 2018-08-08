@@ -7,21 +7,46 @@
 >
 <f:view>
     <h:head>
-        <title>Login</title>
+        <title>Register</title>
         <h:outputStylesheet library="css" name="styles.css"/>
     </h:head>
     <h:body>
         <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
         <div class="centered">
             <h:form id="loginForm">
-                <h3 class="title">Login</h3>
-                <h:outputText styleClass="myFont" value="Username" style="display:block;"/>
+                <h3 class="title">AddUser</h3>
+                <h:outputText styleClass="myFont" value="First Name" style="display:block;"/>
                 <p:inputText id="firsName" value="#{registerUserBean.firstName}" required="true" label="first name"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Last Name" style="display:block;"/>
                 <p:inputText id="lastName" value="#{registerUserBean.lastName}" required="true" label="last name"/>
 
-                <br/><br/>
 
-                <p:commandButton value="Login" action="#{registerUserBean.registerUser}"
+                <br/>
+                <h:outputText styleClass="myFont" value="Password" style="display:block;"/>
+                <p:password id="password" value="#{registerUserBean.password}"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Email" style="display:block;"/>
+                <p:inputText id="email" value="#{registerUserBean.email}"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Phone Number" style="display:block;"/>
+                <p:inputText id="phone_number" value="#{registerUserBean.mobileNumber}"/>
+
+                <br/>
+                <h:outputText styleClass="myFont" value="Select User Roles" style="display:block;"/>
+
+                <p:selectManyCheckbox id="select_roles" value="#{registerUserBean.selectedRolesStrings}">
+                    <f:selectItem itemLabel="Administrator(ADM)" styleClass="myFont" itemValue="ADM"/>
+                    <f:selectItem itemLabel="Project manager(PM)" styleClass="myFont" itemValue="PM"/>
+                    <f:selectItem itemLabel="Test managet(TM)" styleClass="myFont" itemValue="TM"/>
+                    <f:selectItem itemLabel="Developer(DEV)" styleClass="myFont" itemValue="DEV"/>
+                    <f:selectItem itemLabel="Tester(TEST)" styleClass="myFont" itemValue="TEST"/>
+                </p:selectManyCheckbox>
+                <br/>
+                <br/>
+                <br/>
+
+                <p:commandButton value="Add User" action="#{registerUserBean.registerUser}"
                                  ajax="false"
                                  styleClass="aButton"/>
                 <br/>
@@ -29,6 +54,9 @@
 
         </div>
         <br/>
+        <h:form>
+            <h:commandButton value="Back" action="homepage" ajax="false"/>
+        </h:form>
     </h:body>
 </f:view>
 </html>

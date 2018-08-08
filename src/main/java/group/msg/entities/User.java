@@ -41,8 +41,8 @@ public class User implements Serializable {
 
     private String username;
 
-    @mobileNumberValidation
-    @NonNull
+   // @mobileNumberValidation
+   // @NonNull
     private String mobileNumber;
 
     @ManyToMany
@@ -51,10 +51,11 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> userRoles;
 
-    @NotNull
-    @emailValidation
+   // @NotNull
+    //@emailValidation
     private String email;
 
+    private boolean userStatus=true;
 
     @ManyToMany
     @JoinTable(name = "user_notifacation",
@@ -75,7 +76,7 @@ public class User implements Serializable {
 
     }
     public User(String firstName, String lastName, String username,
-                Collection<Role> userRoles, @NotNull @Email String email,String password) {
+                Collection<Role> userRoles, @NotNull @Email String email,String password, String mobileNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
