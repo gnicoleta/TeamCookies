@@ -71,7 +71,8 @@ public class UserCRUDTest extends JPABaseTest {
             bug.setTitle("Title "+i);
             bug.setVersion("a.1."+i%10);
 
-            LocalDateTime localDateTime=LocalDateTime.now().plusDays(i);
+           // Date localDateTime=LocalDateTime.now().plusDays(i);
+            Date localDateTime=new Date();
             bug.setTargetDate(localDateTime);
 
 

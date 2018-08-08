@@ -24,18 +24,18 @@
 
                 <br/>
                 <h:outputText styleClass="myFont" value="Password" style="display:block;"/>
-                <p:password id="password" value="#{registerUserBean.password}"/>
+                <p:password id="password" required="true" value="#{registerUserBean.password} "/>
                 <br/>
                 <h:outputText styleClass="myFont" value="Email" style="display:block;"/>
-                <p:inputText id="email" value="#{registerUserBean.email}"/>
+                <p:inputText id="email" required="true" value="#{registerUserBean.email}"/>
                 <br/>
                 <h:outputText styleClass="myFont" value="Phone Number" style="display:block;"/>
-                <p:inputText id="phone_number" value="#{registerUserBean.mobileNumber}"/>
+                <p:inputText id="phone_number" required="true" value="#{registerUserBean.mobileNumber}"/>
 
                 <br/>
                 <h:outputText styleClass="myFont" value="Select User Roles" style="display:block;"/>
 
-                <p:selectManyCheckbox id="select_roles" value="#{registerUserBean.selectedRolesStrings}">
+                <p:selectManyCheckbox id="select_roles" required="true" value="#{registerUserBean.selectedRolesStrings}">
                     <f:selectItem itemLabel="Administrator(ADM)" styleClass="myFont" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager(PM)" styleClass="myFont" itemValue="PM"/>
                     <f:selectItem itemLabel="Test managet(TM)" styleClass="myFont" itemValue="TM"/>

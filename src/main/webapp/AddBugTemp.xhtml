@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
+<f:view>
+    <h:head>
+        <title>Register</title>
+        <h:outputStylesheet library="css" name="styles.css"/>
+    </h:head>
+    <h:body>
+        <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
+        <div class="centered">
+            <h:form id="add_bug">
+                <h3 class="title">Add Bug</h3>
+                <h:outputText styleClass="myFont" value="Title" style="display:block;"/>
+                <p:inputText id="Title" value="#{addBugBean.title}" required="true" label="first name"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="description" style="display:block;"/>
+                <p:inputText id="description" value="#{addBugBean.description}" required="true" label="last name"/>
+
+
+
+                <br/>
+                <br/>
+                <p:outputLabel for="inline" value="Target Date"/>
+                <p:calendar id="inline" navigator="true" value="#{addBugBean.targetDate}" mode="inline"/>
+                <br/>
+                <br/>
+
+                <p:commandButton value="Add Bug" action="#{addBugBean.addBug()}"
+                                 ajax="false"
+                                 styleClass="aButton"/>
+                <br/>
+            </h:form>
+
+        </div>
+        <br/>
+        <h:form>
+            <h:commandButton value="Back" action="homepage" ajax="false"/>
+        </h:form>
+    </h:body>
+</f:view>
+</html>
