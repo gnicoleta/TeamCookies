@@ -66,6 +66,13 @@ public class UserServiceEJB {
         em.remove(em.contains(user) ? user : em.merge(user));
     }
 
+    public User getUserByUsername(String username){
+        Query q = em.createNamedQuery("User.findByUsername", User.class);
+        q.setParameter(1, username);
+        User result = (User) q.getSingleResult();
+        return result;
+    }
+
     public boolean findUserByUsername(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
