@@ -1,6 +1,8 @@
 package group.msg.jsf_beans;
 
 
+import group.msg.entities.Role;
+import group.msg.entities.RoleType;
 import group.msg.entities.User;
 import lombok.Data;
 import org.primefaces.event.RowEditEvent;
@@ -32,7 +34,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private String outcome;
     private String userName;
 
-    private String wtv;
 
     private User selectedUser;
     private String outputMessage;
@@ -65,18 +66,17 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void ifExistsDelete() {
         if (service.ifExistsDelete(userName)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User status: inactive", "User deleted."));
-        }
-        else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User not found", "Try another username or contact an administrator for help."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User status: inactive", "User deleted."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User not found", "Try another username or contact an administrator for help."));
         }
     }
+
     public void ifExistsActivate() {
         if (service.ifExistsActivate(userName)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User status: active", "User activated."));
-        }
-        else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User not found", "Try another username or contact an administrator for help."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User status: active", "User activated."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User not found", "Try another username or contact an administrator for help."));
         }
     }
 
@@ -163,23 +163,35 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void rowSelected(SelectEvent event) {
         outputMessage = selectedUser.getUsername();
-
-        //selectedUser.setUsername("bbbb");
-        // service.update(selectedUser);
-        this.updateUsername(selectedUser.getUsername());
-
-
-        //service.update(selectedUser);
+        this.updateFirstName(selectedUser.getFirstName());
+        this.updateLastName(selectedUser.getLastName());
+        this.updateMobileNumber(selectedUser.getMobileNumber());
+        this.updateEmail(selectedUser.getEmail());
     }
 
-    public void updateUsername(String ooo) {
-        selectedUser.setUsername(ooo);
+    public void updateFirstName(String newFirstName) {
+        selectedUser.setFirstName(newFirstName);
         service.update(selectedUser);
     }
 
-    public void onEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Item Edited", ((User) event.getObject()).getUsername());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        this.updateUsername(((User) event.getObject()).getUsername());
+    public void updateLastName(String newLastName) {
+        selectedUser.setLastName(newLastName);
+        service.update(selectedUser);
     }
+
+    public void updateMobileNumber(String newMobileNumber) {
+        selectedUser.setMobileNumber(newMobileNumber);
+        service.update(selectedUser);
+    }
+
+    public void updateEmail(String newEmail) {
+        selectedUser.setEmail(newEmail);
+        service.update(selectedUser);
+    }
+/*
+    public void updateRole(Collection<Role> rt) {
+        selectedUser.setUserRoles(rt);
+        service.update(selectedUser);
+    }*/
+
 }

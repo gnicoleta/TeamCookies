@@ -30,52 +30,80 @@
                         <h:outputText value="#{user.id}"/>
                     </p:column>
 
-                    <p:column filterBy="#{user.username}">
+                    <p:column id="c2" headerText="Username" sortBy="#{user.username}" filterBy="#{user.username}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{user.username}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{user.firstName}" filterBy="#{user.firstName}">
                         <f:facet name="header">
-                            <h:outputText value="Username"/>
+                            <h:outputText value="First Name"/>
                         </f:facet>
                         <p:cellEditor>
                             <f:facet name="output">
-                                <h:outputText value="#{user.username}"/>
+                                <h:outputText value="#{user.firstName}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c2" value="#{user.username}"
-                                             action="#{userEditBean.updateUsername(user.username.value)}"
+                                <p:inputText id="c3" value="#{user.firstName}"
                                              style="width:96%"/>
-                                <br/>
-                                <p:outputLabel id="outputLabel3" value="#{user.username}"/>
-                                <br/>
-                                <p:outputLabel id="outputLabel2" value="#{userEditBean.outputMessage}"/>
-                                <br/>
-                                <h:commandButton value="Save"
-                                                 action="#{userEditBean.updateUsername(user.username.value)}"
-                                                 ajax="true" update="output outputLabel3 outputLabel2 c2"/>
                             </f:facet>
                         </p:cellEditor>
-
-
-                        <p:rowEditor/>
                     </p:column>
 
-                    <p:column id="c3" headerText="First Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
-                              filterMatchMode="contains">
-                        <h:outputText value="#{user.firstName}"/>
-                    </p:column>
-                    <p:column id="c4" headerText="Last Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
-                              filterMatchMode="contains">
-                        <h:outputText value="#{user.firstName}"/>
+                    <p:column sortBy="#{user.lastName}" filterBy="#{user.lastName}">
+                        <f:facet name="header">
+                            <h:outputText value="Last Name"/>
+                        </f:facet>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.lastName}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="c4" value="#{user.lastName}"
+                                             style="width:96%"/>
+                                <br/>
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
 
-                    <p:column id="c5" headerText="Mobile number" sortBy="#{user.mobileNumber}"
-                              filterBy="#{user.mobileNumber}"
-                              filterMatchMode="contains">
-                        <h:outputText value="#{user.mobileNumber}"/>
+                    <p:column sortBy="#{user.mobileNumber}" filterBy="#{user.mobileNumber}">
+                        <f:facet name="header">
+                            <h:outputText value="Mobile Number"/>
+                        </f:facet>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.mobileNumber}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="c5" value="#{user.mobileNumber}"
+                                             style="width:96%"/>
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
 
-                    <p:column id="c6" headerText="Last Name" sortBy="#{user.email}" filterBy="#{user.email}"
-                              filterMatchMode="contains">
-                        <h:outputText value="#{user.email}"/>
+                    <p:column sortBy="#{user.email}" filterBy="#{user.email}">
+                        <f:facet name="header">
+                            <h:outputText value="Email"/>
+                        </f:facet>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.email}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="c6" value="#{user.email}"
+                                             style="width:96%"/>
+                                <br/>
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
+
+
+                    <br/>
+                    <h:commandButton value="Save"
+                                     actionListener="#{userEditBean.rowSelected}"
+                                     ajax="true" update="output c6"/>
+
+                    <p:rowEditor/>
 
                 </p:dataTable>
                 <br/>
@@ -91,7 +119,8 @@
 
                 <h:panelGrid columns="7" cellpadding="7">
                     <h:outputLabel for="txt1" value="Insert valid username"/>
-                    <p:inputText id="txt1" value="#{userEditBean.userName}" size="30" required="true" label="Username field">
+                    <p:inputText id="txt1" value="#{userEditBean.userName}" size="30" required="true"
+                                 label="Username field">
                         <p:watermark for="txt1" value="Invalid usernames will be ignored" size="10" id="watermark"/>
                         <f:validateLength minimum="2"/>
                     </p:inputText>
