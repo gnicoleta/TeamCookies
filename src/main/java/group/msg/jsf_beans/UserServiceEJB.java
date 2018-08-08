@@ -56,6 +56,9 @@ public class UserServiceEJB {
         em.merge(user);
     }
 
+    public void updateBug(Bug bug) {
+        em.merge(bug);
+    }
     public void delete(User user) {
         em.remove(em.contains(user) ? user : em.merge(user));
     }
