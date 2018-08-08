@@ -60,13 +60,12 @@ public class UserServiceEJB {
     }
 
     public boolean findUserByUsername(String username) {
-        Query q = em.createNamedQuery("User.findByUsername", String.class);
+        Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
-        List<String> result = q.getResultList();
-
-        if (result.isEmpty()) {
+        User result = (User) q.getSingleResult();
+        if (result == null) {
             return false;
-        } else if (result.get(0).equals(username)) {
+        } else if (result.getUsername().equals(username)) {
             return true;
         } else {
             return false;
@@ -74,11 +73,11 @@ public class UserServiceEJB {
 
     }
 
-    public String ifExistsDelete(String userName) {
-        Query q = em.createQuery("select u from User u where u.username like ?1");
-        q.setParameter(1, userName);
+    public String ifExistsDelete(String username) {
+        Query q = em.createNamedQuery("User.findByUsername", User.class);
+        q.setParameter(1, username);
         User result = (User) q.getSingleResult();
-        if (this.findUserByUsername(userName)) {
+        if (result != null) {
             result.setUserStatus(false);
             this.update(result);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
@@ -89,11 +88,11 @@ public class UserServiceEJB {
         }
     }
 
-    public void ifExistsActivate(String userName) {
-        Query q = em.createQuery("select u from User u where u.username like ?1");
-        q.setParameter(1, userName);
+    public void ifExistsActivate(String username) {
+        Query q = em.createNamedQuery("User.findByUsername", User.class);
+        q.setParameter(1, username);
         User result = (User) q.getSingleResult();
-        if (this.findUserByUsername(userName)) {
+        if (result != null) {
             result.setUserStatus(true);
             this.update(result);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
