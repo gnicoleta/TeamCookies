@@ -2,6 +2,7 @@ package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
+import group.msg.entities.Bug;
 import group.msg.entities.Notification;
 import group.msg.entities.Role;
 import group.msg.entities.User;
@@ -71,6 +72,18 @@ public class UserServiceEJB {
             return false;
         }
 
+    }
+
+    public List<User> getAllUsers() {
+        Query q = em.createNamedQuery("User.findAll", User.class);
+        List<User> result = q.getResultList();
+        return result;
+    }
+
+    public List<Bug> getAllBugs() {
+        Query q = em.createNamedQuery("Bug.findAll", Bug.class);
+        List<Bug> result = q.getResultList();
+        return result;
     }
 
     public String ifExistsDelete(String username) {

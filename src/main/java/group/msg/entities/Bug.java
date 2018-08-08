@@ -14,6 +14,11 @@ import group.msg.validator.bugInfoValidator.revisionValidation;
 @Data
 @Entity
 @Table
+@NamedQueries({
+        @NamedQuery(name = "Bug.findAll",
+                query = "select e from Bug e order by e.id desc")
+
+})
 public class Bug implements Serializable {
     @Id
     @GeneratedValue
