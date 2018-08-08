@@ -1,10 +1,11 @@
 package group.msg.jsf_beans;
 
 import java.util.List;
+
 import group.msg.entities.*;
 import group.msg.jsf_beans.UserServiceEJB;
 import lombok.Data;
-import org.jboss.weld.util.LazyValueHolder;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -12,14 +13,10 @@ import org.primefaces.model.SortOrder;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIColumn;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -27,14 +24,19 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-@ManagedBean
+//@ManagedBean
 @Named
 @ViewScoped
 @Data
 public class BugBean extends LazyDataModel<Bug> implements Serializable {
     @EJB
     private UserServiceEJB service;
+
+    @EJB
+    private BugServiceEJB bugService;
+
     @PersistenceContext
     private EntityManager em;
 
@@ -57,12 +59,36 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     List<Bug> bugList;
 
-    public BugBean(){
+    /*public BugBean(){
         bugList = new ArrayList<>();
     }
 
     public void initialiseList() {
         bugList =  service.getAllBugs();
+    }*/
+
+    //delete these comments after u read them :))
+//asa iti iei lista de buguri ca sa ti-o afisezi in datatable fara sa fie nevoie de metadata in jsf
+//    <f:metadata>
+//            <f:event type="preRenderView" listener="#{bugBean.initialiseList}"/>
+//        </f:metadata>
+//si fara sa fie nevoie sa scazi din id-1
+//nu cred ca mai e nevoie de constructoru de mai sus si de metoda initialiseList()
+    @PostConstruct
+    public void init() {
+        bugList = bugService.getAllBugs();
+    }
+
+    //cam ai nevoie sa suprascrii metodele astea daca vrei sa poti edita in celula
+    @Override
+    public Bug getRowData(String rowKey) {
+        Integer id = Integer.parseInt(rowKey);
+        return bugList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+    }
+
+    @Override
+    public Object getRowKey(Bug object) {
+        return object.getId();
     }
 
     @Override
@@ -78,7 +104,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                         Object filterValue = filters.get(filterProperty);
 
                         Field fieldToFilter = null;
-                        for(Field field : Bug.class.getDeclaredFields()) {
+                        for (Field field : Bug.class.getDeclaredFields()) {
                             if (field.getName().equals(filterProperty)) {
                                 fieldToFilter = field;
                             }
@@ -116,7 +142,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         this.setRowCount(dataSize);
 
 //        paginate
-        if (dataSize>pageSize) {
+        if (dataSize > pageSize) {
             try {
                 return filteredList.subList(first, first + pageSize);
             } catch (IndexOutOfBoundsException e) {
@@ -140,7 +166,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         public int compare(Bug bug, Bug t1) {
             try {
                 Field fieldToSort = null;
-                for(Field field : Bug.class.getDeclaredFields()) {
+                for (Field field : Bug.class.getDeclaredFields()) {
                     if (field.getName().equals(sortField)) {
                         fieldToSort = field;
                     }
@@ -163,18 +189,36 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
             }
         }
     }
-    public Bug getSelectedBug(){
+
+    public Bug getSelectedBug() {
         return selectedBug;
     }
+
     public void setSelectedBug(Bug selectedBug) {
         this.selectedBug = selectedBug;
     }
 
     public void rowSelected(SelectEvent event) {
-        onCLickMsg=selectedBug.getTitle();
+        onCLickMsg = selectedBug.getTitle();
+
+        this.updateBugTitle(selectedBug.getTitle());
+        this.updateBugDescription(selectedBug.getDescription());
     }
-    public void updateBugs(){
+
+    //nu prea mai e nevoie de asta
+    public void updateBugs() {
 
         service.updateBug(selectedBug);
+    }
+
+
+    public void updateBugTitle(String newTitle) {
+        selectedBug.setTitle(newTitle);
+        bugService.update(selectedBug);
+    }
+
+    public void updateBugDescription(String newDescription) {
+        selectedBug.setDescription(newDescription);
+        bugService.update(selectedBug);
     }
 }

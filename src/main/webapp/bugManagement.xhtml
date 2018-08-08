@@ -11,9 +11,6 @@
         <h:outputStylesheet library="css" name="styles.css"/>
     </h:head>
     <h:body>
-        <f:metadata>
-            <f:event type="preRenderView" listener="#{bugBean.initialiseList}"/>
-        </f:metadata>
         <h:form>
             <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
                          selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
@@ -24,9 +21,9 @@
 
                 <p:column styleClass="select-column"  selectionMode="multiple" selectAllToggler="true" />
 
-                <p:column sortBy="#{bug.id-1}" filterBy="#{bug.id-1}" filterMatchMode="contains">
+                <p:column sortBy="#{bug.id}" filterBy="#{bug.id}" filterMatchMode="contains">
                     <f:facet name="header">Id</f:facet>
-                    #{bug.id-1}
+                    #{bug.id}
                 </p:column>
 
                 <p:column sortBy="#{bug.title}" filterBy="#{bug.title}" filterMatchMode="contains">
@@ -37,7 +34,6 @@
                         </f:facet>
                         <f:facet name="input">
                             <p:inputText value="#{bug.title}" style="width:96%"/>
-                            <h:commandButton value="Save" actionListener="#{bugBean.updateBugs}" />
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -116,6 +112,13 @@
                     <f:facet name="header">Notification</f:facet>
                     #{bug.notification}
                 </p:column>
+
+                <br/>
+                <h:commandButton value="Save"
+                                 actionListener="#{bugBean.rowSelected}"
+                                 ajax="true" update="output"/>
+
+                <p:rowEditor/>
             </p:dataTable>
             <br/>
         </h:form>
