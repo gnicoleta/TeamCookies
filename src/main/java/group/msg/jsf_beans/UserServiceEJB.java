@@ -107,10 +107,8 @@ public class UserServiceEJB {
         if (result != null) {
             result.setUserStatus(false);
             this.update(result);
-           // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
             return true;
         } else {
-            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
             return false;
         }
     }
@@ -122,10 +120,8 @@ public class UserServiceEJB {
         if (result != null) {
             result.setUserStatus(true);
             this.update(result);
-            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
             return true;
         } else {
-            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
             return false;
         }
     }

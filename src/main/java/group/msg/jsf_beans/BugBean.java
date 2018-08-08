@@ -9,6 +9,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
@@ -27,9 +28,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 
-
+@ManagedBean
 @Named
-@SessionScoped
+@ViewScoped
 @Data
 public class BugBean extends LazyDataModel<Bug> implements Serializable {
     @EJB

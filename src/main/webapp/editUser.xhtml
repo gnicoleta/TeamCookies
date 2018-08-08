@@ -9,20 +9,20 @@
       xmlns:pe="http://java.sun.com/jsf/facelets">
 <f:view>
     <h:head>
-        <title>Login</title>
+        <title>User list</title>
         <h:outputStylesheet library="css" name="styles.css"/>
     </h:head>
     <h:body>
         <h:form id="form1">
             <div class="centered">
                 <p:dataTable var="user" id="usersTable" value="#{userEditBean}"
-                             selection="#{userEditBean.selectedUser}" selectionMode="single" rowKey="#{user.id}" lazy="true" paginator="true" rows="10"
+                             selection="#{userEditBean.selectedUser}" selectionMode="single" rowKey="#{user.id}"
+                             lazy="true" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="5,10,15" editable="true" editMode="cell">
                     <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}" update=":form1:outputLabel"/>
 
-                    <p:ajax event="rowEdit" listener="#{userEditBean.onEdit}" update=":form1:outputLabel" />
-
+                    <p:ajax event="rowEdit" listener="#{userEditBean.onEdit}" update=":form1:outputLabel"/>
 
 
                     <p:column id="c1" headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}"
@@ -39,18 +39,22 @@
                                 <h:outputText value="#{user.username}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c2" value="#{user.username}" action="#{userEditBean.updateUsername(user.username.value)}" style="width:96%"/>
+                                <p:inputText id="c2" value="#{user.username}"
+                                             action="#{userEditBean.updateUsername(user.username.value)}"
+                                             style="width:96%"/>
                                 <br/>
                                 <p:outputLabel id="outputLabel3" value="#{user.username}"/>
                                 <br/>
                                 <p:outputLabel id="outputLabel2" value="#{userEditBean.outputMessage}"/>
                                 <br/>
-                                <h:commandButton value="Save" action="#{userEditBean.updateUsername(user.username.value)}" ajax="true" update="output outputLabel3 outputLabel2 c2" />
+                                <h:commandButton value="Save"
+                                                 action="#{userEditBean.updateUsername(user.username.value)}"
+                                                 ajax="true" update="output outputLabel3 outputLabel2 c2"/>
                             </f:facet>
                         </p:cellEditor>
 
 
-                        <p:rowEditor />
+                        <p:rowEditor/>
                     </p:column>
 
                     <p:column id="c3" headerText="First Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
@@ -62,7 +66,8 @@
                         <h:outputText value="#{user.firstName}"/>
                     </p:column>
 
-                    <p:column id="c5" headerText="Mobile number" sortBy="#{user.mobileNumber}" filterBy="#{user.mobileNumber}"
+                    <p:column id="c5" headerText="Mobile number" sortBy="#{user.mobileNumber}"
+                              filterBy="#{user.mobileNumber}"
                               filterMatchMode="contains">
                         <h:outputText value="#{user.mobileNumber}"/>
                     </p:column>
@@ -72,36 +77,37 @@
                         <h:outputText value="#{user.email}"/>
                     </p:column>
 
-                    <!--p:ajax event="rowEdit" listener="#{userEditBean.updateUsername()}" /-->
                 </p:dataTable>
-                <!--<p:outputLabel value="#{dataTableBackingBean.animalsList.stream().filter(animal->animal.id==2).toList()}"/>-->
                 <br/>
-                <p:outputLabel id="outputLabel" value="#{dataTableBackingBean.outputMessage}"/>
+                <p:outputLabel id="outputLabel" value=""/>
+                <h:commandButton value="Back" action="homepage" ajax="false"/>
             </div>
         </h:form>
 
         <h:form>
             <p:growl id="growl" sticky="false" showDetail="true"/>
-            <p:panel id="panel" header="Search Form" style="margin-bottom:10px;">
+            <p:panel id="panel" style="margin-bottom:10px;">
                 <p:messages id="messages"/>
 
-                <h:panelGrid columns="4" cellpadding="5">
-                    <h:outputLabel for="txt1" value="Insert Username"/>
-                    <p:inputText id="txt1" value="#{userEditBean.userName}" required="true" label="Text 1">
+                <h:panelGrid columns="7" cellpadding="7">
+                    <h:outputLabel for="txt1" value="Insert valid username"/>
+                    <p:inputText id="txt1" value="#{userEditBean.userName}" size="30" required="true" label="Username field">
+                        <p:watermark for="txt1" value="Invalid usernames will be ignored" size="10" id="watermark"/>
                         <f:validateLength minimum="2"/>
                     </p:inputText>
                 </h:panelGrid>
             </p:panel>
 
             <h:panelGrid columns="2">
-                <p:commandButton value="Deactivate user" action="#{userEditBean.ifExistsDelete}"/>
+                <p:commandButton value="Activate user" action="#{userEditBean.ifExistsActivate}" update="growl"/>
             </h:panelGrid>
+
             <h:panelGrid columns="2">
-                <p:commandButton value="Activate user" action="#{userEditBean.ifExistsActivate}"/>
+                <p:commandButton value="Deactivate user" action="#{userEditBean.ifExistsDelete}" update="growl"/>
             </h:panelGrid>
         </h:form>
         <h:form>
-            <h:commandButton value="Back" action="homepage" ajax="true" update="growl"/>
+
         </h:form>
     </h:body>
 

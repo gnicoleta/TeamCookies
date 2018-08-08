@@ -64,23 +64,19 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
 
     public void ifExistsDelete() {
-        //return service.ifExistsDelete(userName);
-
         if (service.ifExistsDelete(userName)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
-
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User status: inactive", "User deleted."));
+        }
+        else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User not found", "Try another username or contact an administrator for help."));
         }
     }
-
     public void ifExistsActivate() {
-        //service.ifExistsActivate(userName);
         if (service.ifExistsActivate(userName)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
-
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User status: active", "User activated."));
+        }
+        else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"User not found", "Try another username or contact an administrator for help."));
         }
     }
 
