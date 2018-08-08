@@ -21,17 +21,17 @@ public class Bug implements Serializable {
 
     private String title;
 
-    @descriptionValidation
+    //@descriptionValidation
     private String description;
 
-    @revisionValidation
+    //@revisionValidation
     private String version;
 
     @Column(name = "FIXED_IN_VERSION")
     private String fixedInVersion;
 
     @Column(name = "TARGET_DATE")
-    private LocalDateTime targetDate;
+    private Date targetDate;
 
     @Column(name = "SEVERITY")
     private SeverityType severityType;
