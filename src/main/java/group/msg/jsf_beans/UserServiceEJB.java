@@ -62,10 +62,10 @@ public class UserServiceEJB {
     public boolean findUserByUsername(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
-        User result = (User) q.getSingleResult();
-        if (result == null) {
+        List<User> result = q.getResultList();
+        if (result.isEmpty()) {
             return false;
-        } else if (result.getUsername().equals(username)) {
+        } else if (result.get(0).getUsername().equals(username)) {
             return true;
         } else {
             return false;
