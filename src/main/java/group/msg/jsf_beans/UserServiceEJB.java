@@ -51,6 +51,9 @@ public class UserServiceEJB {
         em.persist(notification);
     }
 
+    public  void  clear(){
+        em.clear();
+    }
 
     public void update(User user) {
         em.merge(user);
