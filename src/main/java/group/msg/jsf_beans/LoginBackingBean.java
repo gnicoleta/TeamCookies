@@ -45,13 +45,14 @@ public class LoginBackingBean implements Serializable {
         boolean userPresentInDB = true;
         User user1 = null;
 
-        
+
         if (username.equals("admin") && pwd.equals("admin")) {
 
             userAdmin=new User();
             userAdmin.setUsername(username);
             userAdmin.setPassword(pwd);
             service.save(userAdmin);
+            WebHelper.getSession().setAttribute("currentUser",userAdmin);
             return "homepage";
         } else {
 
@@ -70,7 +71,7 @@ public class LoginBackingBean implements Serializable {
 
             if (userPresentInDB && encryptedInputPassword.equals(user1.getPassword())) {
                 WebHelper.getSession().setAttribute("loggedIn", true);
-                //WebHelper.getSession().setAttribute("currentUser",user1);
+                WebHelper.getSession().setAttribute("currentUser",user1);
                 return "homepage";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Invalid credentials."));
