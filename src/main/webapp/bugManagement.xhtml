@@ -11,13 +11,16 @@
         <h:outputStylesheet library="css" name="styles.css"/>
     </h:head>
     <h:body>
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{bugBean.initialiseList}"/>
+        </f:metadata>
         <h:form>
-            <p:dataTable id="table" value="#{bugBean.bugList}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
+                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="24"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                         rowsPerPageTemplate="25" lazy="false">
+                         rowsPerPageTemplate="24" lazy="true" editable="true" editMode="cell">
 
-                <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}"/>
+                <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}" update=":form:outputLabel"/>
 
                 <p:column sortBy="#{bug.id}" filterBy="#{bug.id}" filterMatchMode="contains">
                     <f:facet name="header">Id</f:facet>
@@ -26,17 +29,39 @@
 
                 <p:column sortBy="#{bug.title}" filterBy="#{bug.title}" filterMatchMode="contains">
                     <f:facet name="header">Title</f:facet>
-                    #{bug.title}
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{bug.title}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{bug.title}" style="width:96%"/>
+                            <h:commandButton value="Save" actionListener="#{bugBean.updateBugs}" />
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column sortBy="#{bug.description}" filterBy="#{bug.description}" filterMatchMode="contains">
                     <f:facet name="header">Description</f:facet>
-                    #{bug.description}
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{bug.description}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{bug.description}" style="width:96%"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column sortBy="#{bug.version}" filterBy="#{bug.version}" filterMatchMode="contains">
                     <f:facet name="header">Version</f:facet>
-                    #{bug.version}
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{bug.version}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{bug.version}" style="width:96%"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column sortBy="#{bug.fixedInVersion}" filterBy="#{bug.fixedInVersion}" filterMatchMode="contains">
@@ -49,7 +74,14 @@
                 </p:column>
                 <p:column sortBy="#{bug.severityType}" filterBy="#{bug.severityType}" filterMatchMode="contains">
                     <f:facet name="header">Severity type</f:facet>
-                    #{bug.severityType}
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{bug.severityType}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{bug.severityType}" style="width:96%"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
                 <p:column sortBy="#{bug.createdBy}" filterBy="#{bug.createdBy}" filterMatchMode="contains">
                     <f:facet name="header">Created by</f:facet>
@@ -57,21 +89,39 @@
                 </p:column>
                 <p:column sortBy="#{bug.statusType}" filterBy="#{bug.statusType}" filterMatchMode="contains">
                     <f:facet name="header">Status type</f:facet>
-                    #{bug.statusType}
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{bug.statusType}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{bug.statusType}" style="width:96%"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
-                <p:column sortBy="#{bug.attachment}" filterBy="#{bug.attachment}" filterMatchMode="contains">
-                    <f:facet name="header">Attachment</f:facet>
-                    #{bug.attachment}
+                <p:column sortBy="#{bug.assignedTo}" filterBy="#{bug.assignedTo}" filterMatchMode="contains">
+                    <f:facet name="header">Assigned to</f:facet>
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{bug.assignedTo}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{bug.assignedTo}" style="width:96%"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
+
                 <p:column sortBy="#{bug.notification}" filterBy="#{bug.notification}" filterMatchMode="contains">
                     <f:facet name="header">Notification</f:facet>
                     #{bug.notification}
                 </p:column>
-
             </p:dataTable>
+            <br/>
 
+            <h:commandButton value = "Save bug" action = "#{bugBean.updateBugs}" update="table" />
         </h:form>
-        <h:form>
+
+        <h:form id="form">
+            <p:outputLabel id="outputLabel" value="#{bugBean.onCLickMsg}"/>
             <h:commandButton value="Back" action="homepage" ajax="false"/>
         </h:form>
     </h:body>
