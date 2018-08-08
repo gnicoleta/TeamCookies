@@ -16,7 +16,7 @@ import group.msg.validator.bugInfoValidator.revisionValidation;
 @Table
 @NamedQueries({
         @NamedQuery(name = "Bug.findAll",
-                query = "select e from Bug e order by e.id desc")
+                query = "select e from Bug e order by e.id asc")
 
 })
 public class Bug implements Serializable {
@@ -59,6 +59,7 @@ public class Bug implements Serializable {
     @ManyToOne
     @JoinColumn(name = "notification")
     private Notification notification;
+
 
 
 }

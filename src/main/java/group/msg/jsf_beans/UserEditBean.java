@@ -15,14 +15,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Data
@@ -44,8 +42,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     @EJB
     private UserServiceEJB service;
 
-
-    Logger logger;
 
     @PostConstruct
     public void init() {
@@ -161,21 +157,20 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
         //selectedUser.setUsername("bbbb");
        // service.update(selectedUser);
-        //this.updateUsername();
+        this.updateUsername(selectedUser.getUsername());
 
 
         //service.update(selectedUser);
     }
 
-    public void updateUsername(String temp) {
-
-        selectedUser.setUsername(temp);
-
+    public void updateUsername(String ooo) {
+        selectedUser.setUsername(ooo);
         service.update(selectedUser);
     }
 
     public void onEdit(RowEditEvent event) {
-       // FacesMessage msg = new FacesMessage("Item Edited",((User) event.getObject()));
-       // FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesMessage msg = new FacesMessage("Item Edited",((User) event.getObject()).getUsername());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        this.updateUsername(((User) event.getObject()).getUsername());
     }
 }

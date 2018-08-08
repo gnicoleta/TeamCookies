@@ -3,6 +3,7 @@ package group.msg.test.jpa;
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
+import group.msg.jsf_beans.Download;
 import group.msg.test.MavenArtifactResolver;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -18,14 +19,15 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 
 @RunWith(Arquillian.class)
 public class UserCRUDTest extends JPABaseTest {
 
     private static final int NUMBER_OF_ENTITIES = 30;
+
+    @Inject
+    private Download download;
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -51,6 +53,7 @@ public class UserCRUDTest extends JPABaseTest {
         utx.begin();
         em.joinTransaction();
         System.out.println("Inserting records...");
+        List<Bug> bugs=new ArrayList<>();
         for (int i = 1; i <= NUMBER_OF_ENTITIES; i++) {
             User e = new User();
             UsernameGenerator usernameGenerator = new UsernameGenerator();
@@ -162,6 +165,9 @@ public class UserCRUDTest extends JPABaseTest {
 
             e.setUserRoles(roles);
 
+            bugs.add(bug);
+
+
             em.persist(e);
             em.persist(role);
             em.persist(role1);
@@ -171,6 +177,7 @@ public class UserCRUDTest extends JPABaseTest {
             em.persist(n);
 
         }
+        download.bugPDF(bugs,"MyBug");
         utx.commit();
 
         em.clear();

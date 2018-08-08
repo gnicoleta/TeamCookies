@@ -39,12 +39,18 @@
                                 <h:outputText value="#{user.username}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c2" value="#{user.username}" binding="#{input1}" style="width:96%"/>
+                                <p:inputText id="c2" value="#{user.username}" action="#{userEditBean.updateUsername(user.username.value)}" style="width:96%"/>
                                 <br/>
-                                <h:commandButton value="Save" action="#{userEditBean.updateUsername(input1.value)}" listener="#{userEditBean.rowSelected}" />
+                                <p:outputLabel id="outputLabel3" value="#{user.username}"/>
+                                <br/>
+                                <p:outputLabel id="outputLabel2" value="#{userEditBean.outputMessage}"/>
+                                <br/>
+                                <h:commandButton value="Save" action="#{userEditBean.updateUsername(user.username.value)}" ajax="true" update="output outputLabel3 outputLabel2 c2" />
                             </f:facet>
-                            <p:rowEditor />
                         </p:cellEditor>
+
+
+                        <p:rowEditor />
                     </p:column>
 
                     <p:column id="c3" headerText="First Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
