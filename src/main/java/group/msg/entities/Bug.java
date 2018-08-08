@@ -61,4 +61,5 @@ public class Bug implements Serializable {
     private Notification notification;
 
 
+
 }

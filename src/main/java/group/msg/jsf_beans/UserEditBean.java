@@ -168,8 +168,8 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         //service.update(selectedUser);
     }
 
-    public void onEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Item Edited",((User) event.getObject()));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+//    public void onEdit(RowEditEvent event) {
+//        FacesMessage msg = new FacesMessage("Item Edited",((User) event.getObject()));
+//        FacesContext.getCurrentInstance().addMessage(null, msg);
+//    }
 }
