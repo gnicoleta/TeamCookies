@@ -7,6 +7,7 @@ import javax.swing.text.Document;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+
 import group.msg.validator.bugInfoValidator.descriptionValidation;
 import group.msg.validator.bugInfoValidator.revisionValidation;
 
@@ -44,7 +45,7 @@ public class Bug implements Serializable {
     @JoinColumn(name = "assigned_user")
     private User assignedTo;
 
-    private StatusType statusType=StatusType.NEW;
+    private StatusType statusType = StatusType.NEW;
 
     @ManyToOne
     @JoinColumn(name = "attachement")

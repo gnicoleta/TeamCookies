@@ -26,7 +26,7 @@ import java.util.Collection;
         @NamedNativeQuery(name = "User.findIdByName",
                 query = "select sp.id from user sp where sp.USERNAME like ?1"),
         @NamedNativeQuery(name = "User.findByUsername",
-                query = "select sp.username from user sp where sp.username like ?1")
+                query = "select sp from user sp where sp.username like ?1")
 })
 public class User implements Serializable {
 
@@ -41,8 +41,8 @@ public class User implements Serializable {
 
     private String username;
 
-   // @mobileNumberValidation
-   // @NonNull
+    // @mobileNumberValidation
+    // @NonNull
     private String mobileNumber;
 
     @ManyToMany
@@ -51,11 +51,11 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> userRoles;
 
-   // @NotNull
+    // @NotNull
     //@emailValidation
     private String email;
 
-    private boolean userStatus=true;
+    private boolean userStatus = true;
 
     @ManyToMany
     @JoinTable(name = "user_notifacation",
@@ -72,18 +72,19 @@ public class User implements Serializable {
 
     private String password;
 
-    public  User(){
+    public User() {
 
     }
+
     public User(String firstName, String lastName, String username,
-                Collection<Role> userRoles,  String email,String password,String mobileNumber) {
+                Collection<Role> userRoles, @NotNull @Email String email, String password, String mobileNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.userRoles = userRoles;
         this.email = email;
-        this.password=password;
-        this.mobileNumber=mobileNumber;
+        this.password = password;
+        this.mobileNumber = mobileNumber;
 
         notifications.add(new Notification(NotificationType.WELCOME_NEW_USER));
     }

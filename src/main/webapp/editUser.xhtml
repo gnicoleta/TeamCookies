@@ -1,59 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
-    <h:head>
-        <title>Edit User</title>
-        <h:outputStylesheet library="css" name="styles.css"/>
-    </h:head>
-    <h:body>
-        <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
-        <div class="centered">
-            <h:form id="loginForm">
-                <h3 class="title">AddUser</h3>
-                <h:outputText styleClass="myFont" value="First Name" style="display:block;"/>
-                <p:inputText id="firsName" value="#{registerUserBean.firstName}" required="true" label="first name"/>
-                <br/>
-                <h:outputText styleClass="myFont" value="Last Name" style="display:block;"/>
-                <p:inputText id="lastName" value="#{registerUserBean.lastName}" required="true" label="last name"/>
-
-
-                <br/>
-                <h:outputText styleClass="myFont" value="Password" style="display:block;"/>
-                <p:password id="password" value="#{registerUserBean.password}"/>
-                <br/>
-                <h:outputText styleClass="myFont" value="Email" style="display:block;"/>
-                <p:inputText id="email" value="#{registerUserBean.email}"/>
-                <br/>
-                <h:outputText styleClass="myFont" value="Phone Number" style="display:block;"/>
-                <p:inputText id="phone_number" value="#{registerUserBean.mobileNumber}"/>
-
-                <br/>
-                <h:outputText styleClass="myFont" value="Select User Roles" style="display:block;"/>
-
-                <p:selectManyCheckbox id="select_roles" value="#{registerUserBean.selectedRolesStrings}">
-                    <f:selectItem itemLabel="Administrator(ADM)" styleClass="myFont" itemValue="ADM"/>
-                    <f:selectItem itemLabel="Project manager(PM)" styleClass="myFont" itemValue="PM"/>
-                    <f:selectItem itemLabel="Test managet(TM)" styleClass="myFont" itemValue="TM"/>
-                    <f:selectItem itemLabel="Developer(DEV)" styleClass="myFont" itemValue="DEV"/>
-                    <f:selectItem itemLabel="Tester(TEST)" styleClass="myFont" itemValue="TEST"/>
-                </p:selectManyCheckbox>
-                <br/>
-                <br/>
-                <br/>
-
-                <p:commandButton value="Add User" action="#{registerUserBean.registerUser}"
-                                 ajax="false"
-                                 styleClass="aButton"/>
-                <br/>
-            </h:form>
-
-        </div>
-        <br/>
-    </h:body>
+    <h:outputLabel value="Hello, world"/>
 </f:view>
 </html>

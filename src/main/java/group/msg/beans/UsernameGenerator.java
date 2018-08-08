@@ -10,7 +10,7 @@ public class UsernameGenerator implements Serializable {
     private EntityManager em;
 
     public String generateUsername(String firstName, String lastName, EntityManager entityManager) {
-        em=entityManager;
+        em = entityManager;
 
         StringBuilder result = new StringBuilder();
         if (lastName.length() < 5) {
@@ -41,10 +41,10 @@ public class UsernameGenerator implements Serializable {
                 q.setParameter(1, result.toString());
 
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
 
             e.printStackTrace();
-            System.out.println("Hello "+em);
+            System.out.println("Hello " + em);
         }
 
 

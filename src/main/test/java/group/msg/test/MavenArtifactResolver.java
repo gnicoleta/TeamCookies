@@ -9,15 +9,11 @@ public class MavenArtifactResolver {
                     (System.getProperty("user.home") + File.separatorChar +
                             ".m2" + File.separatorChar + "repository");
 
-    public static File resolve(final String groupId, final String artifactId,
-                               final String version)
-    {
+    public static File resolve(final String groupId, final String artifactId, final String version) {
         return resolve(groupId, artifactId, version, null);
     }
 
-    public static File resolve(final String groupId, final String artifactId,
-                               final String version, final String classifier)
-    {
+    public static File resolve(final String groupId, final String artifactId, final String version, final String classifier) {
         return new File(LOCAL_MAVEN_REPO + File.separatorChar +
                 groupId.replace(".", File.separator) + File.separatorChar +
                 artifactId + File.separatorChar +
@@ -26,27 +22,21 @@ public class MavenArtifactResolver {
                 (classifier != null ? ("-" + classifier) : "") + ".jar");
     }
 
-    public static File resolve(final String qualifiedArtifactId)
-    {
+    public static File resolve(final String qualifiedArtifactId) {
         String[] segments = qualifiedArtifactId.split(":");
-        if (segments.length == 3)
-        {
+        if (segments.length == 3) {
             return resolve(segments[0], segments[1], segments[2]);
-        }
-        else if (segments.length == 4)
-        {
+        } else if (segments.length == 4) {
             return resolve(segments[0], segments[1], segments[2], segments[3]);
         }
         throw new IllegalArgumentException("Invalid qualified artifactId syntax: " +
                 qualifiedArtifactId);
     }
 
-    public static File[] resolve(final String... qualifiedArtifactIds)
-    {
+    public static File[] resolve(final String... qualifiedArtifactIds) {
         int n = qualifiedArtifactIds.length;
         File[] artifacts = new File[n];
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             artifacts[i] = resolve(qualifiedArtifactIds[i]);
         }
 
