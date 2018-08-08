@@ -123,6 +123,16 @@ public class UserServiceEJB {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
         }
     }
+    /*
+    public void editUser(String userName){
+        Query q = em.createQuery("select u from User u where u.username like ?1");
+        q.setParameter(1,userName);
+        User result =(User) q.getSingleResult();
+        if (this.findUserByUsername(userName)) {
+
+        }
+    }
+    */
 
 
 }
