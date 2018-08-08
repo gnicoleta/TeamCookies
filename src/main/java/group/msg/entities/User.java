@@ -89,5 +89,8 @@ public class User implements Serializable {
         notifications.add(new Notification(NotificationType.WELCOME_NEW_USER));
     }
 
+    public String toString(){
+        return username;
+    }
 
 }
