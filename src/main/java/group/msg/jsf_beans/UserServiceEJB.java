@@ -59,6 +59,9 @@ public class UserServiceEJB {
         em.merge(user);
     }
 
+    public void updateBug(Bug bug) {
+        em.merge(bug);
+    }
     public void delete(User user) {
         em.remove(em.contains(user) ? user : em.merge(user));
     }
@@ -76,17 +79,7 @@ public class UserServiceEJB {
         }
 
     }
-
-    public User getUserByUsername(String username) {
-        Query q = em.createNamedQuery("User.findByUsername", User.class);
-        q.setParameter(1, username);
-        User result = (User) q.getSingleResult();
-
-
-        return result;
-    }
-
-
+    
     public List<User> getAllUsers() {
         Query q = em.createNamedQuery("User.findAll", User.class);
         List<User> result = q.getResultList();
