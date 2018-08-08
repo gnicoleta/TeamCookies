@@ -13,148 +13,61 @@
         <h:outputStylesheet library="css" name="styles.css"/>
     </h:head>
     <h:body>
-    <p:dataTable id="cellEditingTable" var="message" value="#{messageTableController.messages}"
-                 paginator="true" rows="5" paginatorPosition="bottom"
-                 filteredValue="#{messageTableController.filteredMessages}"
-                 editable="true" editMode="cell">
-        <f:facet name="header">
-            In-Cell Editing
-        </f:facet>
+        <h:form id="form1">
+            <div class="centered">
+                <p:dataTable var="user" id="usersTable" value="#{userEditBean}"
+                             selection="#{userEditBean.selectedUser}" selectionMode="single" rowKey="#{user.id}" lazy="true" paginator="true" rows="10"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="5,10,15" editable="true" editMode="cell">
+                    <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}" update=":form1:outputLabel"/>
+                    <p:column id="c1" headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{user.id}"/>
+                    </p:column>
 
-        <p:column filterBy="#{message.subject}">
-            <f:facet name="header">
-                <h:outputText value="Subject"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.subject}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText id="modelInput" value="#{message.subject}" style="width:96%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-        <p:column filterBy="#{message.text}">
-            <f:facet name="header">
-                <h:outputText value="Text"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.text}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText value="#{message.text}" style="width:96%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-        <p:column filterBy="#{message.time}">
-            <f:facet name="header">
-                <h:outputText value="Time"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.time}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText value="#{message.time}" style="width:96%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-        <p:column filterBy="#{message.state}">
-            <f:facet name="header">
-                <h:outputText value="State"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.state}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <h:selectOneMenu value="#{message.state}" style="width:100%">
-                        <f:selectItems value="#{messageTableController.states}" var="state" itemLabel="#{state}"
-                                       itemValue="#{state}"/>
-                    </h:selectOneMenu>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-    </p:dataTable>
+                    <p:column filterBy="#{user.username}">
+                        <f:facet name="header">
+                            <h:outputText value="Username"/>
+                        </f:facet>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.username}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="c2" value="#{user.username}" binding="#{input1}" style="width:96%"/>
+                                <br/>
+                                <h:commandButton value="Save" action="#{userEditBean.updateUsername(input1.value)}" listener="#{userEditBean.rowSelected}" />
+                            </f:facet>
+                            <p:rowEditor />
+                        </p:cellEditor>
+                    </p:column>
 
-    <p:spacer height="20"/>
+                    <p:column id="c3" headerText="First Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{user.firstName}"/>
+                    </p:column>
+                    <p:column id="c4" headerText="Last Name" sortBy="#{user.firstName}" filterBy="#{user.firstName}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{user.firstName}"/>
+                    </p:column>
 
-    <p:panel header="Export PDF and Excel">
+                    <p:column id="c5" headerText="Mobile number" sortBy="#{user.mobileNumber}" filterBy="#{user.mobileNumber}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{user.mobileNumber}"/>
+                    </p:column>
 
-    </p:panel>
+                    <p:column id="c6" headerText="Last Name" sortBy="#{user.email}" filterBy="#{user.email}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{user.email}"/>
+                    </p:column>
 
-    <p:spacer height="40"/>
-
-    <p:dataTable id="rowEditingTable" var="message" value="#{messageTableController.messages}"
-                 paginator="true" rows="5" paginatorPosition="bottom"
-                 filteredValue="#{messageTableController.filteredMessages}"
-                 editable="true" >
-        <f:facet name="header">
-            Row Editing
-        </f:facet>
-
-        <p:column filterBy="#{message.subject}">
-            <f:facet name="header">
-                <h:outputText value="Subject"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.subject}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText id="modelInput" value="#{message.subject}" style="width:96%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-        <p:column filterBy="#{message.text}">
-            <f:facet name="header">
-                <h:outputText value="Text"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.text}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText value="#{message.text}" style="width:96%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-        <p:column filterBy="#{message.time}">
-            <f:facet name="header">
-                <h:outputText value="Time"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.time}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText value="#{message.time}" style="width:96%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-        <p:column filterBy="#{message.state}">
-            <f:facet name="header">
-                <h:outputText value="State"/>
-            </f:facet>
-            <p:cellEditor>
-                <f:facet name="output">
-                    <h:outputText value="#{message.state}"/>
-                </f:facet>
-                <f:facet name="input">
-                    <p:selectOneMenu value="#{message.state}" style="width:100%">
-                        <f:selectItems value="#{messageTableController.states}" var="state" itemLabel="#{state}"
-                                       itemValue="#{state}"/>
-                    </p:selectOneMenu>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-        <p:column style="width:6%" exportable="false">
-            <p:rowEditor />
-        </p:column>
-    </p:dataTable>
-
-    <p:spacer height="20"/>
+                    <p:ajax event="rowEdit" listener="#{userEditBean.updateUsername()}" />
+                </p:dataTable>
+                <!--<p:outputLabel value="#{dataTableBackingBean.animalsList.stream().filter(animal->animal.id==2).toList()}"/>-->
+                <br/>
+                <p:outputLabel id="outputLabel" value="#{dataTableBackingBean.outputMessage}"/>
+            </div>
+        </h:form>
     </h:body>
 
 </f:view>
