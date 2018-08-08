@@ -4,6 +4,7 @@ package group.msg.jsf_beans;
 import group.msg.entities.User;
 import lombok.Data;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -24,11 +25,18 @@ public class UserEditBean implements Serializable {
 
     private String outcome;
     private String userName;
+
+    private List<User> usersList;
+
     @EJB
     private UserServiceEJB service;
 
-    @PersistenceContext
-    private EntityManager em;
+
+    /*@PostConstruct
+    public void init() {
+        usersList =
+    }*/
+
 
     public void navigate() {
         FacesContext context = FacesContext.getCurrentInstance();

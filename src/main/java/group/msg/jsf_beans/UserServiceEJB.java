@@ -2,6 +2,7 @@ package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
+import group.msg.entities.Bug;
 import group.msg.entities.Notification;
 import group.msg.entities.Role;
 import group.msg.entities.User;
@@ -62,10 +63,10 @@ public class UserServiceEJB {
     public boolean findUserByUsername(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
-        User result = (User) q.getSingleResult();
-        if (result == null) {
+        List<User> result = q.getResultList();
+        if (result.isEmpty()) {
             return false;
-        } else if (result.getUsername().equals(username)) {
+        } else if (result.get(0).getUsername().equals(username)) {
             return true;
         } else {
             return false;
@@ -80,6 +81,18 @@ public class UserServiceEJB {
     }
 
 
+
+    public List<User> getAllUsers() {
+        Query q = em.createNamedQuery("User.findAll", User.class);
+        List<User> result = q.getResultList();
+        return result;
+    }
+
+    public List<Bug> getAllBugs() {
+        Query q = em.createNamedQuery("Bug.findAll", Bug.class);
+        List<Bug> result = q.getResultList();
+        return result;
+    }
 
     public String ifExistsDelete(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
