@@ -73,13 +73,15 @@ public class UserServiceEJB {
         }
 
     }
-    public User getUserByUsername(String username){
+
+    public User getUserByUsername(String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
+
+
         return result;
     }
-
 
 
     public List<User> getAllUsers() {
@@ -121,7 +123,6 @@ public class UserServiceEJB {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
         }
     }
-
 
 
 }

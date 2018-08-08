@@ -18,6 +18,7 @@ public class AddBugBean implements Serializable {
     @EJB
     UserServiceEJB userServiceEJB;
 
+
     private String title;
     private String description;
     private String version;
@@ -25,6 +26,8 @@ public class AddBugBean implements Serializable {
     private Date targetDate;
     private SeverityType severityType;
     private String username;
+
+
 
     //private User createdBy;
     private User assignedTo;
@@ -46,8 +49,9 @@ public class AddBugBean implements Serializable {
         SeverityType severityType=SeverityType.valueOf(severityTypeString);
         bug.setSeverityType(severityType);
 
-        //User user=userServiceEJB.getUserByUsername(username);
-        //bug.setAssignedTo(user);
+        User user=userServiceEJB.getUserByUsername(username);
+
+        bug.setAssignedTo(user);
 
         bugServiceEJB.save(bug);
 
