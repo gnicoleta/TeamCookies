@@ -7,7 +7,7 @@
 >
 <f:view>
     <h:head>
-        <title>Register</title>
+        <title>Add Bug</title>
         <h:outputStylesheet library="css" name="styles.css"/>
     </h:head>
     <h:body>
@@ -16,20 +16,32 @@
             <h:form id="add_bug">
                 <h3 class="title">Add Bug</h3>
                 <h:outputText styleClass="myFont" value="Title" style="display:block;"/>
-                <p:inputText id="Title" value="#{addBugBean.title}" required="true" label="first name"/>
+                <p:inputText id="Title" value="#{addBugBean.title}" required="true" label="Title"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="description" style="display:block;"/>
-                <p:inputText id="description" value="#{addBugBean.description}" required="true" label="last name"/>
-
-
-
+                <h:outputText styleClass="myFont" value="Description" style="display:block;"/>
+                <p:inputText id="description" value="#{addBugBean.description}" required="true" label="description"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Version" style="display:block;"/>
+                <p:inputText id="version" value="#{addBugBean.version}" required="true" label="version"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Assigned to user" style="display:block;"/>
+                <p:inputText id="assignedTo" value="#{addBugBean.version}"  label="assignedTo"/>
                 <br/>
                 <br/>
-                <p:outputLabel for="inline" value="Target Date"/>
+                <p:outputLabel for="inline" styleClass="myFont" value="Target Date" style="display:block;"/>
                 <p:calendar id="inline" navigator="true" value="#{addBugBean.targetDate}" mode="inline"/>
                 <br/>
-                <br/>
+                <p:outputLabel for="console" styleClass="myFont"  value="Severity Type" style="display:block;" />
 
+                <p:selectOneMenu id="console" value="#{addBugBean.severityTypeString}" style="width:125px">
+                    <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL" />
+                    <f:selectItem itemLabel="HIGH" itemValue="HIGH" />
+                    <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM" />
+                    <f:selectItem itemLabel="LOW" itemValue="LOW" />
+                </p:selectOneMenu>
+                <br/>
+                <br/>
+                <br/>
                 <p:commandButton value="Add Bug" action="#{addBugBean.addBug()}"
                                  ajax="false"
                                  styleClass="aButton"/>

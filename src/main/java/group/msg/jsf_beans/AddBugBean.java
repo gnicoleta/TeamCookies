@@ -1,26 +1,11 @@
 package group.msg.jsf_beans;
-
-
-import group.msg.beans.PasswordEncryptor;
-import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
 import lombok.Data;
-
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 @Data
 @Named
 @SessionScoped
@@ -30,14 +15,19 @@ public class AddBugBean implements Serializable {
     @EJB
     BugServiceEJB bugServiceEJB;
 
+    @EJB
+    UserServiceEJB userServiceEJB;
+
     private String title;
     private String description;
     private String version;
-
+    private String severityTypeString;
     private Date targetDate;
     private SeverityType severityType;
+    private String username;
+
     //private User createdBy;
-    // private User assignedTo;
+    private User assignedTo;
 
     // private Attachment attachment;
     private Notification notification;
@@ -53,7 +43,14 @@ public class AddBugBean implements Serializable {
 
         bug.setTargetDate(targetDate);
 
+        SeverityType severityType=SeverityType.valueOf(severityTypeString);
+        bug.setSeverityType(severityType);
+
+        //User user=userServiceEJB.getUserByUsername(username);
+        //bug.setAssignedTo(user);
+
         bugServiceEJB.save(bug);
+
         return "bugManagement";
     }
 
