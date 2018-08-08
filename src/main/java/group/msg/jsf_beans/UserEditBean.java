@@ -3,6 +3,7 @@ package group.msg.jsf_beans;
 
 import group.msg.entities.User;
 import lombok.Data;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -165,5 +166,10 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void updateUsername(String lolo) {
         selectedUser.setUsername(lolo);
         //service.update(selectedUser);
+    }
+
+    public void onEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Item Edited",((User) event.getObject()));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }

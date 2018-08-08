@@ -20,6 +20,7 @@
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="5,10,15" editable="true" editMode="cell">
                     <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}" update=":form1:outputLabel"/>
+                    <p:ajax event="rowEdit" listener="#{userEditBean.onEdit}" update=":form1:outputLabel" />
                     <p:column id="c1" headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}"
                               filterMatchMode="contains">
                         <h:outputText value="#{user.id}"/>
