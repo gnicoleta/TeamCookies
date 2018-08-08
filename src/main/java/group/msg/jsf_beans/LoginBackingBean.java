@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 @Named
 @SessionScoped
-public class LoginBackingBean  implements Serializable {
+public class LoginBackingBean implements Serializable {
     private String username;
     private String pwd;
 
@@ -41,16 +41,16 @@ public class LoginBackingBean  implements Serializable {
         user1.setUsername("admin");
         service.save(user1);
 
-        if ( service.findUserByUsername(username) && pwd.equals("admin")) {
-            WebHelper.getSession().setAttribute("loggedIn",true);
+        if (service.findUserByUsername(username) && pwd.equals("admin")) {
+            WebHelper.getSession().setAttribute("loggedIn", true);
             return "homepage";
-        }else{
+        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Invalid credentials."));
             return "";
         }
     }
 
-    public String getCurrentlyLoggedInUsername(){
+    public String getCurrentlyLoggedInUsername() {
         return user.getUsername();
     }
 }

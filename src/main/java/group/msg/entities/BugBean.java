@@ -27,17 +27,17 @@ public class BugBean {
     private SeverityType severityType;
     private User createdBy;
     private User assignedTo;
-    private StatusType statusType=StatusType.NEW;
+    private StatusType statusType = StatusType.NEW;
     private Attachment attachment;
     private Notification notification;
 
-    private String onCLickMsg="";
+    private String onCLickMsg = "";
 
     private Bug selectedBug;
 
     private List<Bug> bugList;
 
-    public BugBean(){
+    public BugBean() {
         Query q = em.createQuery("select e from Bug e order by e.id desc ");
         List<Bug> bugList = (List) q.getResultList();
 
@@ -49,9 +49,7 @@ public class BugBean {
 
     public String rowSelected(SelectEvent event) {
         return "bugEdit";
-   }
-
-
+    }
 
 
 }

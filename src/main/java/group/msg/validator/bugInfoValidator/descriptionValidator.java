@@ -8,7 +8,7 @@ public class descriptionValidator implements ConstraintValidator<descriptionVali
     @Override
     public boolean isValid(String description, ConstraintValidatorContext constraintValidatorContext) {
 
-        if(null==description){
+        if (null == description) {
             return false;
         }
 

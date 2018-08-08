@@ -8,13 +8,13 @@ public class emailValidator implements ConstraintValidator<emailValidation, Stri
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
 
-        String path="@msggroup.com";
+        String path = "@msggroup.com";
 
-        if(null==email){
+        if (null == email) {
             return false;
         }
 
-        if(email.endsWith(path)){
+        if (email.endsWith(path)) {
             return true;
         }
 

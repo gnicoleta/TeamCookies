@@ -29,8 +29,8 @@ public class UserServiceEJB {
     @PersistenceContext
     private EntityManager em;
 
-    public String generateUsername(String firstname,String lastName){
-        return usernameGenerator.generateUsername(firstname,lastName,em);
+    public String generateUsername(String firstname, String lastName) {
+        return usernameGenerator.generateUsername(firstname, lastName, em);
     }
 
     public User find(Integer id) {
@@ -41,10 +41,12 @@ public class UserServiceEJB {
         em.persist(user);
 
     }
-    public void save(Role role){
+
+    public void save(Role role) {
         em.persist(role);
     }
-    public void save(Notification notification){
+
+    public void save(Notification notification) {
         em.persist(notification);
     }
 
@@ -71,29 +73,31 @@ public class UserServiceEJB {
         }
 
     }
-    public String ifExistsDelete(String userName){
+
+    public String ifExistsDelete(String userName) {
         Query q = em.createQuery("select u from User u where u.username like ?1");
-        q.setParameter(1,userName);
-        User result =(User) q.getSingleResult();
+        q.setParameter(1, userName);
+        User result = (User) q.getSingleResult();
         if (this.findUserByUsername(userName)) {
             result.setUserStatus(false);
             this.update(result);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: inactive", "User deleted."));
             return "";
-        }else{
+        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
             return "";
         }
     }
-    public void ifExistsActivate(String userName){
+
+    public void ifExistsActivate(String userName) {
         Query q = em.createQuery("select u from User u where u.username like ?1");
-        q.setParameter(1,userName);
-        User result =(User) q.getSingleResult();
+        q.setParameter(1, userName);
+        User result = (User) q.getSingleResult();
         if (this.findUserByUsername(userName)) {
             result.setUserStatus(true);
             this.update(result);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User status: active", "User activated."));
-        }else{
+        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "User not found."));
         }
     }

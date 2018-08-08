@@ -44,11 +44,11 @@ public class UserEditBean implements Serializable {
     }
 
 
-    public String ifExistsDelete(){
+    public String ifExistsDelete() {
         return service.ifExistsDelete(userName);
     }
 
-    public void ifExistsActivate(){
+    public void ifExistsActivate() {
         service.ifExistsActivate(userName);
     }
 

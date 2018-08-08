@@ -8,12 +8,8 @@ import lombok.Data;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +32,7 @@ public class RegisterUserBean implements Serializable {
     private String email;
     private String mobileNumber;
     private LinkedList<String> selectedRolesStrings;
-    private LinkedList<Role> seletectedRoles=new LinkedList<>();
+    private LinkedList<Role> selectedRoles = new LinkedList<>();
 
     private User user;
     private List<User> users;
@@ -59,16 +55,16 @@ public class RegisterUserBean implements Serializable {
         user1.setEmail(email);
         user1.setMobileNumber(mobileNumber);
         user1.setPassword(passwordEncryptor.passwordEncryption(password));
-        for(String roleString:selectedRolesStrings){
-            Role role=new Role(RoleType.valueOf(roleString));
-            seletectedRoles.add(role);
+        for (String roleString : selectedRolesStrings) {
+            Role role = new Role(RoleType.valueOf(roleString));
+            selectedRoles.add(role);
             service.save(role);
 
         }
-        Notification notification=new Notification(NotificationType.WELCOME_NEW_USER);
+        Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
         service.save(notification);
 
-        user1.setUserRoles(seletectedRoles);
+        user1.setUserRoles(selectedRoles);
 
         service.save(user1);
 

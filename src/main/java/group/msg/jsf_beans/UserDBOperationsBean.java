@@ -27,15 +27,15 @@ public class UserDBOperationsBean {
 
     public void insertUser(String firstName, String lastName) {
 
-       User user = new User();
+        User user = new User();
         user.setFirstName(firstName);
-       user.setLastName(lastName);
-       em.persist(user);
-       em.flush();
+        user.setLastName(lastName);
+        em.persist(user);
+        em.flush();
     }
 
     public boolean findId(int id) {
-        if(em.find(User.class,id)!= null) {
+        if (em.find(User.class, id) != null) {
             return true;
         } else {
             return false;

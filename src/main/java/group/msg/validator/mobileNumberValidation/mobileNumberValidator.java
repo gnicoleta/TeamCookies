@@ -5,9 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 
 public class mobileNumberValidator implements ConstraintValidator<mobileNumberValidation, String> {
 
-    private boolean isEveryCharacterDigit(String string){
-        for(int i=1;i<string.length();i++){
-            if(!Character.isDigit(string.charAt(i))){
+    private boolean isEveryCharacterDigit(String string) {
+        for (int i = 1; i < string.length(); i++) {
+            if (!Character.isDigit(string.charAt(i))) {
                 return false;
             }
         }
@@ -15,13 +15,13 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
         return true;
     }
 
-    private boolean isRomanianPhoneNumber(String mobileNumber){
-        String startingPathRO="+40";
-        int romanianPhoneNumberLength=12;
+    private boolean isRomanianPhoneNumber(String mobileNumber) {
+        String startingPathRO = "+40";
+        int romanianPhoneNumberLength = 12;
 
-        if(mobileNumber.startsWith(startingPathRO)){
-            if(mobileNumber.length()==romanianPhoneNumberLength){
-                if(isEveryCharacterDigit(mobileNumber)) {
+        if (mobileNumber.startsWith(startingPathRO)) {
+            if (mobileNumber.length() == romanianPhoneNumberLength) {
+                if (isEveryCharacterDigit(mobileNumber)) {
                     return true;
                 }
             }
@@ -30,13 +30,13 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
         return false;
     }
 
-    private boolean isGermanPhoneNumber(String mobileNumber){
-        String startingPathDe="+49";
-        int germanPhoneNumberLength=14;
+    private boolean isGermanPhoneNumber(String mobileNumber) {
+        String startingPathDe = "+49";
+        int germanPhoneNumberLength = 14;
 
-        if(mobileNumber.startsWith(startingPathDe)){
-            if(mobileNumber.length()==germanPhoneNumberLength){
-                if(isEveryCharacterDigit(mobileNumber)){
+        if (mobileNumber.startsWith(startingPathDe)) {
+            if (mobileNumber.length() == germanPhoneNumberLength) {
+                if (isEveryCharacterDigit(mobileNumber)) {
                     return true;
                 }
             }
@@ -49,15 +49,14 @@ public class mobileNumberValidator implements ConstraintValidator<mobileNumberVa
     @Override
     public boolean isValid(String mobileNumber, ConstraintValidatorContext constraintValidatorContext) {
 
-        if(mobileNumber==null) {
+        if (mobileNumber == null) {
             return false;
         }
 
-        if(isRomanianPhoneNumber(mobileNumber)){
+        if (isRomanianPhoneNumber(mobileNumber)) {
             return true;
-        }
-        else{
-            if(isGermanPhoneNumber(mobileNumber)){
+        } else {
+            if (isGermanPhoneNumber(mobileNumber)) {
                 return true;
             }
         }

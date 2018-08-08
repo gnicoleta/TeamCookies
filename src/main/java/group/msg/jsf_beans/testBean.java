@@ -18,39 +18,39 @@ public class testBean {
     }
 
     //get all the rows from the category table
-    public List<User> getCategory(){
+    public List<User> getCategory() {
         EntityManagerFactory emf;
         EntityManager em;
 
-        emf=Persistence.createEntityManagerFactory("test");
-        em=emf.createEntityManager();
+        emf = Persistence.createEntityManagerFactory("test");
+        em = emf.createEntityManager();
 
-        String queryStr="select cat from User cat";
+        String queryStr = "select cat from User cat";
 
         Query query;
-        query=em.createQuery(queryStr);
-        List<User> cat=query.getResultList();
+        query = em.createQuery(queryStr);
+        List<User> cat = query.getResultList();
 
         return cat;
 
     }
 
-    public void insertData(){
+    public void insertData() {
         EntityManagerFactory emf;
         EntityManager em;
 
 //the Entity Class-Category
-        User cat=new User();
+        User cat = new User();
 
 //set value
         cat.setId(5);
         cat.setFirstName("test cat");
 
 //the "test" is the persist unit in persistence.xml
-        emf=Persistence.createEntityManagerFactory("test");
-        em=emf.createEntityManager();
+        emf = Persistence.createEntityManagerFactory("test");
+        em = emf.createEntityManager();
 
-        EntityTransaction tx=em.getTransaction();
+        EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.persist(cat);
         tx.commit();

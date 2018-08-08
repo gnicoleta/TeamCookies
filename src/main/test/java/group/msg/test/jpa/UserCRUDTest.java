@@ -56,22 +56,22 @@ public class UserCRUDTest extends JPABaseTest {
             UsernameGenerator usernameGenerator = new UsernameGenerator();
             PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
 
-            String lastName = "Popescu" ;
-            String firstName = "Ion" ;
+            String lastName = "Popescu";
+            String firstName = "Ion";
             String password = "admin" + i;
             String mail = "re" + i + "@msggroup.com";
-            String mobileNumber = "+4045678901" + i%10;
-            String germanNumber = "+494567890123" + i%10;
+            String mobileNumber = "+4045678901" + i % 10;
+            String germanNumber = "+494567890123" + i % 10;
 
 
             RightType rightType = RightType.BUG_MANAGEMENT;
             RoleType roleType = RoleType.ADM;
-            Bug bug=new Bug();
-            bug.setDescription("Description "+i);
-            bug.setTitle("Title "+i);
-            bug.setVersion("a.1."+i%10);
+            Bug bug = new Bug();
+            bug.setDescription("Description " + i);
+            bug.setTitle("Title " + i);
+            bug.setVersion("a.1." + i % 10);
 
-            LocalDateTime localDateTime=LocalDateTime.now().plusDays(i);
+            LocalDateTime localDateTime = LocalDateTime.now().plusDays(i);
             bug.setTargetDate(localDateTime);
 
 
@@ -137,7 +137,7 @@ public class UserCRUDTest extends JPABaseTest {
             roles.add(role);
             roles.add(role1);
 
-            e.setUsername(usernameGenerator.generateUsername(firstName,lastName,em));
+            e.setUsername(usernameGenerator.generateUsername(firstName, lastName, em));
             e.setPassword(passwordEncryptor.passwordEncryption(password));
             e.setLastName(lastName);
             e.setFirstName(firstName);
@@ -155,7 +155,7 @@ public class UserCRUDTest extends JPABaseTest {
                 bug.setSeverityType(SeverityType.LOW);
             }
 
-            Notification n=new Notification();
+            Notification n = new Notification();
             n.setNotificationType(NotificationType.BUG_STATUS_UPDATED);
             bug.setNotification(n);
 

@@ -26,10 +26,12 @@ public class Notification implements Serializable {
 
     @OneToMany(mappedBy = "notification")
     private Collection<Bug> bugs;
-    public Notification(){
+
+    public Notification() {
 
     }
-    public Notification(NotificationType notificationType){
-        this.notificationType=notificationType;
+
+    public Notification(NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 }

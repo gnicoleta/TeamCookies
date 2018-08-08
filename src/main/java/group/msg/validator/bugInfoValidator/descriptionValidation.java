@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = descriptionValidator.class)
 @Target({FIELD})
 @Retention(RUNTIME)
-public @interface descriptionValidation  {
+public @interface descriptionValidation {
 
     String message() default "Description validation did not pass!";
 
