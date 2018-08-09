@@ -9,6 +9,7 @@ import lombok.Data;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Data
 @Named
-@SessionScoped
+@ViewScoped
 public class RegisterUserBean implements Serializable {
 
 
@@ -68,12 +69,13 @@ public class RegisterUserBean implements Serializable {
             Role role = new Role(RoleType.valueOf(roleString));
 
             List<RightType> rightTypes = new ArrayList<>();
-            rightTypes=rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
+            rightTypes = rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
 
-            List<Right> rightList=new LinkedList<>();
-            for(RightType rightType:rightTypes){
+            List<Right> rightList = new LinkedList<>();
+            for (RightType rightType : rightTypes) {
 
-                Right right=new Right(rightType);
+
+                Right right = new Right(rightType);
                 rightList.add(right);
                 service.save(right);
             }

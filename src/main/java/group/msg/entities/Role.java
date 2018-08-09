@@ -40,4 +40,9 @@ public class Role implements Serializable {
 
     }
 
+    @Override
+    public String toString() {
+        return " " + role + "\n";
+    }
+
 }
