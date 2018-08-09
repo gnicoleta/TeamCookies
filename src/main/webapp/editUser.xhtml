@@ -20,7 +20,7 @@
                              lazy="true" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="5,10,15" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom">
-                    <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}" update=":form1:outputLabel"/>
+                    <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}"/>
 
                     <p:ajax event="rowEdit" listener="#{userEditBean.onEdit}" update=":form1:outputLabel"/>
 
@@ -118,15 +118,11 @@
                         <f:facet name="header">
                             <h:outputText value="Roles"/>
                         </f:facet>
-                        <p:cellEditor>
                             <f:facet name="output">
                                 <ui:repeat value="#{user.userRoles}" var="role">
                                     <h:outputText value="#{role}"/>
                                 </ui:repeat>
                             </f:facet>
-                            <f:facet name="input">
-                            </f:facet>
-                        </p:cellEditor>
                     </p:column>
 
 

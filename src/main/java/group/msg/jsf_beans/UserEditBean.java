@@ -1,10 +1,7 @@
 package group.msg.jsf_beans;
 
 
-import group.msg.entities.RightType;
-import group.msg.entities.Role;
-import group.msg.entities.RoleType;
-import group.msg.entities.User;
+import group.msg.entities.*;
 import lombok.Data;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -208,6 +205,9 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void updateEmail(String newEmail) {
         selectedUser.setEmail(newEmail);
+        Notification notification=new Notification(NotificationType.USER_UPDATED);
+        service.save(notification);
+        selectedUser.getNotifications().add(notification);
         service.update(selectedUser);
     }
 /*

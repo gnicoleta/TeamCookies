@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.io.BufferedReader;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
 
 @Data
 @Entity
@@ -58,7 +59,7 @@ public class User implements Serializable {
     private UserStatus userStatus = UserStatus.ACTIVE;
 
     @ManyToMany
-    @JoinTable(name = "user_notifacation",
+    @JoinTable(name = "user_notification",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "notification_id"))
     private Collection<Notification> notifications;
@@ -86,7 +87,7 @@ public class User implements Serializable {
         this.password = password;
         this.mobileNumber = mobileNumber;
 
-        notifications.add(new Notification(NotificationType.WELCOME_NEW_USER));
+
     }
 
     public String toString(){
