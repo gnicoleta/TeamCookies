@@ -1,11 +1,14 @@
 package group.msg.jsf_beans;
 
 import java.awt.*;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
 
 import group.msg.entities.*;
 import group.msg.jsf_beans.UserServiceEJB;
 import lombok.Data;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -21,7 +24,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,6 +42,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     @EJB
     private BugServiceEJB bugService;
+
+    @EJB
+    private AttachmentServiceEJB attachmentServiceEJB;
 
     @PersistenceContext
     private EntityManager em;
@@ -220,20 +225,39 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         bugService.update(selectedBug);
     }
 
-    private UploadedFile file;
-
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    public void setFile(UploadedFile file) {
-        this.file = file;
-    }
-
-    public void upload() {
-        if(file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+    public byte[] fileToByte(File file){
+        byte[] b = new byte[(int) file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(b);
+            for (int i = 0; i < b.length; i++) {
+                System.out.print((char)b[i]);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not Found.");
+            e.printStackTrace();
         }
+        catch (IOException e1) {
+            System.out.println("Error Reading The File.");
+            e1.printStackTrace();
+        }
+        return b;
     }
+    public void handleFileUpload(FileUploadEvent event) {
+        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        Attachment attachment=new Attachment();
+        File f = new File(event.getFile().getFileName());
+        byte[] b =fileToByte(f);
+        attachment.setAttachmentByte(b);
+        selectedBug.setAttachment(attachment);
+    }
+
+    public void deleteAttachment(){
+        Attachment attachment = selectedBug.getAttachment();
+        attachmentServiceEJB.delete(attachment);
+    }
+
+
+
 }

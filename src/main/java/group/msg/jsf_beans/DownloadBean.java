@@ -15,5 +15,8 @@ public class DownloadBean implements Serializable {
     @Inject
     private Download download;
 
+    @Inject
+    private ExcelWriter excelWriter;
+
 
 }

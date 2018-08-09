@@ -4,6 +4,7 @@ import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
 import group.msg.jsf_beans.Download;
+import group.msg.jsf_beans.DownloadBean;
 import group.msg.test.MavenArtifactResolver;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -27,7 +28,7 @@ public class UserCRUDTest extends JPABaseTest {
     private static final int NUMBER_OF_ENTITIES = 30;
 
     @Inject
-    private Download download;
+    private DownloadBean download;
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -44,7 +45,7 @@ public class UserCRUDTest extends JPABaseTest {
         System.out.println("Checking number of created entities...");
 
         Query q = em.createNamedQuery("User.findAll");
-        Assert.assertEquals("Entities not found in the database!", NUMBER_OF_ENTITIES, q.getResultList().size());
+        Assert.assertEquals("Entities not found in the database!", NUMBER_OF_ENTITIES*2, q.getResultList().size());
     }
 
 
@@ -149,6 +150,9 @@ public class UserCRUDTest extends JPABaseTest {
 
             bug.setCreatedBy(e);
 
+            User tmp=new User();
+            tmp.setUsername("Nobody");
+
             if (Math.random() > 0.5) {
                 e.setMobileNumber(mobileNumber);
                 bug.setAssignedTo(e);
@@ -157,6 +161,7 @@ public class UserCRUDTest extends JPABaseTest {
                 e.setMobileNumber(germanNumber);
                 bug.setStatusType(StatusType.NEW);
                 bug.setSeverityType(SeverityType.LOW);
+                bug.setAssignedTo(tmp);
             }
 
             Notification n = new Notification();
@@ -176,8 +181,12 @@ public class UserCRUDTest extends JPABaseTest {
             em.persist(bug);
             em.persist(n);
 
+            em.persist(tmp);
+
         }
-        download.bugPDF(bugs,"MyBug");
+        download.getDownload().bugPDF(bugs,"MyBug");
+        download.getExcelWriter().ExcelFile(bugs,"ExcelBugs");
+
         utx.commit();
 
         em.clear();

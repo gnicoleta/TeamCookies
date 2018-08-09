@@ -88,7 +88,12 @@ public class RegisterUserBean implements Serializable {
 
         }
         Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
+        List<Notification>notifications=new LinkedList<>();
+
         service.save(notification);
+        notifications.add(notification);
+
+        user1.setNotifications(notifications);
 
         List<Notification> notificationList = new LinkedList<>();
         notificationList.add(notification);
