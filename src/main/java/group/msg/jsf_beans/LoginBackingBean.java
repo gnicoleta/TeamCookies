@@ -2,7 +2,8 @@ package group.msg.jsf_beans;
 //import group.msg.test.jpa.JPABaseTest;
 
 import group.msg.beans.PasswordEncryptor;
-import group.msg.entities.User;
+import group.msg.beans.RightsForRoleGetterAndSetter;
+import group.msg.entities.*;
 import lombok.Data;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -34,6 +37,9 @@ public class LoginBackingBean implements Serializable {
     @Inject
     PasswordEncryptor passwordEncryptor;
 
+    @Inject
+    RightsForRoleGetterAndSetter rightsForRoleGetterAndSetter;
+
     @PostConstruct
     public void init() {
         user = new User();
@@ -50,16 +56,50 @@ public class LoginBackingBean implements Serializable {
         boolean userPresentInDB = true;
         User user1 = null;
 
-
+    // delete after testing--------
         if (username.equals("admin") && pwd.equals("admin")) {
 
             userAdmin=new User();
             userAdmin.setUsername(username);
             userAdmin.setPassword(pwd);
+
+
+            LinkedList<String> selectedRolesStrings=new LinkedList<>();
+            selectedRolesStrings.add("ADM");
+            selectedRolesStrings.add("PM");
+            selectedRolesStrings.add("TM");
+            selectedRolesStrings.add("DEV");
+            selectedRolesStrings.add("TEST");
+            LinkedList<Role> selectedRoles = new LinkedList<>();
+
+            for (String roleString : selectedRolesStrings) {
+                Role role = new Role(RoleType.valueOf(roleString));
+
+                List<RightType> rightTypes = new ArrayList<>();
+                rightTypes=rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
+                Right right;
+                List<Right> rightList=new LinkedList<>();
+                for(RightType rightType:rightTypes){
+
+                  right =new  Right(rightType);
+                    rightList.add(right);
+
+                    service.save(right);
+                }
+
+                role.setRoleRights(rightList);
+
+
+                selectedRoles.add(role);
+                service.save(role);
+
+            }
+            userAdmin.setUserRoles(selectedRoles);
             service.save(userAdmin);
             WebHelper.getSession().setAttribute("currentUser",userAdmin);
 
             return "homepage";
+            // delete after testing--------
         } else {
 
 

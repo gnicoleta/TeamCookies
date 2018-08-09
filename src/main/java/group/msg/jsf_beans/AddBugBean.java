@@ -3,12 +3,13 @@ import group.msg.entities.*;
 import lombok.Data;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
 @Data
 @Named
-@SessionScoped
+@ViewScoped
 public class AddBugBean implements Serializable {
 
 
@@ -51,7 +52,7 @@ public class AddBugBean implements Serializable {
 
         User user=userServiceEJB.getUserByUsername(username);
 
-       bug.setCreatedBy((User) WebHelper.getSession().getAttribute("currentUser"));
+       bug.setCreatedBy((User)WebHelper.getSession().getAttribute("currentUser"));
         bug.setAssignedTo(user);
 
         bugServiceEJB.save(bug);
