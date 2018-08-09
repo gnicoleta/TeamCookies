@@ -20,9 +20,8 @@
                              lazy="true" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="5,10,15" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom">
-                    <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}" update=":form1:outputLabel"/>
 
-                    <p:ajax event="rowEdit" listener="#{userEditBean.onEdit}" update=":form1:outputLabel"/>
+                    <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}" />
 
 
                     <p:column id="c1" headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}"
@@ -30,8 +29,8 @@
                         <h:outputText value="#{user.id}"/>
                     </p:column>
 
-                    <p:column id="c2" headerText="Username" sortBy="#{user.username}" filterBy="#{user.username}"
-                              filterMatchMode="contains">
+                    <p:column sortBy="#{user.username}" filterBy="#{user.username}" filterMatchMode="contains">
+                        <f:facet name="header">Username</f:facet>
                         <h:outputText value="#{user.username}"/>
                     </p:column>
 
@@ -128,47 +127,13 @@
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
-
-
                     <br/>
-                    <h:commandButton value="Save"
-                                     actionListener="#{userEditBean.rowSelected}"
-                                     ajax="true" update="output c6"/>
-
                     <p:rowEditor/>
 
                 </p:dataTable>
                 <br/>
-                <p:outputLabel id="outputLabel" value=""/>
                 <h:commandButton value="Back" action="homepage" ajax="false"/>
             </div>
-        </h:form>
-
-        <h:form>
-            <p:growl id="growl" sticky="false" showDetail="true"/>
-            <p:panel id="panel" style="margin-bottom:10px;">
-                <p:messages id="messages"/>
-
-                <h:panelGrid columns="7" cellpadding="7">
-                    <h:outputLabel for="txt1" value="Insert valid username"/>
-                    <p:inputText id="txt1" value="#{userEditBean.userName}" size="30" required="true"
-                                 label="Username field">
-                        <p:watermark for="txt1" value="Invalid usernames will be ignored" size="10" id="watermark"/>
-                        <f:validateLength minimum="2"/>
-                    </p:inputText>
-                </h:panelGrid>
-            </p:panel>
-
-            <h:panelGrid columns="2">
-                <p:commandButton value="Activate user" action="#{userEditBean.ifExistsActivate}" update="growl"/>
-            </h:panelGrid>
-
-            <h:panelGrid columns="2">
-                <p:commandButton value="Deactivate user" action="#{userEditBean.ifExistsDelete}" update="growl"/>
-            </h:panelGrid>
-        </h:form>
-        <h:form>
-
         </h:form>
     </h:body>
 

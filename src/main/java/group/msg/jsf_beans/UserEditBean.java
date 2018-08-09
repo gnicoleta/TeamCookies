@@ -1,10 +1,7 @@
 package group.msg.jsf_beans;
 
 
-import group.msg.entities.RightType;
-import group.msg.entities.Role;
-import group.msg.entities.RoleType;
-import group.msg.entities.User;
+import group.msg.entities.*;
 import lombok.Data;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -12,6 +9,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -20,10 +18,12 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @Named
 @ViewScoped
 public class UserEditBean extends LazyDataModel<User> implements Serializable {
+
 
 
     private String outcome;
@@ -123,7 +124,21 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
                     try {
                         String filterProperty = it.next();
                         Object filterValue = filters.get(filterProperty);
-                        String fieldValue = String.valueOf(user.getClass().getField(filterProperty).get(user));
+
+                        Field fieldToFilter = null;
+                        for (Field field : User.class.getDeclaredFields()) {
+                            if (field.getName().equals(filterProperty)) {
+                                fieldToFilter = field;
+                            }
+                        }
+
+                        if (fieldToFilter != null) {
+                            fieldToFilter.setAccessible(true);
+                        } else {
+                            continue;
+                        }
+
+                        String fieldValue = String.valueOf(fieldToFilter.get(user));
 
                         if (filterValue.equals("") || filterValue == null || fieldValue.startsWith(filterValue.toString())) {
                             match = true;
