@@ -17,7 +17,9 @@ public class Attachment {
     @Column(name = "ATTACHEMENT_TYPE")
     private AttachmentType attachmentType;
 
-
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] attachmentByte;
 
     @OneToMany(mappedBy = "attachment")
     private Collection<Bug> bugs;

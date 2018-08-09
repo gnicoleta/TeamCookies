@@ -32,4 +32,5 @@ public class BugServiceEJB {
         return result;
     }
 
+
 }
