@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.io.BufferedReader;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
 
 @Data
 @Entity

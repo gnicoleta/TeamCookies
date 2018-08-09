@@ -223,6 +223,9 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void updateEmail(String newEmail) {
         selectedUser.setEmail(newEmail);
+        Notification notification=new Notification(NotificationType.USER_UPDATED);
+        service.save(notification);
+        selectedUser.getNotifications().add(notification);
         service.update(selectedUser);
     }
 /*
