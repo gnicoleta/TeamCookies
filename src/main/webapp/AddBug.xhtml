@@ -33,7 +33,8 @@
                 <br/>
                 <p:outputLabel for="console" styleClass="myFont" value="Severity Type" style="display:block;"/>
 
-                <p:selectOneMenu id="console" value="#{addBugBean.severityTypeString}" style="width:125px">
+                <p:selectOneMenu id="console" value="#{addBugBean.severityTypeString}" style="width:175px">
+                    <f:selectItem itemLabel="Choose severity type" itemDisabled="true"/>
                     <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL"/>
                     <f:selectItem itemLabel="HIGH" itemValue="HIGH"/>
                     <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM"/>
