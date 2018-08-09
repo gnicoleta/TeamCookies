@@ -106,7 +106,7 @@ public class UserServiceEJB {
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
         if (result != null) {
-            result.setUserStatus(false);
+            result.setUserStatus(UserStatus.INACTIVE);
             this.update(result);
             return true;
         } else {
@@ -119,7 +119,7 @@ public class UserServiceEJB {
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
         if (result != null) {
-            result.setUserStatus(true);
+            result.setUserStatus(UserStatus.ACTIVE);
             this.update(result);
             return true;
         } else {
