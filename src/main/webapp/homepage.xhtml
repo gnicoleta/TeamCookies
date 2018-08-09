@@ -14,17 +14,19 @@
 
         <h:form>
             <p:panel>
+                <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
                 <div class="centered">
-                    <p:selectOneMenu id="selectOneMenu" value="#{userEditBean.outcome}" ajax="true">
+
+                    <p:selectOneMenu id="selectOneMenu" value="#{userEditBean.outcome}" ajax="false">
                         <f:selectItem itemLabel="User Management"/>
-                        <f:selectItem itemValue="register" itemLabel="Add User"/>
+                        <f:selectItem itemValue="register"  itemLabel="Add User"/>
                         <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
                         <f:selectItem itemValue="deleteUser" itemLabel="Activate/Deactivate User"/>
                         <f:selectItem itemValue="adaugareEditarePermisiuni" itemLabel="Add/Edit User Permissions"/>
                         <f:selectItem itemValue="stergerePermisiuni" itemLabel="Delete User Permissions"/>
                         <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                     </p:selectOneMenu>
-                    <p:commandButton value="Bug Management" action='bugManagement' ajax="false" styleClass="aButton"/>
+                    <p:commandButton value="Bug Management" action="bugManagement"  styleClass="aButton"/>
                     <br/>
                 </div>
             </p:panel>

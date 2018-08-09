@@ -39,6 +39,11 @@ public class LoginBackingBean implements Serializable {
         user = new User();
     }
 
+    public void submit(){
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correct", "Correct");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
     public String validateUsernamePassword() {
 
         User userAdmin;
@@ -53,6 +58,7 @@ public class LoginBackingBean implements Serializable {
             userAdmin.setPassword(pwd);
             service.save(userAdmin);
             WebHelper.getSession().setAttribute("currentUser",userAdmin);
+
             return "homepage";
         } else {
 

@@ -16,18 +16,29 @@
             <h:form id="loginForm">
                 <h3 class="title">Login</h3>
                 <h:outputText styleClass="myFont" value="Username" style="display:block;"/>
-                <p:inputText id="username" value="#{loginBackingBean.username}" required="true" label="username"/>
+                <p:inputText id="username" value="#{loginBackingBean.username}" required="true" label="Username"/>
                 <br/><br/>
 
                 <h:outputText styleClass="myFont" value="Password" style="display:block;"/>
-                <p:password id="password" value="#{loginBackingBean.pwd}" required="true" label="password"/>
+                <p:password id="password" value="#{loginBackingBean.pwd}" required="true" label="Password"/>
                 <br/><br/>
+
+
+
+
+                <br/>
+                <br/>
 
                 <p:commandButton value="Login" action="#{loginBackingBean.validateUsernamePassword}"
                                  ajax="false"
                                  styleClass="aButton"/>
+
                 <br/>
+
             </h:form>
+
+
+
 
         </div>
         <br/>

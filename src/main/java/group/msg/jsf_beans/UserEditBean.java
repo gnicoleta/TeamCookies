@@ -1,10 +1,12 @@
 package group.msg.jsf_beans;
 
 
+import group.msg.entities.RightType;
 import group.msg.entities.Role;
 import group.msg.entities.RoleType;
 import group.msg.entities.User;
 import lombok.Data;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -50,12 +52,32 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     }
 
 
+
+
+
     public void navigate() {
         FacesContext context = FacesContext.getCurrentInstance();
         NavigationHandler navigationHandler = context.getApplication()
                 .getNavigationHandler();
-        navigationHandler.handleNavigation(context, null, outcome
-                + "?faces-redirect=true");
+        User user=(User) WebHelper.getSession().getAttribute("currentUser");
+        boolean hasRight=false;
+        String requiredRight="";
+
+        if(outcome.equals("register")||outcome.equals("editUser")) {
+            hasRight = service.userHasRight(user,RightType.USER_MANAGEMENT);
+            requiredRight=RightType.USER_MANAGEMENT.toString();
+        }
+
+
+        if(hasRight) {
+            navigationHandler.handleNavigation(context, null, outcome
+                    + "?faces-redirect=true");
+        }else{
+
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: "+requiredRight);
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
     }
 
     public String logout() {
