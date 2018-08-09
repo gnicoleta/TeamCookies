@@ -19,7 +19,17 @@
     </servlet-mapping>
 
     <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Lf-_mgUAAAAAF2Tav3LvQnE7z9zAYfhM0k5Drd2</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Lf-_mgUAAAAAAS2mmY2IzSvdTdPyAS62loYcbIt</param-value>
+    </context-param>
+    <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
+
 </web-app>

@@ -25,5 +25,8 @@ public class Right implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
-
+    public Right(RightType type) {
+        this.type = type;
+    }
+    public Right(){}
 }

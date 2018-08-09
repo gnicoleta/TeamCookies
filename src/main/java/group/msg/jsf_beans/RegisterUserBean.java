@@ -1,6 +1,7 @@
 package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
+import group.msg.beans.RightsForRoleGetterAndSetter;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
 import lombok.Data;
@@ -11,6 +12,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,8 +36,12 @@ public class RegisterUserBean implements Serializable {
     private LinkedList<String> selectedRolesStrings;
     private LinkedList<Role> selectedRoles = new LinkedList<>();
 
+
     private User user;
     private List<User> users;
+
+    @Inject
+    RightsForRoleGetterAndSetter rightsForRoleGetterAndSetter;
 
     @EJB
     private UserServiceEJB service;
@@ -48,6 +54,7 @@ public class RegisterUserBean implements Serializable {
     public String registerUser() {
 
 
+        service.clear();
         User user1 = new User();
         user1.setFirstName(firstName);
         user1.setLastName(lastName);
@@ -55,8 +62,25 @@ public class RegisterUserBean implements Serializable {
         user1.setEmail(email);
         user1.setMobileNumber(mobileNumber);
         user1.setPassword(passwordEncryptor.passwordEncryption(password));
+
+
         for (String roleString : selectedRolesStrings) {
             Role role = new Role(RoleType.valueOf(roleString));
+
+            List<RightType> rightTypes = new ArrayList<>();
+            rightTypes=rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
+
+            List<Right> rightList=new LinkedList<>();
+            for(RightType rightType:rightTypes){
+
+                Right right=new Right(rightType);
+                rightList.add(right);
+                service.save(right);
+            }
+
+            role.setRoleRights(rightList);
+
+
             selectedRoles.add(role);
             service.save(role);
 

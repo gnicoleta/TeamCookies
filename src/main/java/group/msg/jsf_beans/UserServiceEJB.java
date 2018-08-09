@@ -2,10 +2,7 @@ package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
-import group.msg.entities.Bug;
-import group.msg.entities.Notification;
-import group.msg.entities.Role;
-import group.msg.entities.User;
+import group.msg.entities.*;
 
 import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
@@ -45,6 +42,10 @@ public class UserServiceEJB {
 
     public void save(Role role) {
         em.persist(role);
+    }
+
+    public void save(Right right) {
+        em.persist(right);
     }
 
     public void save(Notification notification) {
@@ -125,16 +126,21 @@ public class UserServiceEJB {
             return false;
         }
     }
-    /*
-    public void editUser(String userName){
-        Query q = em.createQuery("select u from User u where u.username like ?1");
-        q.setParameter(1,userName);
-        User result =(User) q.getSingleResult();
-        if (this.findUserByUsername(userName)) {
 
+
+    public boolean userHasRight(User user, RightType rightType) {
+        List<Role> roles = (List<Role>) user.getUserRoles();
+        for (Role role : roles) {
+            List<Right> rights = (List<Right>) role.getRoleRights();
+            for (Right right : rights) {
+                if (right.getType().equals(rightType)) {
+                    return true;
+                }
+            }
         }
+        return false;
+
     }
-    */
 
 
 }
