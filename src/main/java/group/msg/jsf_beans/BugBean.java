@@ -1,5 +1,6 @@
 package group.msg.jsf_beans;
 
+import java.awt.*;
 import java.util.List;
 
 import group.msg.entities.*;
@@ -9,10 +10,13 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.UploadedFile;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -26,7 +30,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//@ManagedBean
+@ManagedBean
 @Named
 @ViewScoped
 @Data
@@ -189,6 +193,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
             }
         }
     }
+//    public void onRowClick(Event e) {
+//        this.selectedBug = e.data;
+//    }
 
     public Bug getSelectedBug() {
         return selectedBug;
@@ -199,18 +206,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     }
 
     public void rowSelected(SelectEvent event) {
-        onCLickMsg = selectedBug.getTitle();
-
         this.updateBugTitle(selectedBug.getTitle());
         this.updateBugDescription(selectedBug.getDescription());
     }
-
-    //nu prea mai e nevoie de asta
-    public void updateBugs() {
-
-        service.updateBug(selectedBug);
-    }
-
 
     public void updateBugTitle(String newTitle) {
         selectedBug.setTitle(newTitle);
@@ -220,5 +218,22 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     public void updateBugDescription(String newDescription) {
         selectedBug.setDescription(newDescription);
         bugService.update(selectedBug);
+    }
+
+    private UploadedFile file;
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    public void upload() {
+        if(file != null) {
+            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 }

@@ -11,19 +11,25 @@
         <h:outputStylesheet library="css" name="styles.css"/>
     </h:head>
     <h:body>
-        <h:form>
-            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+        <h:form id="datatableform">
+            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single" selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                          lazy="true" editable="true" editMode="cell">
+                         lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom">
 
                 <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}"/>
 
-                <p:column styleClass="select-column"  selectionMode="multiple" selectAllToggler="true" />
+                <p:column >
+                    <f:facet name="footer">
+                        <p:commandLink>
+                            <h:outputText value="Download list"/>
+                            <p:dataExporter type="xls" target="datatableform" fileName="bugs"/>
+                        </p:commandLink>
+                    </f:facet>
+                </p:column>
 
-                <p:column sortBy="#{bug.id}" filterBy="#{bug.id}" filterMatchMode="contains">
+                <p:column sortBy="#{bug.id-1}" filterBy="#{bug.id-1}" filterMatchMode="contains">
                     <f:facet name="header">Id</f:facet>
-                    #{bug.id}
+                    #{bug.id-1}
                 </p:column>
 
                 <p:column sortBy="#{bug.title}" filterBy="#{bug.title}" filterMatchMode="contains">
@@ -77,7 +83,12 @@
                             <h:outputText value="#{bug.severityType}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{bug.severityType}" style="width:96%"/>
+                            <p:selectOneMenu id="severityMenu" value="#{bug.severityType}" style="width:125px">
+                                <f:selectItem value="#{bug.severityType}" itemLabel="CRITICAL" itemValue="CRITICAL"/>
+                                <f:selectItem value="#{bug.severityType}" itemLabel="HIGH" itemValue="HIGH"/>
+                                <f:selectItem value="#{bug.severityType}" itemLabel="MEDIUM" itemValue="MEDIUM"/>
+                                <f:selectItem value="#{bug.severityType}" itemLabel="LOW" itemValue="LOW"/>
+                            </p:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -92,7 +103,15 @@
                             <h:outputText value="#{bug.statusType}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{bug.statusType}" style="width:96%"/>
+                            <p:selectOneMenu id="statusMenu" value="#{bug.statusType}" style="width:125px">
+                                <f:selectItem value="#{bug.statusType}" itemLabel="NEW" itemValue="NEW"/>
+                                <f:selectItem value="#{bug.statusType}" itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
+                                <f:selectItem value="#{bug.statusType}" itemLabel="FIXED" itemValue="FIXED"/>
+                                <f:selectItem value="#{bug.statusType}" itemLabel="CLOSED" itemValue="CLOSED"/>
+                                <f:selectItem value="#{bug.statusType}" itemLabel="REJECTED" itemValue="REJECTED"/>
+                                <f:selectItem value="#{bug.statusType}" itemLabel="INFO_NEEDED"
+                                              itemValue="INFO_NEEDED"/>
+                            </p:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -112,21 +131,25 @@
                     <f:facet name="header">Notification</f:facet>
                     #{bug.notification}
                 </p:column>
+                <p:column>
+                    <f:facet name="header">Attachment</f:facet>
+                    <p:growl id="messages" showDetail="true"/>
+                    <p:fileUpload value="#{bugBean.file}" mode="simple" skinSimple="true"/>
+                </p:column>
 
                 <br/>
-                <h:commandButton value="Save"
-                                 actionListener="#{bugBean.rowSelected}"
-                                 ajax="true" update="output"/>
+
 
                 <p:rowEditor/>
             </p:dataTable>
             <br/>
+
         </h:form>
 
         <h:form id="form">
             <h:commandButton value="Back" action="homepage" ajax="false"/>
             <h:commandButton value="Add bug" action="AddBug" ajax="false"/>
-
+            <h:commandButton value="Submit attachment" ajax="false" actionListener="#{bugBean.upload}" disabled="true"/>
         </h:form>
     </h:body>
 </f:view>
