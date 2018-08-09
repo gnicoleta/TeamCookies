@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://java.sun.com/jsf/facelets">
+      xmlns:pe="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <f:view>
     <h:head>
         <title>User list</title>
@@ -19,7 +19,7 @@
                              selection="#{userEditBean.selectedUser}" selectionMode="single" rowKey="#{user.id}"
                              lazy="true" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                             rowsPerPageTemplate="5,10,15" editable="true" editMode="cell">
+                             rowsPerPageTemplate="5,10,15" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom">
                     <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}" update=":form1:outputLabel"/>
 
                     <p:ajax event="rowEdit" listener="#{userEditBean.onEdit}" update=":form1:outputLabel"/>
@@ -35,7 +35,7 @@
                         <h:outputText value="#{user.username}"/>
                     </p:column>
 
-                    <p:column sortBy="#{user.firstName}" filterBy="#{user.firstName}">
+                    <p:column sortBy="#{user.firstName}" filterBy="#{user.firstName}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="First Name"/>
                         </f:facet>
@@ -50,7 +50,7 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column sortBy="#{user.lastName}" filterBy="#{user.lastName}">
+                    <p:column sortBy="#{user.lastName}" filterBy="#{user.lastName}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="Last Name"/>
                         </f:facet>
@@ -66,7 +66,7 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column sortBy="#{user.mobileNumber}" filterBy="#{user.mobileNumber}">
+                    <p:column sortBy="#{user.mobileNumber}" filterBy="#{user.mobileNumber}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="Mobile Number"/>
                         </f:facet>
@@ -81,7 +81,7 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column sortBy="#{user.email}" filterBy="#{user.email}">
+                    <p:column sortBy="#{user.email}" filterBy="#{user.email}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="Email"/>
                         </f:facet>
@@ -93,6 +93,38 @@
                                 <p:inputText id="c6" value="#{user.email}"
                                              style="width:96%"/>
                                 <br/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column sortBy="#{user.userStatus}" filterBy="#{user.userStatus}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.userStatus}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu id="statusMenu" value="#{user.userStatus}" style="width:125px">
+                                    <f:selectItem value="#{user.userStatus}" itemLabel="ACTIVE" itemValue="ACTIVE"/>
+                                    <f:selectItem value="#{user.userStatus}" itemLabel="INACTIVE" itemValue="INACTIVE"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column sortBy="#{user.userRoles}" filterBy="#{user.userRoles}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Roles"/>
+                        </f:facet>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <ui:repeat value="#{user.userRoles}" var="role">
+                                    <h:outputText value="#{role}"/>
+                                </ui:repeat>
+                            </f:facet>
+                            <f:facet name="input">
                             </f:facet>
                         </p:cellEditor>
                     </p:column>

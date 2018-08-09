@@ -192,6 +192,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void updateRole(Collection<Role> rt) {
         selectedUser.setUserRoles(rt);
         service.update(selectedUser);
-    }*/
-
+    }
+*/
 }

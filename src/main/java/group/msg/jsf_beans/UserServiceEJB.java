@@ -2,10 +2,7 @@ package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
-import group.msg.entities.Bug;
-import group.msg.entities.Notification;
-import group.msg.entities.Role;
-import group.msg.entities.User;
+import group.msg.entities.*;
 
 import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
@@ -105,7 +102,7 @@ public class UserServiceEJB {
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
         if (result != null) {
-            result.setUserStatus(false);
+            result.setUserStatus(UserStatus.INACTIVE);
             this.update(result);
             return true;
         } else {
@@ -118,7 +115,7 @@ public class UserServiceEJB {
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
         if (result != null) {
-            result.setUserStatus(true);
+            result.setUserStatus(UserStatus.ACTIVE);
             this.update(result);
             return true;
         } else {
