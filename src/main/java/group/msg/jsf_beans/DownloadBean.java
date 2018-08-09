@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.BufferedOutputStream;
 import java.io.Serializable;
 
 @Data
