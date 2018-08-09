@@ -12,13 +12,13 @@
     </h:head>
     <h:body>
         <h:form id="datatableform">
-            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single" selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
+                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom">
 
                 <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}"/>
-
-                <p:column >
+                <p:column>
                     <f:facet name="footer">
                         <p:commandLink>
                             <h:outputText value="Download list"/>
@@ -105,7 +105,8 @@
                         <f:facet name="input">
                             <p:selectOneMenu id="statusMenu" value="#{bug.statusType}" style="width:125px">
                                 <f:selectItem value="#{bug.statusType}" itemLabel="NEW" itemValue="NEW"/>
-                                <f:selectItem value="#{bug.statusType}" itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
+                                <f:selectItem value="#{bug.statusType}" itemLabel="IN_PROGRESS"
+                                              itemValue="IN_PROGRESS"/>
                                 <f:selectItem value="#{bug.statusType}" itemLabel="FIXED" itemValue="FIXED"/>
                                 <f:selectItem value="#{bug.statusType}" itemLabel="CLOSED" itemValue="CLOSED"/>
                                 <f:selectItem value="#{bug.statusType}" itemLabel="REJECTED" itemValue="REJECTED"/>
@@ -134,14 +135,18 @@
                 <p:column>
                     <f:facet name="header">Attachment</f:facet>
                     <p:growl id="messages" showDetail="true"/>
-                    <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
-                                  update="messages" auto="true" sizeLimit="26214400" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/" />
+                    <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced"
+                                  dragDropSupport="false"
+                                  update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
+                    <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"
+                                     icon="ui-icon-arrowthick-1-s">
+                        <p:fileDownload value="#{bugBean.downloadAttachment}"/>
+                    </p:commandButton>
                     <h:commandButton value="Delete" action="#{bugBean.deleteAttachment}" ajax="true"/>
                 </p:column>
 
                 <br/>
-
-
                 <p:rowEditor/>
             </p:dataTable>
             <br/>

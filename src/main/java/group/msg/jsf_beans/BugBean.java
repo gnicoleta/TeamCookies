@@ -11,9 +11,7 @@ import lombok.Data;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.*;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -258,6 +256,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         attachmentServiceEJB.delete(attachment);
     }
 
-
-
+    public StreamedContent downloadAttachment() throws IOException{
+        Attachment attachment = selectedBug.getAttachment();
+        InputStream stream =new ByteArrayInputStream(attachment.getAttachmentByte());
+            return new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug_attachment.pdf");
+    }
 }

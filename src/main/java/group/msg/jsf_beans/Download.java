@@ -111,7 +111,7 @@ public class Download implements Serializable {
 
 
     public StreamedContent getFile() throws IOException {
-        InputStream stream =new FileInputStream(pdfPath.toFile().getAbsolutePath());
+        InputStream stream =new FileInputStream("C:\\Users\\petraa\\IdeaProjects\\TeamCookies\\MyBug");
         StreamedContent file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug.pdf");
 
 
