@@ -16,6 +16,8 @@ import org.primefaces.model.*;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -56,14 +58,13 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private SeverityType severityType;
     private User createdBy;
     private User assignedTo;
-    private StatusType statusType = StatusType.NEW;
+    private StatusType statusType;
     private Attachment attachment;
     private Notification notification;
 
     private String onCLickMsg = "nume";
 
     private Bug selectedBug;
-
     List<Bug> bugList;
 
     /*public BugBean(){
@@ -82,7 +83,8 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 //si fara sa fie nevoie sa scazi din id-1
 //nu cred ca mai e nevoie de constructoru de mai sus si de metoda initialiseList()
     @PostConstruct
-    public void init() {
+    public void init()
+    {
         bugList = bugService.getAllBugs();
     }
 
@@ -205,6 +207,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     }
 
     public void setSelectedBug(Bug selectedBug) {
+
         this.selectedBug = selectedBug;
     }
 
@@ -223,42 +226,42 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         bugService.update(selectedBug);
     }
 
-    public byte[] fileToByte(File file){
+    public byte[] fileToByte(File file) {
         byte[] b = new byte[(int) file.length()];
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             fileInputStream.read(b);
             for (int i = 0; i < b.length; i++) {
-                System.out.print((char)b[i]);
+                System.out.print((char) b[i]);
             }
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found.");
             e.printStackTrace();
-        }
-        catch (IOException e1) {
+        } catch (IOException e1) {
             System.out.println("Error Reading The File.");
             e1.printStackTrace();
         }
         return b;
     }
+
     public void handleFileUpload(FileUploadEvent event) {
         FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, message);
-        Attachment attachment=new Attachment();
+        Attachment attachment = new Attachment();
         File f = new File(event.getFile().getFileName());
-        byte[] b =fileToByte(f);
+        byte[] b = fileToByte(f);
         attachment.setAttachmentByte(b);
         selectedBug.setAttachment(attachment);
     }
 
-    public void deleteAttachment(){
+    public void deleteAttachment() {
         Attachment attachment = selectedBug.getAttachment();
         attachmentServiceEJB.delete(attachment);
     }
 
-    public StreamedContent downloadAttachment() throws IOException{
+    public StreamedContent downloadAttachment() throws IOException {
         Attachment attachment = selectedBug.getAttachment();
-        InputStream stream =new ByteArrayInputStream(attachment.getAttachmentByte());
-            return new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug_attachment.pdf");
+        InputStream stream = new ByteArrayInputStream(attachment.getAttachmentByte());
+        return new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug_attachment.pdf");
     }
 }
