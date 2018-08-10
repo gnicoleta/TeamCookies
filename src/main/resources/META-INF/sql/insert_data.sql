@@ -1,18 +1,18 @@
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (1,'Doe','John','john.doe@foo.com', '+40456789011', 'test', 'dojo', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (2,'Public','Mary','mary.public@foo.com', '+40456789011', 'test', 'puma', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (3,'Queue','Susan','susan.queue@foo.com', '+40456789011', 'test', 'qusa', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (1,'Doe','John','john.doe@msggroup.com', '+40456789011', 'test', 'dojo', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (2,'Public','Mary','mary.public@msggroup.com', '+40456789011', 'test', 'puma', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (3,'Queue','Susan','susan.queue@msggroup.com', '+40456789011', 'test', 'qusa', 0);
 
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (4,'Williams','David','david.williams@foo.com','+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'wida', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (5,'Johnson','Lisa','lisa.johnson@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'joli', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (6,'Smith','Paul','paul.smith@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'smpa', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (4,'Williams','David','david.williams@msggroup.com','+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'wida', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (5,'Johnson','Lisa','lisa.johnson@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'joli', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (6,'Smith','Paul','paul.smith@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'smpa', 0);
 
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (7,'Adams','Carl','carl.adams@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'adca', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (8,'Brown','Bill','bill.brown@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'brobi', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (9,'Thomas','Susan','susan.thomas@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'thsu', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (7,'Adams','Carl','carl.adams@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'adca', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (8,'Brown','Bill','bill.brown@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'brobi', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (9,'Thomas','Susan','susan.thomas@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'thsu', 0);
 
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (10,'Davis','John','john.davis@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'dajo', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (11,'Fowler','Mary','mary.fowler@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'foma', 0);
-insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (12,'Waters','David','david.waters@foo.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'wada', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (10,'Davis','John','john.davis@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'dajo', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (11,'Fowler','Mary','mary.fowler@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'foma', 0);
+insert into jbugger.user (ID, FIRST_NAME, LAST_NAME, EMAIL, MOBILENUMBER, PASSWORD, USERNAME, USERSTATUS) VALUES (12,'Waters','David','david.waters@msggroup.com', '+40456789011', 'E00CF25AD42683B3DF678C61F42C6BDA', 'wada', 0);
 
 
 
