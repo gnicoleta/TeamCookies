@@ -7,9 +7,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import com.sun.enterprise.config.serverbeans.customvalidators.NotDuplicateTargetName;
 import group.msg.entities.*;
 import group.msg.jsf_beans.UserServiceEJB;
 import lombok.Data;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -66,7 +68,8 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     private Bug selectedBug;
 
-    List<Bug> bugList;
+    private List<Bug> bugList;
+
 
     /*public BugBean(){
         bugList = new ArrayList<>();
@@ -151,6 +154,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         this.setRowCount(dataSize);
 
 //        paginate
+
         if (dataSize > pageSize) {
             try {
                 return filteredList.subList(first, first + pageSize);
@@ -257,6 +261,8 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         byte[] b = event.getFile().getContents();
         Attachment attachment = new Attachment();
         attachment.setAttachmentByte(b);
+        attachment.setAttachmentType(event.getFile().getContentType());
+        attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
         selectedBug.setAttachment(attachment);
         bugService.save(selectedBug);
         FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
@@ -275,6 +281,10 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
         InputStream stream = new FileInputStream(file.getAbsolutePath());
 
-        return new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug_attachment.pdf");
+
+        String contentType=attachment.getAttachmentType();
+        String extension=attachment.getExtensionType();
+
+        return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment."+extension);
     }
 }
