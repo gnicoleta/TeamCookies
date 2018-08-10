@@ -43,8 +43,18 @@
                                 <h:outputText value="#{user.firstName}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c3" value="#{user.firstName}"
+                                <p:inputText id="c3" value="#{userEditBean.aux}"
                                              style="width:96%"/>
+                                <br/>
+                                #{userEditBean.setOldInfo(user.firstName)}
+                                #{userEditBean.makeAllInfo()}
+                                <h:outputText value="#{userEditBean.oldInfo}"/>
+                                <br/>
+                                Here: <h:outputText value="#{userEditBean.oldInfo}+#{userEditBean.newInfo}"/>
+                                <br/>
+                                #{userEditBean.setNewInfo(user.firstName)}
+                                Here2: <h:outputText value="#{userEditBean.allInfo}"/>
+                                #{userEditBean.updateFirstName()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -91,6 +101,15 @@
                                 <p:inputText id="c6" value="#{user.email}"
                                              style="width:96%"/>
                                 <br/>
+                                #{userEditBean.setOldInfo(user.email)}
+                                #{userEditBean.makeAllInfo()}
+                                <h:outputText value="#{userEditBean.oldInfo}"/>
+                                <br/>
+                                Here: <h:outputText value="#{userEditBean.oldInfo}+#{userEditBean.newInfo}"/>
+                                <br/>
+                                #{userEditBean.setNewInfo(user.email)}
+                                Here2: <h:outputText value="#{userEditBean.allInfo}"/>
+                                #{userEditBean.updateEmail(user.email)}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>

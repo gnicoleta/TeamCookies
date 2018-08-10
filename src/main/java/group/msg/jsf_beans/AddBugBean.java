@@ -1,12 +1,15 @@
 package group.msg.jsf_beans;
+
 import group.msg.entities.*;
 import lombok.Data;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
+
 @Data
 @Named
 @ViewScoped
@@ -29,7 +32,6 @@ public class AddBugBean implements Serializable {
     private String username;
 
 
-
     //private User createdBy;
     private User assignedTo;
 
@@ -47,12 +49,12 @@ public class AddBugBean implements Serializable {
 
         bug.setTargetDate(targetDate);
 
-        SeverityType severityType=SeverityType.valueOf(severityTypeString);
+        SeverityType severityType = SeverityType.valueOf(severityTypeString);
         bug.setSeverityType(severityType);
 
-        User user=userServiceEJB.getUserByUsername(username);
+        User user = userServiceEJB.getUserByUsername(username);
 
-       bug.setCreatedBy((User)WebHelper.getSession().getAttribute("currentUser"));
+        bug.setCreatedBy((User) WebHelper.getSession().getAttribute("currentUser"));
         bug.setAssignedTo(user);
 
         bugServiceEJB.save(bug);

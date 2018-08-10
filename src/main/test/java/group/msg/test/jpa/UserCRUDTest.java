@@ -3,7 +3,6 @@ package group.msg.test.jpa;
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
-import group.msg.jsf_beans.Download;
 import group.msg.jsf_beans.DownloadBean;
 import group.msg.test.MavenArtifactResolver;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -15,11 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.io.File;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RunWith(Arquillian.class)
@@ -45,7 +40,7 @@ public class UserCRUDTest extends JPABaseTest {
         System.out.println("Checking number of created entities...");
 
         Query q = em.createNamedQuery("User.findAll");
-        Assert.assertEquals("Entities not found in the database!", NUMBER_OF_ENTITIES*2, q.getResultList().size());
+        Assert.assertEquals("Entities not found in the database!", NUMBER_OF_ENTITIES * 2, q.getResultList().size());
     }
 
 
@@ -54,7 +49,7 @@ public class UserCRUDTest extends JPABaseTest {
         utx.begin();
         em.joinTransaction();
         System.out.println("Inserting records...");
-        List<Bug> bugs=new ArrayList<>();
+        List<Bug> bugs = new ArrayList<>();
         for (int i = 1; i <= NUMBER_OF_ENTITIES; i++) {
             User e = new User();
             UsernameGenerator usernameGenerator = new UsernameGenerator();
@@ -75,8 +70,8 @@ public class UserCRUDTest extends JPABaseTest {
             bug.setTitle("Title " + i);
             bug.setVersion("a.1." + i % 10);
 
-           // Date localDateTime=LocalDateTime.now().plusDays(i);
-            Date localDateTime=new Date();
+            // Date localDateTime=LocalDateTime.now().plusDays(i);
+            Date localDateTime = new Date();
             bug.setTargetDate(localDateTime);
 
 
@@ -148,9 +143,22 @@ public class UserCRUDTest extends JPABaseTest {
             e.setFirstName(firstName);
             e.setEmail(mail);
 
+
+            Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
+            String notificationInfo = "welcome " + firstName + " " + lastName + "\n" + "username=" + e.getUsername() +
+                    "\n" + "mail=" + mail + "\n";
+            notification.setInfo(notificationInfo);
+
+            List<Notification> notifications = new LinkedList<>();
+
+            em.persist(notification);
+            notifications.add(notification);
+
+            e.setNotifications(notifications);
+
             bug.setCreatedBy(e);
 
-            User tmp=new User();
+            User tmp = new User();
             tmp.setUsername("Nobody");
 
             if (Math.random() > 0.5) {
@@ -184,8 +192,8 @@ public class UserCRUDTest extends JPABaseTest {
             em.persist(tmp);
 
         }
-        download.getDownload().bugPDF(bugs,"MyBug");
-        download.getExcelWriter().ExcelFile(bugs,"ExcelBugs");
+        download.getPDFWriter().createPDF(bugs, "MyBug");
+        download.getExcelWriter().createExcel(bugs, "ExcelBugs");
 
         utx.commit();
 
