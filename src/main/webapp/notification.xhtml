@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+    <h:head>
+        <h:outputStylesheet library="css" name="styles.css"/>
+    </h:head>
+    <h:body>
+        <h:form id="datatableform">
+
+
+            <p:dataTable var="user" id="usersTable" value="#{userEditBean}"
+                         selection="#{userEditBean.selectedUser}" selectionMode="single" rowKey="#{user.id}"
+                         lazy="true" paginator="true" rows="10"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" editable="true" editMode="cell" cellEditMode="lazy"
+                         paginatorPosition="bottom">
+
+                <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}"/>
+
+
+                <p:column id="c1" headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{user.id}"/>
+                </p:column>
+
+                <p:column sortBy="#{user.username}" filterBy="#{user.username}" filterMatchMode="contains">
+                    <f:facet name="header">Username</f:facet>
+                    <h:outputText value="#{user.username}"/>
+                </p:column>
+
+                <p:column sortBy="#{user.firstName}" filterBy="#{user.firstName}" filterMatchMode="contains">
+                    <f:facet name="header">
+                        <h:outputText value="First Name"/>
+                    </f:facet>
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{user.firstName}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="c3" value="#{user.firstName}"
+                                         style="width:96%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+
+
+
+
+                <br/>
+                <p:rowEditor/>
+
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</f:view>
+</html>
