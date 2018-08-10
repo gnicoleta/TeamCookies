@@ -14,51 +14,42 @@
     <h:body>
         <h:form id="datatableform">
 
-
-            <p:dataTable var="user" id="usersTable" value="#{userEditBean}"
-                         selection="#{userEditBean.selectedUser}" selectionMode="single" rowKey="#{user.id}"
-                         lazy="true" paginator="true" rows="10"
+            <div class="centered">
+            <p:dataTable var="notification" id="notificationsTable" value="#{notificationsBean}"
+                         selection="#{notificationsBean.selectedNotification}"
+                         selectionMode="single"
+                         rowKey="#{notification.id}"
+                         lazy="true"
+                         paginator="true" rows="10"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                         rowsPerPageTemplate="5,10,15" editable="true" editMode="cell" cellEditMode="lazy"
+                         rowsPerPageTemplate="5,10,15"
+
                          paginatorPosition="bottom">
 
-                <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}"/>
+                <p:ajax event="rowSelect" listener="#{notificationsBean.rowSelected}"/>
 
 
-                <p:column id="c1" headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}"
+                <p:column id="c1" headerText="Id" sortBy="#{notification.id}" filterBy="#{notification.id}"
                           filterMatchMode="contains">
-                    <h:outputText value="#{user.id}"/>
+                    <h:outputText value="#{notification.id}"/>
                 </p:column>
 
-                <p:column sortBy="#{user.username}" filterBy="#{user.username}" filterMatchMode="contains">
-                    <f:facet name="header">Username</f:facet>
-                    <h:outputText value="#{user.username}"/>
+                <p:column sortBy="#{notification.notificationType}" filterBy="#{notification.notificationType}"
+                          filterMatchMode="contains">
+                    <f:facet name="header">Notification Type</f:facet>
+                    <h:outputText value="#{notification.notificationType}"/>
                 </p:column>
-
-                <p:column sortBy="#{user.firstName}" filterBy="#{user.firstName}" filterMatchMode="contains">
-                    <f:facet name="header">
-                        <h:outputText value="First Name"/>
-                    </f:facet>
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <h:outputText value="#{user.firstName}"/>
-                        </f:facet>
-                        <f:facet name="input">
-                            <p:inputText id="c3" value="#{user.firstName}"
-                                         style="width:96%"/>
-                        </f:facet>
-                    </p:cellEditor>
+                <p:column sortBy="#{notification.info}" filterBy="#{notification.info}" filterMatchMode="contains">
+                    <f:facet name="header">Info</f:facet>
+                    <h:outputText value="#{notification.info}"/>
                 </p:column>
-
-
-
-
 
 
                 <br/>
                 <p:rowEditor/>
 
             </p:dataTable>
+            </div>
         </h:form>
     </h:body>
 </f:view>

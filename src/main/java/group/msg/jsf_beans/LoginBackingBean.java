@@ -88,7 +88,16 @@ public class LoginBackingBean implements Serializable {
                 }
 
                 role.setRoleRights(rightList);
+                Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
 
+                notification.setInfo("Welcome admin"+'\n'+"bla"+"\n");
+
+                List<Notification> notifications = new LinkedList<>();
+
+                service.save(notification);
+                notifications.add(notification);
+
+                userAdmin.setNotifications(notifications);
 
                 selectedRoles.add(role);
                 service.save(role);
