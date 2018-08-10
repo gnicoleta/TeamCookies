@@ -2,18 +2,13 @@ package group.msg.jsf_beans;
 
 
 import group.msg.entities.Bug;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 
 import javax.activation.MimetypesFileTypeMap;
-import javax.faces.context.FacesContext;
 import java.io.*;
 import java.util.List;
 
@@ -25,7 +20,7 @@ public class ExcelWriter implements Serializable{
     private FileOutputStream fileOut;
     private File excelPath;
 
-    public void ExcelFile(List<Bug> bugs, String filename) throws IOException {
+    public void createExcel(List<Bug> bugs, String filename) throws IOException {
         // Create a Workbook
         Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
 

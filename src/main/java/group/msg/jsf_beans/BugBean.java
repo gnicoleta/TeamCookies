@@ -1,19 +1,12 @@
 package group.msg.jsf_beans;
 
-import java.awt.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import com.sun.enterprise.config.serverbeans.customvalidators.NotDuplicateTargetName;
 import group.msg.entities.*;
-import group.msg.jsf_beans.UserServiceEJB;
 import lombok.Data;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.*;
 
@@ -23,6 +16,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -47,6 +41,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     @EJB
     private AttachmentServiceEJB attachmentServiceEJB;
+
+    @Inject
+    private DownloadBean downloadBean;
 
     @PersistenceContext
     private EntityManager em;
@@ -287,4 +284,30 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
         return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment."+extension);
     }
+
+
+    public StreamedContent getPDF() throws IOException {
+        List<Bug>bugs=new ArrayList<>();
+        bugs.add(selectedBug);
+
+        PDFWriter pdfWriter= downloadBean.getPDFWriter();
+
+        pdfWriter.createPDF(bugs,"Bug_Info");
+
+
+        return pdfWriter.getFile();
+
+    }
+
+    public StreamedContent getExcel() throws IOException {
+
+        ExcelWriter excelWriter= downloadBean.getExcelWriter();
+        excelWriter.createExcel(bugList,"Bug_Info");
+
+
+        return excelWriter.downloadAttachment();
+
+    }
+
+
 }

@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class Download implements Serializable {
+public class PDFWriter implements Serializable {
 
     private Path pdfPath;
 
@@ -71,7 +71,7 @@ public class Download implements Serializable {
         return lines;
     }
 
-    public void bugPDF(List<Bug> bugs, String filename) throws IOException {
+    public void createPDF(List<Bug> bugs, String filename) throws IOException {
 
         pdfPath=Paths.get(filename+".pdf");
         document=new PDDocument();

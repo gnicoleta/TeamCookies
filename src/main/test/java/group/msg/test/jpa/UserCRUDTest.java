@@ -3,7 +3,6 @@ package group.msg.test.jpa;
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
-import group.msg.jsf_beans.Download;
 import group.msg.jsf_beans.DownloadBean;
 import group.msg.test.MavenArtifactResolver;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -15,11 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.io.File;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RunWith(Arquillian.class)
@@ -197,8 +192,8 @@ public class UserCRUDTest extends JPABaseTest {
             em.persist(tmp);
 
         }
-        download.getDownload().bugPDF(bugs, "MyBug");
-        download.getExcelWriter().ExcelFile(bugs, "ExcelBugs");
+        download.getPDFWriter().createPDF(bugs, "MyBug");
+        download.getExcelWriter().createExcel(bugs, "ExcelBugs");
 
         utx.commit();
 
