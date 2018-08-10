@@ -3,11 +3,15 @@ package group.msg.jsf_beans;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+import com.sun.enterprise.config.serverbeans.customvalidators.NotDuplicateTargetName;
 import group.msg.entities.*;
 import group.msg.jsf_beans.UserServiceEJB;
 import lombok.Data;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -64,7 +68,8 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     private Bug selectedBug;
 
-    List<Bug> bugList;
+    private List<Bug> bugList;
+
 
     /*public BugBean(){
         bugList = new ArrayList<>();
@@ -149,6 +154,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         this.setRowCount(dataSize);
 
 //        paginate
+
         if (dataSize > pageSize) {
             try {
                 return filteredList.subList(first, first + pageSize);
@@ -223,42 +229,62 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         bugService.update(selectedBug);
     }
 
-    public byte[] fileToByte(File file){
-        byte[] b = new byte[(int) file.length()];
+    /**Might be useful someday*/
+//    public byte[] fileToByte(File file) {
+//        byte[] fileContent = null;
+//        try {
+//            Path path = Paths.get(file.getAbsolutePath());
+//            fileContent = Files.readAllBytes(path);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return fileContent;
+//    }
+
+    public File byteToFile(byte[] byteFile, String filename) {
+        File file = new File(filename);
+        FileOutputStream stream = null;
         try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            fileInputStream.read(b);
-            for (int i = 0; i < b.length; i++) {
-                System.out.print((char)b[i]);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File Not Found.");
+            stream = new FileOutputStream(file);
+            stream.write(byteFile);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        catch (IOException e1) {
-            System.out.println("Error Reading The File.");
-            e1.printStackTrace();
-        }
-        return b;
-    }
-    public void handleFileUpload(FileUploadEvent event) {
-        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        Attachment attachment=new Attachment();
-        File f = new File(event.getFile().getFileName());
-        byte[] b =fileToByte(f);
-        attachment.setAttachmentByte(b);
-        selectedBug.setAttachment(attachment);
+
+        return file;
+
     }
 
-    public void deleteAttachment(){
+
+    public void handleFileUpload(FileUploadEvent event) {
+        byte[] b = event.getFile().getContents();
+        Attachment attachment = new Attachment();
+        attachment.setAttachmentByte(b);
+        attachment.setAttachmentType(event.getFile().getContentType());
+        attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
+        selectedBug.setAttachment(attachment);
+        bugService.save(selectedBug);
+        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+    }
+
+    public void deleteAttachment() {
         Attachment attachment = selectedBug.getAttachment();
         attachmentServiceEJB.delete(attachment);
     }
 
-    public StreamedContent downloadAttachment() throws IOException{
+    public StreamedContent downloadAttachment() throws IOException {
         Attachment attachment = selectedBug.getAttachment();
-        InputStream stream =new ByteArrayInputStream(attachment.getAttachmentByte());
-            return new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug_attachment.pdf");
+        File file = byteToFile(attachment.getAttachmentByte(), "MyAttachment");
+
+        InputStream stream = new FileInputStream(file.getAbsolutePath());
+
+
+        String contentType=attachment.getAttachmentType();
+        String extension=attachment.getExtensionType();
+
+        return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment."+extension);
     }
 }

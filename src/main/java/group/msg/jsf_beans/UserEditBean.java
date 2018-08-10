@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 @ViewScoped
 public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
+
+
     private String outcome;
     private String userName;
 
@@ -56,6 +58,9 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void init() {
         usersList = service.getAllUsers();
     }
+
+
+
 
 
     public void navigate() {

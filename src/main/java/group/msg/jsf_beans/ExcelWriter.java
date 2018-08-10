@@ -2,11 +2,17 @@ package group.msg.jsf_beans;
 
 
 import group.msg.entities.Bug;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.faces.context.FacesContext;
 import java.io.*;
 import java.util.List;
@@ -97,5 +103,15 @@ public class ExcelWriter implements Serializable{
     }
 
 
+    public StreamedContent downloadAttachment() throws IOException {
+
+        InputStream stream = new FileInputStream(excelPath.getAbsolutePath());
+
+        String contentType=new MimetypesFileTypeMap().getContentType(excelPath);
+
+        String extension=FilenameUtils.getExtension(excelPath.getName());
+
+        return new DefaultStreamedContent(stream, contentType, "Downloaded_excel_bug."+extension);
+    }
 
 }

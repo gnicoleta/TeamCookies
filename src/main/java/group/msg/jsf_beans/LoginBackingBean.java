@@ -45,7 +45,7 @@ public class LoginBackingBean implements Serializable {
         user = new User();
     }
 
-    public void submit(){
+    public void submit() {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correct", "Correct");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
@@ -56,15 +56,15 @@ public class LoginBackingBean implements Serializable {
         boolean userPresentInDB = true;
         User user1 = null;
 
-    // delete after testing--------
+        // delete after testing--------
         if (username.equals("admin") && pwd.equals("admin")) {
 
-            userAdmin=new User();
+            userAdmin = new User();
             userAdmin.setUsername(username);
             userAdmin.setPassword(pwd);
 
 
-            LinkedList<String> selectedRolesStrings=new LinkedList<>();
+            LinkedList<String> selectedRolesStrings = new LinkedList<>();
             selectedRolesStrings.add("ADM");
             selectedRolesStrings.add("PM");
             selectedRolesStrings.add("TM");
@@ -76,19 +76,28 @@ public class LoginBackingBean implements Serializable {
                 Role role = new Role(RoleType.valueOf(roleString));
 
                 List<RightType> rightTypes = new ArrayList<>();
-                rightTypes=rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
+                rightTypes = rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
                 Right right;
-                List<Right> rightList=new LinkedList<>();
-                for(RightType rightType:rightTypes){
+                List<Right> rightList = new LinkedList<>();
+                for (RightType rightType : rightTypes) {
 
-                  right =new  Right(rightType);
+                    right = new Right(rightType);
                     rightList.add(right);
 
                     service.save(right);
                 }
 
                 role.setRoleRights(rightList);
+                Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
 
+                notification.setInfo("Welcome admin"+'\n'+"bla"+"\n");
+
+                List<Notification> notifications = new LinkedList<>();
+
+                service.save(notification);
+                notifications.add(notification);
+
+                userAdmin.setNotifications(notifications);
 
                 selectedRoles.add(role);
                 service.save(role);
@@ -96,7 +105,7 @@ public class LoginBackingBean implements Serializable {
             }
             userAdmin.setUserRoles(selectedRoles);
             service.save(userAdmin);
-            WebHelper.getSession().setAttribute("currentUser",userAdmin);
+            WebHelper.getSession().setAttribute("currentUser", userAdmin);
 
             return "homepage";
             // delete after testing--------
@@ -117,7 +126,7 @@ public class LoginBackingBean implements Serializable {
 
             if (userPresentInDB && encryptedInputPassword.equals(user1.getPassword())) {
                 WebHelper.getSession().setAttribute("loggedIn", true);
-                WebHelper.getSession().setAttribute("currentUser",user1);
+                WebHelper.getSession().setAttribute("currentUser", user1);
                 return "homepage";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Invalid credentials."));
