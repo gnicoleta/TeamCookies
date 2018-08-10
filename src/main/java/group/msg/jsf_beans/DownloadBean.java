@@ -2,11 +2,11 @@ package group.msg.jsf_beans;
 
 import lombok.Data;
 
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.BufferedOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
 @Data
 @Named
