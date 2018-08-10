@@ -139,10 +139,13 @@
                                   dragDropSupport="false"
                                   update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
                                   allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
-                    <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                    <p:commandButton value="Download attachment" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                         <p:fileDownload value="#{bugBean.downloadAttachment()}" />
                     </p:commandButton>
-                    <h:commandButton value="Delete" action="#{bugBean.deleteAttachment}" ajax="true"/>
+                    <p:commandButton value="Download bug" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                        <p:fileDownload value="#{downloadBean.download.getFile()}" />
+                    </p:commandButton>
+                    <h:commandButton value="Delete attachment" action="#{bugBean.deleteAttachment}" ajax="true"/>
                 </p:column>
 
                 <br/>
