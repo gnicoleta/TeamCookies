@@ -43,8 +43,9 @@
                                 <h:outputText value="#{user.firstName}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c3" value="#{user.firstName}"
+                                <p:inputText id="c3" value="#{userEditBean.newFirstName}"
                                              style="width:96%"/>
+                                #{userEditBean.updateFirstName()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -58,12 +59,13 @@
                                 <h:outputText value="#{user.lastName}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c4" value="#{user.lastName}"
+                                <p:inputText id="c4" value="#{userEditBean.newLastName}"
                                              style="width:96%"/>
-                                <br/>
+                                #{userEditBean.updateLastName()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
+
                     <p:column sortBy="#{user.mobileNumber}" filterBy="#{user.mobileNumber}" filterMatchMode="contains">
                         <f:facet name="header">
                             <h:outputText value="Mobile Number"/>
@@ -73,8 +75,9 @@
                                 <h:outputText value="#{user.mobileNumber}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c5" value="#{user.mobileNumber}"
+                                <p:inputText id="c5" value="#{userEditBean.newMobileNumber}"
                                              style="width:96%"/>
+                                #{userEditBean.updateMobileNumber()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -88,9 +91,9 @@
                                 <h:outputText value="#{user.email}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText id="c6" value="#{user.email}"
+                                <p:inputText id="c6" value="#{userEditBean.newEmail}"
                                              style="width:96%"/>
-                                <br/>
+                                #{userEditBean.updateEmail()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>

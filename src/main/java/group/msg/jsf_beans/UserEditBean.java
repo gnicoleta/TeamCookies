@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
 
-
     private String outcome;
     private String userName;
 
@@ -46,6 +45,11 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     @EJB
     private UserServiceEJB service;
 
+    private String newFirstName;
+    private String newLastName;
+    private String newEmail;
+    private String newMobileNumber;
+
 
     @PostConstruct
     public void init() {
@@ -53,30 +57,27 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     }
 
 
-
-
-
     public void navigate() {
         FacesContext context = FacesContext.getCurrentInstance();
         NavigationHandler navigationHandler = context.getApplication()
                 .getNavigationHandler();
-        User user=(User) WebHelper.getSession().getAttribute("currentUser");
-        boolean hasRight=false;
-        String requiredRight="";
+        User user = (User) WebHelper.getSession().getAttribute("currentUser");
+        boolean hasRight = false;
+        String requiredRight = "";
 
-        if(outcome.equals("register")||outcome.equals("editUser")) {
-            hasRight = service.userHasRight(user,RightType.USER_MANAGEMENT);
-            requiredRight=RightType.USER_MANAGEMENT.toString();
+        if (outcome.equals("register") || outcome.equals("editUser")) {
+            hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
+            requiredRight = RightType.USER_MANAGEMENT.toString();
         }
 
 
-        if(hasRight) {
+        if (hasRight) {
             navigationHandler.handleNavigation(context, null, outcome
                     + "?faces-redirect=true");
-        }else{
+        } else {
 
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: "+requiredRight);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + requiredRight);
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
     }
@@ -200,38 +201,60 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void rowSelected(SelectEvent event) {
         outputMessage = selectedUser.getUsername();
-        this.updateFirstName(selectedUser.getFirstName());
-        this.updateLastName(selectedUser.getLastName());
-        this.updateMobileNumber(selectedUser.getMobileNumber());
-        this.updateEmail(selectedUser.getEmail());
     }
 
-    public void updateFirstName(String newFirstName) {
-        selectedUser.setFirstName(newFirstName);
-        service.update(selectedUser);
+    public void updateFirstName() {
+        if (newFirstName != null && newFirstName != selectedUser.getFirstName() && newFirstName != "" && newFirstName != " ") {
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "First Name changed: (new)" + newFirstName + " - (old)" + selectedUser.getFirstName();
+            selectedUser.setFirstName(newFirstName);
+            notification.setInfo(allInfo);
+            service.save(notification);
+            selectedUser.getNotifications().add(notification);
+            service.update(selectedUser);
+            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+        }
     }
 
-    public void updateLastName(String newLastName) {
-        selectedUser.setLastName(newLastName);
-        service.update(selectedUser);
+    public void updateEmail() {
+        if (newEmail != null && newEmail != selectedUser.getEmail() && newEmail != "" && newEmail != " ") {
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "Email changed: (new)" + newEmail + " - (old)" + selectedUser.getEmail();
+            selectedUser.setEmail(newEmail);
+            notification.setInfo(allInfo);
+            service.save(notification);
+            selectedUser.getNotifications().add(notification);
+            service.update(selectedUser);
+            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+        }
     }
 
-    public void updateMobileNumber(String newMobileNumber) {
-        selectedUser.setMobileNumber(newMobileNumber);
-        service.update(selectedUser);
+
+    public void updateMobileNumber() {
+        if (newMobileNumber != null && newMobileNumber != selectedUser.getMobileNumber() && newMobileNumber != "" && newMobileNumber != " ") {
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "Mobile Number changed: (new)" + newMobileNumber + " - (old)" + selectedUser.getMobileNumber();
+            selectedUser.setMobileNumber(newMobileNumber);
+            notification.setInfo(allInfo);
+            service.save(notification);
+            selectedUser.getNotifications().add(notification);
+            service.update(selectedUser);
+            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+        }
     }
 
-    public void updateEmail(String newEmail) {
-        selectedUser.setEmail(newEmail);
-        Notification notification=new Notification(NotificationType.USER_UPDATED);
-        service.save(notification);
-        selectedUser.getNotifications().add(notification);
-        service.update(selectedUser);
+    public void updateLastName() {
+        if (newLastName != null && newLastName != selectedUser.getLastName() && newLastName != "" && newLastName != " ") {
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "Last Name changed: (new)" + newLastName + " - (old)" + selectedUser.getLastName();
+            selectedUser.setLastName(newLastName);
+            notification.setInfo(allInfo);
+            service.save(notification);
+            selectedUser.getNotifications().add(notification);
+            service.update(selectedUser);
+            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+        }
     }
-/*
-    public void updateRole(Collection<Role> rt) {
-        selectedUser.setUserRoles(rt);
-        service.update(selectedUser);
-    }
-*/
+
+
 }
