@@ -32,13 +32,18 @@ import java.util.stream.Collectors;
 @ViewScoped
 public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
-
-
     private String outcome;
     private String userName;
 
+    private String newInfo;
+    private String oldInfo;
 
     private User selectedUser;
+
+    private String allInfo;
+
+
+
     private String outputMessage;
 
     private List<User> usersList;
@@ -53,30 +58,27 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     }
 
 
-
-
-
     public void navigate() {
         FacesContext context = FacesContext.getCurrentInstance();
         NavigationHandler navigationHandler = context.getApplication()
                 .getNavigationHandler();
-        User user=(User) WebHelper.getSession().getAttribute("currentUser");
-        boolean hasRight=false;
-        String requiredRight="";
+        User user = (User) WebHelper.getSession().getAttribute("currentUser");
+        boolean hasRight = false;
+        String requiredRight = "";
 
-        if(outcome.equals("register")||outcome.equals("editUser")) {
-            hasRight = service.userHasRight(user,RightType.USER_MANAGEMENT);
-            requiredRight=RightType.USER_MANAGEMENT.toString();
+        if (outcome.equals("register") || outcome.equals("editUser")) {
+            hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
+            requiredRight = RightType.USER_MANAGEMENT.toString();
         }
 
 
-        if(hasRight) {
+        if (hasRight) {
             navigationHandler.handleNavigation(context, null, outcome
                     + "?faces-redirect=true");
-        }else{
+        } else {
 
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: "+requiredRight);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + requiredRight);
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
     }
@@ -198,6 +200,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         }
     }
 
+
     public void rowSelected(SelectEvent event) {
         outputMessage = selectedUser.getUsername();
         this.updateFirstName(selectedUser.getFirstName());
@@ -223,11 +226,21 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void updateEmail(String newEmail) {
         selectedUser.setEmail(newEmail);
-        Notification notification=new Notification(NotificationType.USER_UPDATED);
-        service.save(notification);
-        selectedUser.getNotifications().add(notification);
+        selectedUser.setNewInfo(newEmail);
         service.update(selectedUser);
     }
+
+    public void sendNotification() {
+        Notification notification = new Notification(NotificationType.USER_UPDATED);
+        service.save(notification);
+        selectedUser.getNotifications().add(notification);
+        //service.update(selectedUser);
+    }
+
+    public void makeAllInfo() {
+        allInfo = oldInfo + ":" + newInfo;
+    }
+
 /*
     public void updateRole(Collection<Role> rt) {
         selectedUser.setUserRoles(rt);

@@ -95,10 +95,7 @@ public class RegisterUserBean implements Serializable {
 
         user1.setNotifications(notifications);
 
-        List<Notification> notificationList = new LinkedList<>();
-        notificationList.add(notification);
 
-        user1.setNotifications(notificationList);
 
 
         user1.setUserRoles(selectedRoles);

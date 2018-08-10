@@ -91,6 +91,15 @@
                                 <p:inputText id="c6" value="#{user.email}"
                                              style="width:96%"/>
                                 <br/>
+                                #{userEditBean.setNewInfo(user.email)}
+                                #{userEditBean.makeAllInfo()}
+                                <h:outputText value="#{userEditBean.oldInfo}"/>
+                                <br/>
+                                Here: <h:outputText value="#{userEditBean.oldInfo}+#{userEditBean.newInfo}"/>
+                                <br/>
+                                #{userEditBean.setOldInfo(user.email)}
+                                Here2: <h:outputText value="#{userEditBean.allInfo}"/>
+
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
