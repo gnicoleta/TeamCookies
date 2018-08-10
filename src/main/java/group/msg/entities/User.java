@@ -24,6 +24,7 @@ import java.util.LinkedList;
         @NamedQuery(name = "User.findByUsername",
                 query = "select sp from User sp where sp.username like ?1")
 
+
 })
 @NamedNativeQueries({
         @NamedNativeQuery(name = "User.findIdByName",
@@ -72,6 +73,9 @@ public class User implements Serializable {
     private Bug createdBug;
 
     private String password;
+
+    @Column(name = "COUNT")
+    private int loginAttemptsCount=0;
 
     public User() {
 
