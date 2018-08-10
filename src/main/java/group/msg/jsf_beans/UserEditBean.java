@@ -30,12 +30,14 @@ import java.util.stream.Collectors;
 @Data
 @Named
 @ViewScoped
-public class UserEditBean extends LazyDataModel<User> implements Serializable {
-
+public class UserEditBean extends LazyDataModel<User> {
 
 
     private String outcome;
     private String userName;
+
+
+    private String aux;
 
     private String newInfo;
     private String oldInfo;
@@ -44,6 +46,10 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     private String allInfo;
 
+    private boolean updatedMail = false;
+    private boolean updatedFirstName = false;
+    private boolean updatedLastName = false;
+    private boolean updatedMobileNumber = false;
 
 
     private String outputMessage;
@@ -58,9 +64,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void init() {
         usersList = service.getAllUsers();
     }
-
-
-
 
 
     public void navigate() {
@@ -208,15 +211,27 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void rowSelected(SelectEvent event) {
         outputMessage = selectedUser.getUsername();
-        this.updateFirstName(selectedUser.getFirstName());
-        this.updateLastName(selectedUser.getLastName());
-        this.updateMobileNumber(selectedUser.getMobileNumber());
-        this.updateEmail(selectedUser.getEmail());
+        //this.updateUser();
+
     }
 
-    public void updateFirstName(String newFirstName) {
-        selectedUser.setFirstName(newFirstName);
-        service.update(selectedUser);
+    public void updateFirstName() {
+        //updatedFirstName=true;
+
+        if (aux!=null&&aux!=selectedUser.getFirstName()&&aux!=""&&aux!=" ") {
+
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+
+            String ursu = "First Name changed: " + aux+" "+selectedUser.getFirstName();
+            selectedUser.setFirstName(aux);
+
+            notification.setInfo(ursu);
+            service.save(notification);
+            selectedUser.getNotifications().add(notification);
+
+            service.update(selectedUser);
+            ursu="";
+        }
     }
 
     public void updateLastName(String newLastName) {
@@ -230,9 +245,18 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     }
 
     public void updateEmail(String newEmail) {
-        selectedUser.setEmail(newEmail);
-        selectedUser.setNewInfo(newEmail);
-        service.update(selectedUser);
+        //updatedMail = true;
+        if (newEmail!="") {
+            selectedUser.setEmail(newEmail);
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            allInfo = "Email changed: " + allInfo;
+            notification.setInfo(allInfo);
+            service.save(notification);
+            selectedUser.getNotifications().add(notification);
+
+            service.update(selectedUser);
+            allInfo = " ";
+        }
     }
 
     public void sendNotification() {
@@ -244,6 +268,21 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     public void makeAllInfo() {
         allInfo = oldInfo + ":" + newInfo;
+    }
+
+    public void updateUser() {
+        if (updatedFirstName) {
+           // updateFirstName(selectedUser.getFirstName());
+        }
+        if (updatedLastName) {
+            this.updateLastName(selectedUser.getLastName());
+        }
+        if (updatedMobileNumber) {
+            this.updateMobileNumber(selectedUser.getMobileNumber());
+        }
+        if (updatedMail) {
+            updateEmail(selectedUser.getEmail());
+        }
     }
 
 /*

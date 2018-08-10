@@ -73,12 +73,6 @@ public class User implements Serializable {
 
     private String password;
 
-    @Transient
-    private String oldInfo;
-
-    @Transient
-    private String newInfo;
-
     public User() {
 
     }
