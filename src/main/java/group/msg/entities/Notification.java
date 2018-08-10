@@ -18,8 +18,6 @@ public class Notification implements Serializable {
     @Column(name = "notification")
     private NotificationType notificationType;
 
-    private String info;
-
     @ManyToMany
     @JoinTable(name = "user_notification",
             joinColumns = @JoinColumn(name = "notification_id"),

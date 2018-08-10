@@ -16,7 +16,7 @@
             <h:form id="ProductsForm">
                 <h3 class="title">Download</h3>
                 <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-                    <p:fileDownload value="#{downloadBean.PDFWriter.getFile()}" />
+                    <p:fileDownload value="#{downloadBean.download.getFile()}" />
                 </p:commandButton>
 
             </h:form>

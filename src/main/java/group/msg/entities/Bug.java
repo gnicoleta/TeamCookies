@@ -61,25 +61,5 @@ public class Bug implements Serializable {
     private Notification notification;
 
 
-    @Override
-    public String toString(){
-        StringBuilder result=new StringBuilder();
-        result.append("ID: ").append(id).append(System.lineSeparator());
-        result.append("Title: ").append(title).append(System.lineSeparator());
-        result.append("Description: ").append(description).append(System.lineSeparator());
-        result.append("Version: ").append(version).append(System.lineSeparator());
-        result.append("Fixed in version: ").append(fixedInVersion).append(System.lineSeparator());
-        result.append("Target date: ").append(targetDate.toString()).append(System.lineSeparator());
-        result.append("Severity type: ").append(severityType.toString()).append(System.lineSeparator());
-        result.append("Created by: ").append(createdBy.getUsername()).append(System.lineSeparator());
-        result.append("Assigned to: ").append(assignedTo.getUsername()).append(System.lineSeparator());
-        result.append("Status type: ").append(statusType.toString()).append(System.lineSeparator());
-
-
-        return result.toString();
-
-
-    }
-
 
 }

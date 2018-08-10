@@ -2,13 +2,12 @@ package group.msg.jsf_beans;
 
 
 import group.msg.entities.Bug;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import javax.activation.MimetypesFileTypeMap;
+import javax.faces.context.FacesContext;
 import java.io.*;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ExcelWriter implements Serializable{
     private FileOutputStream fileOut;
     private File excelPath;
 
-    public void createExcel(List<Bug> bugs, String filename) throws IOException {
+    public void ExcelFile(List<Bug> bugs, String filename) throws IOException {
         // Create a Workbook
         Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
 
@@ -98,15 +97,5 @@ public class ExcelWriter implements Serializable{
     }
 
 
-    public StreamedContent downloadAttachment() throws IOException {
-
-        InputStream stream = new FileInputStream(excelPath.getAbsolutePath());
-
-        String contentType=new MimetypesFileTypeMap().getContentType(excelPath);
-
-        String extension=FilenameUtils.getExtension(excelPath.getName());
-
-        return new DefaultStreamedContent(stream, contentType, "Downloaded_excel_bug."+extension);
-    }
 
 }

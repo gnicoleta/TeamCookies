@@ -32,48 +32,13 @@
             </p:panel>
         </h:form>
 
-        <p:dataTable var="notification" id="notificationsTable" value="#{notificationsBean}"
-                     selection="#{notificationsBean.selectedNotification}"
-                     selectionMode="single"
-                     rowKey="#{notification.id}"
-                     lazy="true"
-                     paginator="true" rows="10"
-                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                     rowsPerPageTemplate="5,10,15"
 
-                     paginatorPosition="bottom">
-
-            <p:ajax event="rowSelect" listener="#{notificationsBean.rowSelected}"/>
-
-
-            <p:column id="c1" headerText="Id" sortBy="#{notification.id}" filterBy="#{notification.id}"
-                      filterMatchMode="contains">
-                <h:outputText value="#{notification.id}"/>
-            </p:column>
-
-            <p:column sortBy="#{notification.notificationType}" filterBy="#{notification.notificationType}"
-                      filterMatchMode="contains">
-                <f:facet name="header">Notification Type</f:facet>
-                <h:outputText value="#{notification.notificationType}"/>
-            </p:column>
-            <p:column sortBy="#{notification.info}" filterBy="#{notification.info}" filterMatchMode="contains">
-                <f:facet name="header">Info</f:facet>
-                <h:outputText value="#{notification.info}"/>
-            </p:column>
-
-
-            <br/>
-            <p:rowEditor/>
-
-        </p:dataTable>
 
         <h:form id="logOutForm">
             <p:commandButton value="Logout" action="#{userEditBean.logout}"
                              ajax="false"
                              styleClass="aButton"/>
         </h:form>
-
-
 
 
 

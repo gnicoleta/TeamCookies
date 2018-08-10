@@ -23,7 +23,7 @@
         <property name="portNumber" value="3306"/>
         <property name="verifyServerCertificate" value="false"/>
         <property name="useSSL" value="false"/>
-        <property name="password" value="admin"/>
+        <property name="password" value="1234"/>
         <property name="allowPublicKeyRetrieval" value="true"/>
     </jdbc-connection-pool>
 </resources>

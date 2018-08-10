@@ -52,24 +52,9 @@ public class RegisterUserBean implements Serializable {
         user = new User();
     }
 
-    public String getRegisterInfo(String username) {
-        String temp = "Welcome " + firstName + " " + lastName + "\n";
-        temp += "Username=" + username + "\n";
-        temp += "Email=" + email + "\n";
-        temp += "Mobile number=" + mobileNumber + "\n";
-        temp += "Roles: ";
-        for (String s : selectedRolesStrings) {
-            temp += s + " ";
-        }
-        temp += "\n";
-        return temp;
-
-    }
-
     public String registerUser() {
 
 
-        String notificationInfo = "";
         service.clear();
         User user1 = new User();
         user1.setFirstName(firstName);
@@ -103,15 +88,17 @@ public class RegisterUserBean implements Serializable {
 
         }
         Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
-        notificationInfo = this.getRegisterInfo(user1.getUsername());
-        notification.setInfo(notificationInfo);
-
-        List<Notification> notifications = new LinkedList<>();
+        List<Notification>notifications=new LinkedList<>();
 
         service.save(notification);
         notifications.add(notification);
 
         user1.setNotifications(notifications);
+
+        List<Notification> notificationList = new LinkedList<>();
+        notificationList.add(notification);
+
+        user1.setNotifications(notificationList);
 
 
         user1.setUserRoles(selectedRoles);

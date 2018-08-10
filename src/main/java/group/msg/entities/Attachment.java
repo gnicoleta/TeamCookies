@@ -15,9 +15,7 @@ public class Attachment {
     private Integer id;
 
     @Column(name = "ATTACHEMENT_TYPE")
-    private String attachmentType;
-
-    private String extensionType;
+    private AttachmentType attachmentType;
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
