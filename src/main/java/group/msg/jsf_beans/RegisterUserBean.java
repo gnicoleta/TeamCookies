@@ -5,10 +5,10 @@ import group.msg.beans.RightsForRoleGetterAndSetter;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
 import lombok.Data;
+import org.jboss.weld.context.ejb.Ejb;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -47,6 +47,15 @@ public class RegisterUserBean implements Serializable {
     @EJB
     private UserServiceEJB service;
 
+    @EJB
+    private  NotificationServiceEJB notificationServiceEJB;
+
+    @EJB
+    private RoleServiceEJB roleServiceEJB;
+
+    @Ejb
+    private RightServiceEJB rightServiceEJB;
+
     @PostConstruct
     public void init() {
         user = new User();
@@ -81,35 +90,38 @@ public class RegisterUserBean implements Serializable {
 
 
         for (String roleString : selectedRolesStrings) {
-            Role role = new Role(RoleType.valueOf(roleString));
+
+            Role role = roleServiceEJB.findRoleByType(roleString);
 
             List<RightType> rightTypes = new ArrayList<>();
             rightTypes = rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
 
-            List<Right> rightList = new LinkedList<>();
+            List<Rights> rightList = new LinkedList<>();
+            Rights right;
             for (RightType rightType : rightTypes) {
 
+                right=service.findRightByType(rightType.toString());
 
-                Right right = new Right(rightType);
-                right.setTypeString(rightType.toString());
+
                 rightList.add(right);
-                service.save(right);
+
             }
 
             role.setRoleRights(rightList);
 
 
             selectedRoles.add(role);
-            service.save(role);
+
 
         }
+
         Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
         notificationInfo = this.getRegisterInfo(user1.getUsername());
         notification.setInfo(notificationInfo);
 
         List<Notification> notifications = new LinkedList<>();
 
-        service.save(notification);
+        notificationServiceEJB.save(notification);
         notifications.add(notification);
 
         user1.setNotifications(notifications);

@@ -10,6 +10,13 @@ import java.util.Collection;
 @Data
 @Entity
 @Table
+@NamedQueries({
+
+        @NamedQuery(name = "Role.findByRoleType",
+                query = "select sp from Role sp where sp.roleString like ?1")
+
+
+})
 public class Role implements Serializable {
 
     @Id
@@ -17,6 +24,9 @@ public class Role implements Serializable {
     private Integer id;
 
     private RoleType role;
+
+    @Column(name = "role_string")
+    private String roleString;
 
     @ManyToMany
     @JoinTable(name = "user_role",
@@ -29,7 +39,7 @@ public class Role implements Serializable {
     @JoinTable(name = "role_right",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "right_id"))
-    private Collection<Right> roleRights;
+    private Collection<Rights> roleRights;
 
     public Role() {
 
@@ -37,6 +47,7 @@ public class Role implements Serializable {
 
     public Role(RoleType role) {
         this.role = role;
+        roleString=role.toString();
 
     }
 

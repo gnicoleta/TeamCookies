@@ -9,6 +9,13 @@ import java.util.Collection;
 @Data
 @Entity
 @Table
+@NamedQueries({
+
+        @NamedQuery(name = "Notification.findByNotificationType",
+                query = "select sp from Notification sp where sp.notificationTypeString like ?1")
+
+
+})
 public class Notification implements Serializable {
 
     @Id
@@ -17,6 +24,8 @@ public class Notification implements Serializable {
 
     @Column(name = "notification")
     private NotificationType notificationType;
+
+    private String notificationTypeString;
 
     private String info;
 
@@ -35,5 +44,6 @@ public class Notification implements Serializable {
 
     public Notification(NotificationType notificationType) {
         this.notificationType = notificationType;
+        notificationTypeString=notificationType.toString();
     }
 }

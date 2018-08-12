@@ -3,7 +3,6 @@ package group.msg.test.jpa;
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
-import group.msg.jsf_beans.Download;
 import group.msg.jsf_beans.DownloadBean;
 import group.msg.test.MavenArtifactResolver;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -15,11 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.io.File;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RunWith(Arquillian.class)
@@ -121,12 +116,12 @@ public class UserCRUDTest extends JPABaseTest {
             }
 
 
-            Right right = new Right();
+            Rights right = new Rights();
             right.setType(rightType);
-            Right right1 = new Right();
+            Rights right1 = new Rights();
             right1.setType(rightType1);
 
-            Collection<Right> rights = new LinkedList<>();
+            Collection<Rights> rights = new LinkedList<>();
             rights.add(right);
             rights.add(right1);
 
@@ -209,7 +204,7 @@ public class UserCRUDTest extends JPABaseTest {
     protected void internalClearData() {
         em.createQuery("delete from User ").executeUpdate();
         em.createQuery("delete from Role ").executeUpdate();
-        em.createQuery("delete from Right").executeUpdate();
+        em.createQuery("delete from Rights").executeUpdate();
         em.createQuery("delete from Notification ").executeUpdate();
     }
 

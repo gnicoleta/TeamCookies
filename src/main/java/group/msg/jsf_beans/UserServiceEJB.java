@@ -1,27 +1,22 @@
 package group.msg.jsf_beans;
 
-import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
 
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Stateless
 public class UserServiceEJB {
 
 
-    @Inject
-    PasswordEncryptor passwordEncryptor;
+
 
     @Inject
     UsernameGenerator usernameGenerator;
@@ -42,17 +37,10 @@ public class UserServiceEJB {
 
     }
 
-    public void save(Role role) {
-        em.persist(role);
-    }
 
-    public void save(Right right) {
-        em.persist(right);
-    }
 
-    public void save(Notification notification) {
-        em.persist(notification);
-    }
+
+
 
     public void clear() {
         em.clear();
@@ -133,8 +121,8 @@ public class UserServiceEJB {
     public boolean userHasRight(User user, RightType rightType) {
         List<Role> roles = (List<Role>) user.getUserRoles();
         for (Role role : roles) {
-            List<Right> rights = (List<Right>) role.getRoleRights();
-            for (Right right : rights) {
+            List<Rights> rights = (List<Rights>) role.getRoleRights();
+            for (Rights right : rights) {
                 if (right.getType().equals(rightType)) {
                     return true;
                 }
@@ -142,6 +130,15 @@ public class UserServiceEJB {
         }
         return false;
 
+    }
+    public void save(Rights right) {
+        em.persist(right);
+    }
+    public Rights findRightByType(String type){
+        Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
+        q.setParameter(1, type);
+        Rights result = (Rights) q.getSingleResult();
+        return result;
     }
     public String getUserInfo(User user){
         String s="";
@@ -156,8 +153,7 @@ public class UserServiceEJB {
 
     public List<User> getUsersWithCertainRight(RightType rightType){
 
-     //TypedQuery<User> query1 = em.createQuery("select ur from  User ur,ur.userRoles urr,urr.roleRights urrr where urrr.typeString='USER_MANAGEMENT'", User.class);
-        Query query1=em.createQuery("select distinct u from User u,u.userRoles ur join Right rr where rr.typeString='USER_MANAGEMENT'");
+        Query query1=em.createQuery("select distinct u from User u,u.userRoles ur join Rights rr where rr.typeString='USER_MANAGEMENT'");
 
      return query1.getResultList();
 

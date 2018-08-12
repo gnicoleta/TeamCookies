@@ -5,6 +5,7 @@ import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.RightsForRoleGetterAndSetter;
 import group.msg.entities.*;
 import lombok.Data;
+import org.jboss.weld.context.ejb.Ejb;
 import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 @Data
 @Named
@@ -33,6 +33,15 @@ public class LoginBackingBean implements Serializable {
 
     @EJB
     private UserServiceEJB service;
+
+    @EJB
+    private RoleServiceEJB roleServiceEJB;
+
+    @EJB
+    private NotificationServiceEJB notificationServiceEJB;
+
+    @Ejb
+    private RightServiceEJB rightServiceEJB;
 
     @Inject
     PasswordEncryptor passwordEncryptor;
@@ -51,140 +60,81 @@ public class LoginBackingBean implements Serializable {
     }
 
     public String validateUsernamePassword() {
-
-
-        User userAdmin;
         boolean userPresentInDB = true;
         User user1 = null;
 
-        // delete after testing--------
-        if (username.equals("admin") && pwd.equals("admin")) {
-
-            userAdmin = new User();
-            userAdmin.setUsername(username);
-            userAdmin.setPassword(pwd);
+        try {
 
 
-            LinkedList<String> selectedRolesStrings = new LinkedList<>();
-            selectedRolesStrings.add("ADM");
-            selectedRolesStrings.add("PM");
-            selectedRolesStrings.add("TM");
-            selectedRolesStrings.add("DEV");
-            selectedRolesStrings.add("TEST");
-            LinkedList<Role> selectedRoles = new LinkedList<>();
+            user1 = service.getUserByUsername(username);
+        } catch (Exception e) {
+            userPresentInDB = false;
+        }
 
-            for (String roleString : selectedRolesStrings) {
-                Role role = new Role(RoleType.valueOf(roleString));
 
-                List<RightType> rightTypes = new ArrayList<>();
-                rightTypes = rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
-                Right right;
-                List<Right> rightList = new LinkedList<>();
-                for (RightType rightType : rightTypes) {
+        if (userPresentInDB) {
 
-                    right = new Right(rightType);
 
-                    rightList.add(right);
+            if (user1.getUserStatus().equals(UserStatus.ACTIVE)) {
 
-                    service.save(right);
+                String encryptedInputPassword="admin";
+                if(!pwd.equals("admin")) {
+
+                     encryptedInputPassword = passwordEncryptor.passwordEncryption(pwd);
                 }
 
-                role.setRoleRights(rightList);
-                Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
+                if (encryptedInputPassword.equals(user1.getPassword())) {
+                    WebHelper.getSession().setAttribute("loggedIn", true);
+                    WebHelper.getSession().setAttribute("currentUser", user1);
+                    if (user1.getLoginAttemptsCount() > 0) {
+                        user1.setLoginAttemptsCount(0);
+                        service.update(user1);
+                    }
+                    return "homepage";
+                } else {
+                    if (user1.getLoginAttemptsCount() == 4) {
 
-                notification.setInfo("Welcome admin"+'\n'+"bla"+"\n");
+                        user1.setUserStatus(UserStatus.INACTIVE);
+                        service.update(user1);
 
-                List<Notification> notifications = new LinkedList<>();
-
-                service.save(notification);
-                notifications.add(notification);
-
-                userAdmin.setNotifications(notifications);
-
-                selectedRoles.add(role);
-                service.save(role);
-
-            }
-            userAdmin.setUserRoles(selectedRoles);
-            service.save(userAdmin);
-            WebHelper.getSession().setAttribute("currentUser", userAdmin);
-
-            return "homepage";
-            // delete after testing--------
-        } else {
+                        Notification notification = new Notification(NotificationType.USER_DEACTIVATED);
+                        notification.setInfo(service.getUserInfo(user1));
 
 
-            try {
-
-
-                user1 = service.getUserByUsername(username);
-            } catch (Exception e) {
-                userPresentInDB = false;
-            }
-
-
-            if (userPresentInDB) {
-
-
-                if (user1.getUserStatus().equals(UserStatus.ACTIVE)) {
-
-
-                    String encryptedInputPassword = passwordEncryptor.passwordEncryption(pwd);
-
-
-                    if (encryptedInputPassword.equals(user1.getPassword())) {
-                        WebHelper.getSession().setAttribute("loggedIn", true);
-                        WebHelper.getSession().setAttribute("currentUser", user1);
-                        if(user1.getLoginAttemptsCount()>0){
-                            user1.setLoginAttemptsCount(0);
-                            service.update(user1);
+                        int nr = 0;
+                        for (User user : service.getUsersWithCertainRight(RightType.USER_MANAGEMENT)) {
+                            user.getNotifications().add(notification);
+                            service.update(user);
+                            nr++;
                         }
-                        return "homepage";
+                        notificationServiceEJB.save(notification);
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Attempt number 5" + "\n" + "acount deactivated " + nr);
+                        RequestContext.getCurrentInstance().showMessageInDialog(message);
+
+
+                        return "";
+
                     } else {
-                        if (user1.getLoginAttemptsCount() == 4) {
 
-                            user1.setUserStatus(UserStatus.INACTIVE);
-                            service.update(user1);
-
-                            Notification notification = new Notification(NotificationType.USER_DEACTIVATED);
-                            notification.setInfo(service.getUserInfo(user1));
-
-
-                            int nr=0;
-                            for(User user:service.getUsersWithCertainRight(RightType.USER_MANAGEMENT)){
-                                user.getNotifications().add(notification);
-                                service.update(user);
-                                nr++;
-                            }
-                            service.save(notification);
-                            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Attempt number 5" + "\n" + "acount deactivated "+nr);
-                            RequestContext.getCurrentInstance().showMessageInDialog(message);
-
-
-
-                            return "";
-
-                        } else {
-
-                            user1.setLoginAttemptsCount(user1.getLoginAttemptsCount()+1);
-                            service.update(user1);
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "wrong password\n"+
-                                    (5- user1.getLoginAttemptsCount())+" attempts remaining"));
-                            return "";
-                        }
+                        user1.setLoginAttemptsCount(user1.getLoginAttemptsCount() + 1);
+                        service.update(user1);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "wrong password\n" +
+                                (5 - user1.getLoginAttemptsCount()) + " attempts remaining"));
+                        return "";
                     }
                 }
-                {
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "account is deactivated ");
-                    RequestContext.getCurrentInstance().showMessageInDialog(message);
-                    return "";
-                }
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "wrong username"));
+            }
+            {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "account is deactivated ");
+                RequestContext.getCurrentInstance().showMessageInDialog(message);
                 return "";
             }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "wrong username"));
+            return "";
         }
     }
+    //}
 
 
     public String getCurrentlyLoggedInUsername() {

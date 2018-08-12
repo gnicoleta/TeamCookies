@@ -45,6 +45,9 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     @EJB
     private UserServiceEJB service;
 
+    @EJB
+    private NotificationServiceEJB notificationServiceEJB;
+
     private String newFirstName;
     private String newLastName;
     private String newEmail;
@@ -209,7 +212,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             String allInfo = "First Name changed: (new)" + newFirstName + " - (old)" + selectedUser.getFirstName();
             selectedUser.setFirstName(newFirstName);
             notification.setInfo(allInfo);
-            service.save(notification);
+            notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
             RequestContext.getCurrentInstance().execute("window.location.reload(true)");
@@ -222,7 +225,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             String allInfo = "Email changed: (new)" + newEmail + " - (old)" + selectedUser.getEmail();
             selectedUser.setEmail(newEmail);
             notification.setInfo(allInfo);
-            service.save(notification);
+            notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
             RequestContext.getCurrentInstance().execute("window.location.reload(true)");
@@ -236,7 +239,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             String allInfo = "Mobile Number changed: (new)" + newMobileNumber + " - (old)" + selectedUser.getMobileNumber();
             selectedUser.setMobileNumber(newMobileNumber);
             notification.setInfo(allInfo);
-            service.save(notification);
+            notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
             RequestContext.getCurrentInstance().execute("window.location.reload(true)");
@@ -249,7 +252,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             String allInfo = "Last Name changed: (new)" + newLastName + " - (old)" + selectedUser.getLastName();
             selectedUser.setLastName(newLastName);
             notification.setInfo(allInfo);
-            service.save(notification);
+            notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
             RequestContext.getCurrentInstance().execute("window.location.reload(true)");

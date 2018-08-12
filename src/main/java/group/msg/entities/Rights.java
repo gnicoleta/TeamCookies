@@ -9,7 +9,14 @@ import java.util.Collection;
 @Data
 @Entity
 @Table(name = "rights")
-public class Right implements Serializable {
+@NamedQueries({
+
+        @NamedQuery(name = "Rights.findByRightType",
+                query = "select sp from Rights sp where sp.typeString like ?1")
+
+
+})
+public class Rights implements Serializable {
 
     @Id
     @GeneratedValue
@@ -18,6 +25,7 @@ public class Right implements Serializable {
 
     private RightType type;
 
+    @Column(name = "type_string")
     private String typeString;
 
     @ManyToMany
@@ -26,9 +34,9 @@ public class Right implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
-    public Right(RightType type) {
+    public Rights(RightType type) {
         this.type = type;
         this.typeString=type.toString();
     }
-    public Right(){}
+    public Rights(){}
 }
