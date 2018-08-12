@@ -18,6 +18,7 @@ public class Right implements Serializable {
 
     private RightType type;
 
+    private String typeString;
 
     @ManyToMany
     @JoinTable(name = "role_right",
@@ -27,6 +28,7 @@ public class Right implements Serializable {
 
     public Right(RightType type) {
         this.type = type;
+        this.typeString=type.toString();
     }
     public Right(){}
 }

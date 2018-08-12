@@ -1,5 +1,5 @@
 package group.msg.jsf_beans;
-//import group.msg.test.jpa.JPABaseTest;
+
 
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.RightsForRoleGetterAndSetter;
@@ -14,13 +14,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 @Data
 @Named
@@ -84,6 +83,7 @@ public class LoginBackingBean implements Serializable {
                 for (RightType rightType : rightTypes) {
 
                     right = new Right(rightType);
+
                     rightList.add(right);
 
                     service.save(right);
@@ -142,10 +142,26 @@ public class LoginBackingBean implements Serializable {
                         return "homepage";
                     } else {
                         if (user1.getLoginAttemptsCount() == 4) {
-                            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Attempt number 5" + "\n" + "acount deactivated");
-                            RequestContext.getCurrentInstance().showMessageInDialog(message);
+
                             user1.setUserStatus(UserStatus.INACTIVE);
                             service.update(user1);
+
+                            Notification notification = new Notification(NotificationType.USER_DEACTIVATED);
+                            notification.setInfo(service.getUserInfo(user1));
+
+
+                            int nr=0;
+                            for(User user:service.getUsersWithCertainRight(RightType.USER_MANAGEMENT)){
+                                user.getNotifications().add(notification);
+                                service.update(user);
+                                nr++;
+                            }
+                            service.save(notification);
+                            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Attempt number 5" + "\n" + "acount deactivated "+nr);
+                            RequestContext.getCurrentInstance().showMessageInDialog(message);
+
+
+
                             return "";
 
                         } else {

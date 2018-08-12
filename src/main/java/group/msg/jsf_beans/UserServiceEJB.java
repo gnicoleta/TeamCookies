@@ -11,6 +11,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -139,6 +141,25 @@ public class UserServiceEJB {
             }
         }
         return false;
+
+    }
+    public String getUserInfo(User user){
+        String s="";
+        s+="Username="+user.getUsername()+
+                "\n"+"First Name="+user.getFirstName()+
+                "\n"+"Last Name="+user.getLastName()+
+                "\n"+"Email="+user.getEmail()+
+                "\n"+"Phone="+user.getMobileNumber();
+        return s;
+
+    }
+
+    public List<User> getUsersWithCertainRight(RightType rightType){
+
+     //TypedQuery<User> query1 = em.createQuery("select ur from  User ur,ur.userRoles urr,urr.roleRights urrr where urrr.typeString='USER_MANAGEMENT'", User.class);
+        Query query1=em.createQuery("select distinct u from User u,u.userRoles ur join Right rr where rr.typeString='USER_MANAGEMENT'");
+
+     return query1.getResultList();
 
     }
 
