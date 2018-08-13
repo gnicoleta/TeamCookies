@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class Download implements Serializable {
+public class PDFWriter implements Serializable {
 
     private Path pdfPath;
 
@@ -38,33 +38,30 @@ public class Download implements Serializable {
         float startX = mediabox.getLowerLeftX() + margin;
         float startY = mediabox.getUpperRightY() - margin;
 
-        String text =bug;
-        List<String> lines = new ArrayList<String>();
-        int lastSpace = -1;
-        while (text.length() > 0)
-        {
-            int spaceIndex = text.indexOf(' ', lastSpace + 1);
-            if (spaceIndex < 0)
-                spaceIndex = text.length();
-            String subString = text.substring(0, spaceIndex);
-            float size = fontSize * pdfFont.getStringWidth(subString) / 1000;
-            if (size > width)
-            {
-                if (lastSpace < 0)
+        String bugContent =bug;
+        List<String> lines = new ArrayList<>();
+
+        for (String text : bugContent.split(System.lineSeparator())) {
+            int lastSpace = -1;
+            while (text.length() > 0) {
+                int spaceIndex = text.indexOf(' ', lastSpace + 1);
+                if (spaceIndex < 0)
+                    spaceIndex = text.length();
+                String subString = text.substring(0, spaceIndex);
+                float size = fontSize * pdfFont.getStringWidth(subString) / 1000;
+                if (size > width) {
+                    if (lastSpace < 0)
+                        lastSpace = spaceIndex;
+                    subString = text.substring(0, lastSpace);
+                    lines.add(subString);
+                    text = text.substring(lastSpace).trim();
+                    lastSpace = -1;
+                } else if (spaceIndex == text.length()) {
+                    lines.add(text);
+                    text = "";
+                } else {
                     lastSpace = spaceIndex;
-                subString = text.substring(0, lastSpace);
-                lines.add(subString);
-                text = text.substring(lastSpace).trim();
-                lastSpace = -1;
-            }
-            else if (spaceIndex == text.length())
-            {
-                lines.add(text);
-                text = "";
-            }
-            else
-            {
-                lastSpace = spaceIndex;
+                }
             }
         }
 
@@ -74,9 +71,9 @@ public class Download implements Serializable {
         return lines;
     }
 
-    public void bugPDF(List<Bug> bugs, String filename) throws IOException {
+    public void createPDF(List<Bug> bugs, String filename) throws IOException {
 
-        pdfPath=Paths.get(filename);
+        pdfPath=Paths.get(filename+".pdf");
         document=new PDDocument();
 
         Iterator it=bugs.iterator();
@@ -104,18 +101,20 @@ public class Download implements Serializable {
             contentStream.close();
         }
 
-        document.save(filename);
+        document.save(pdfPath.toFile().getAbsolutePath());
         document.close();
 
     }
 
 
     public StreamedContent getFile() throws IOException {
-        InputStream stream =new FileInputStream("C:\\Users\\petraa\\IdeaProjects\\TeamCookies\\MyBug");
+        InputStream stream =new FileInputStream(pdfPath.toFile().getAbsolutePath());
         StreamedContent file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug.pdf");
 
 
         return file;
     }
+
+
 
 }
