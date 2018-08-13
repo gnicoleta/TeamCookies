@@ -59,10 +59,11 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private RoleType roleType;
     private Role role;
 
-    private String roleStr;
+    private String roleString;
 
     private Collection<Role> roles = new ArrayList<>();
 
+    private String wtv = "not found";
 
 
     @PostConstruct
@@ -263,18 +264,32 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
 
     public void updateRoles() {
-        Notification notification = new Notification(NotificationType.USER_UPDATED);
-        String allInfo = "Added new role: (new)" + roleType ;
-        //role = roleService.findRoleByType(roleStr);
-        //Role role = new Role();
-        //role.setRole(RoleType.TEST);
-        selectedUser.addRole(roleType);
-        //selectedUser.getUserRoles().add(role);
-        notification.setInfo(allInfo);
-        notificationServiceEJB.save(notification);
-        selectedUser.getNotifications().add(notification);
-        service.update(selectedUser);
-        RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+        if (roleType != null) {
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "Added new role: (new)" + this.roleType;
+
+//        role = roleService.findRoleByType(roleStr);
+//        if(role!=null) {
+//            wtv = "found";
+//        }
+            //Role role = new Role();
+            //role.setRole(RoleType.TEST);
+            //selectedUser.addRole(roleType);
+            //role.setRole(roleType);
+            //this.roles = selectedUser.getUserRoles();
+            //roles.add(role);
+            //selectedUser.setUserRoles(roles);
+            //selectedUser.getUserRoles().contains()
+            selectedUser.addRole(this.roleType);
+            //selectedUser.addRole();
+
+            //selectedUser.getUserRoles().add(role);
+            notification.setInfo(allInfo);
+            notificationServiceEJB.save(notification);
+            selectedUser.getNotifications().add(notification);
+            service.update(selectedUser);
+            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+        }
     }
 
 
@@ -291,6 +306,27 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         }
     }
 
+    public void notWorkingRoleUpdate() {
+        if (roleType != null) {
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "Added new role: (new)" + this.roleString;
+            Role role = roleService.findRoleByType(roleString);
+            selectedUser.getUserRoles().add(role);
+            notification.setInfo(allInfo);
+            notificationServiceEJB.save(notification);
+            selectedUser.getNotifications().add(notification);
+            service.update(selectedUser);
+            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+        }
+    }
+
+    public void roleList() {
+        this.roles = selectedUser.getUserRoles();
+    }
+
+    public void refresh() {
+        RequestContext.getCurrentInstance().execute("setTimeout(function () { location.reload(1); }, 5000);");
+    }
 
 
 }

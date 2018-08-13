@@ -47,13 +47,28 @@ public class Role implements Serializable {
 
     public Role(RoleType role) {
         this.role = role;
-        roleString=role.toString();
+        roleString = role.toString();
 
     }
 
     @Override
     public String toString() {
         return " " + role + "\n";
+    }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        // a quick test to see if the objects are identical
+        if (this == otherObject) return true;
+        // must return false if the explicit parameter is null
+        if (otherObject == null) return false;
+        // if the classes don't match, they can't be equal
+        if (getClass() != otherObject.getClass())
+            return false;
+        // now we know otherObject is a non-null Employee
+        Role other = (Role) otherObject;
+        // test whether the fields have identical values
+        return role.equals(other.role);
     }
 
 }

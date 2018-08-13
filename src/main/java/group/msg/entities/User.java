@@ -78,7 +78,7 @@ public class User implements Serializable {
     private int loginAttemptsCount=0;
 
     @Transient
-    private Role role;
+    private RoleType roleType;
 
     public User() {
 
@@ -103,8 +103,11 @@ public class User implements Serializable {
     }
 
     public void addRole(RoleType roleType) {
-        this.role.setRole(roleType);
-        this.userRoles.add(this.role);
+        Role role = new Role();
+        role.setRole(roleType);
+        if (!this.userRoles.contains(role)) {
+            this.userRoles.add(role);
+        }
     }
 
 }
