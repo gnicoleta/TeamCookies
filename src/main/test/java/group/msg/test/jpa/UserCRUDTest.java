@@ -192,8 +192,8 @@ public class UserCRUDTest extends JPABaseTest {
             em.persist(tmp);
 
         }
-        download.getDownload().bugPDF(bugs, "MyBug");
-        download.getExcelWriter().ExcelFile(bugs, "ExcelBugs");
+        download.getPDFWriter().createPDF(bugs, "MyBug");
+        download.getExcelWriter().createExcel(bugs, "ExcelBugs");
 
         utx.commit();
 

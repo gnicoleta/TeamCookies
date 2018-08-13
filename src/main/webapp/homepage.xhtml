@@ -11,24 +11,32 @@
         <h:outputStylesheet library="css" name="default.css"/>
     </h:head>
     <h:body>
-
         <h:form>
             <p:panel>
-                <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
-                <div class="centered">
-
-                    <p:selectOneMenu id="selectOneMenu" value="#{userEditBean.outcome}" ajax="false">
-                        <f:selectItem itemLabel="User Management"/>
-                        <f:selectItem itemValue="register"  itemLabel="Add User"/>
-                        <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
-                        <f:selectItem itemValue="deleteUser" itemLabel="Activate/Deactivate User"/>
-                        <f:selectItem itemValue="adaugareEditarePermisiuni" itemLabel="Add/Edit User Permissions"/>
-                        <f:selectItem itemValue="stergerePermisiuni" itemLabel="Delete User Permissions"/>
-                        <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                    </p:selectOneMenu>
-                    <p:commandButton value="Bug Management" action="bugManagement"  styleClass="aButton"/>
-                    <br/>
-                </div>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
+                        <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                            <f:selectItem itemLabel="User Management"/>
+                            <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
+                            <f:selectItem itemValue="register" itemLabel="Add User"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                            <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                                <f:selectItem itemLabel="Bug Management"/>
+                                <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
+                                <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
+                                <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="Account" action="homepage" styleClass="aButton"/>
+                        </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Logout" action="#{userEditBean.logout}"
+                                         ajax="false"
+                                         styleClass="aButton"/>
+                    </p:toolbarGroup>
+                        <br/>
+                </p:toolbar>
             </p:panel>
         </h:form>
 
@@ -66,14 +74,6 @@
             <p:rowEditor/>
 
         </p:dataTable>
-
-
-        <h:form id="logOutForm">
-            <p:commandButton value="Logout" action="#{userEditBean.logout}"
-                             ajax="false"
-                             styleClass="aButton"/>
-        </h:form>
-
 
 
     </h:body>
