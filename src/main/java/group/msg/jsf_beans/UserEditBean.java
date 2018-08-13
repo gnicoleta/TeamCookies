@@ -44,6 +44,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     @EJB
     private UserServiceEJB service;
+    private RoleServiceEJB roleService;
 
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
@@ -52,6 +53,11 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private String newLastName;
     private String newEmail;
     private String newMobileNumber;
+
+    private RoleType roleType;
+    private Role role;
+
+    private String roleStr="DEV";
 
 
     @PostConstruct
@@ -250,6 +256,21 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         }
     }
 
+
+    public void updateRoles() {
+        Notification notification = new Notification(NotificationType.USER_UPDATED);
+        String allInfo = "Added new role: (new)" + roleStr ;
+        Role role = new Role();
+        role = roleService.findRoleByType(roleStr);
+        selectedUser.getUserRoles().add(role);
+        notification.setInfo(allInfo);
+        notificationServiceEJB.save(notification);
+        selectedUser.getNotifications().add(notification);
+        service.update(selectedUser);
+        RequestContext.getCurrentInstance().execute("window.location.reload(true)");
+    }
+
+
     public void updateLastName() {
         if (newLastName != null && newLastName != selectedUser.getLastName() && newLastName != "" && newLastName != " ") {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
@@ -262,6 +283,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             RequestContext.getCurrentInstance().execute("window.location.reload(true)");
         }
     }
+
 
 
 }
