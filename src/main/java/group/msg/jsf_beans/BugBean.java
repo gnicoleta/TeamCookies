@@ -6,6 +6,7 @@ import java.util.List;
 import group.msg.entities.*;
 import lombok.Data;
 import org.apache.commons.io.FilenameUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.*;
@@ -267,12 +268,20 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     }
 
     public void deleteAttachment() {
-        Attachment attachment = selectedBug.getAttachment();
-        attachmentServiceEJB.delete(attachment);
+        try {
+            Attachment attachment = selectedBug.getAttachment();
+            attachmentServiceEJB.delete(attachment);
+        }catch (Exception e){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
     }
 
     public StreamedContent downloadAttachment() throws IOException {
-        Attachment attachment = selectedBug.getAttachment();
+        Attachment attachment=null;
+        try {
+            attachment = selectedBug.getAttachment();
+
         File file = byteToFile(attachment.getAttachmentByte(), "MyAttachment");
 
         InputStream stream = new FileInputStream(file.getAbsolutePath());
@@ -282,19 +291,33 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         String extension=attachment.getExtensionType();
 
         return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment."+extension);
+        }catch (Exception e){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
+        return null;
     }
 
 
     public StreamedContent getPDF() throws IOException {
-        List<Bug>bugs=new ArrayList<>();
-        bugs.add(selectedBug);
+        PDFWriter pdfWriter=null;
+        try {
+            List<Bug> bugs = new ArrayList<>();
+            bugs.add(selectedBug);
 
-        PDFWriter pdfWriter= downloadBean.getPDFWriter();
+            pdfWriter = downloadBean.getPDFWriter();
 
-        pdfWriter.createPDF(bugs,"Bug_Info");
+            pdfWriter.createPDF(bugs, "Bug_Info");
 
 
-        return pdfWriter.getFile();
+            return pdfWriter.getFile();
+        }catch (Exception e){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid bug");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
+
+        return null;
+
 
     }
 
