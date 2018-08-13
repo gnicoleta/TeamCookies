@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
+<f:view>
+    <h:head>
+        <title>Account</title>
+
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
+                        <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                            <f:selectItem itemLabel="User Management"/>
+                            <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
+                            <f:selectItem itemValue="register" itemLabel="Add User"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                            <f:selectItem itemLabel="Bug Management"/>
+                            <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
+                            <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Account" action="account" styleClass="aButton"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Logout" action="#{userEditBean.logout}"
+                                         ajax="false"
+                                         styleClass="aButton"/>
+                    </p:toolbarGroup>
+                    <br/>
+                </p:toolbar>
+            </p:panel>
+        </h:form>
+        <h:form align="left">
+
+            <h:panelGrid columns="2">
+                <h:outputText styleClass="myFont" value="First Name" />
+                <p:inputText id="first_name"  value="#{accountJSFBean.firstName}"/>
+                <p:watermark for="first_name" value="#{accountJSFBean.user.firstName}" id="watermark1"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Last Name" />
+                <p:inputText id="last_name"  value="#{accountJSFBean.lastName}"/>
+                <p:watermark for="last_name" value="#{accountJSFBean.user.lastName}" id="watermark2"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Email" />
+                <p:inputText id="email"  value="#{accountJSFBean.email}"/>
+                <p:watermark for="email" value="#{accountJSFBean.user.email}" id="watermark3"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Phone Number" />
+                <p:inputText id="phone_number"  value="#{accountJSFBean.mobileNumber}"/>
+                <p:watermark for="phone_number" value="#{accountJSFBean.user.mobileNumber}" id="watermark4"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="Old Password" />
+                <p:password id="old_password"  value="#{accountJSFBean.oldPassword}"/>
+                <p:watermark for="old_password" value="old password is required" id="watermark5"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="New Password" />
+                <p:password id="new_password"  value="#{accountJSFBean.password}"/>
+
+
+                <p:commandButton value="Save" action="#{accountJSFBean.update()}"
+                                 ajax="false"
+                                 styleClass="aButton"/>
+            </h:panelGrid>
+
+        </h:form>
+
+
+    </h:body>
+</f:view>
+</html>

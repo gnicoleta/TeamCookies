@@ -49,7 +49,7 @@ public class AddBugBean implements Serializable {
         bug.setVersion(version);
 
         bug.setTargetDate(targetDate);
-        
+
         SeverityType severityType=SeverityType.valueOf(severityTypeString);
         bug.setSeverityType(severityType);
 
