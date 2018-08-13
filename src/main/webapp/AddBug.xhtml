@@ -25,11 +25,11 @@
                 <p:inputText id="version" value="#{addBugBean.version}" required="true" label="version"/>
                 <br/>
                 <h:outputText styleClass="myFont" value="Assigned to user" style="display:block;"/>
-                <p:inputText id="assignedTo" value="#{addBugBean.username}" label="assignedTo"/>
+                <p:inputText id="assignedTo" value="#{addBugBean.username}" required="true" label="assignedTo"/>
                 <br/>
                 <br/>
                 <p:outputLabel for="inline" styleClass="myFont" value="Target Date" style="display:block;"/>
-                <p:calendar id="inline" navigator="true" value="#{addBugBean.targetDate}" mode="inline"/>
+                <p:calendar id="inline" navigator="true"  value="#{addBugBean.targetDate}" mode="inline"/>
                 <br/>
                 <p:outputLabel for="console" styleClass="myFont" value="Severity Type" style="display:block;"/>
 
