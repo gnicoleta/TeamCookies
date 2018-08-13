@@ -77,6 +77,9 @@ public class User implements Serializable {
     @Column(name = "COUNT")
     private int loginAttemptsCount=0;
 
+    @Transient
+    private Role role;
+
     public User() {
 
     }
@@ -97,6 +100,11 @@ public class User implements Serializable {
 
     public String toString(){
         return username;
+    }
+
+    public void addRole(RoleType roleType) {
+        this.role.setRole(roleType);
+        this.userRoles.add(this.role);
     }
 
 }

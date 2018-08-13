@@ -149,13 +149,17 @@
                         </f:facet>
                         <p:cellEditor>
                             <f:facet name="output">
+
                                 <ui:repeat value="#{user.userRoles}" var="role">
                                     <h:outputText value="#{role}"/>
                                 </ui:repeat>
                             </f:facet>
                             <f:facet name="input">
-                                <h:inputText value="#{userEditBean.roleStr}"/>
-                                    #{userEditBean.updateRoles()}
+                                <h:inputText value="#{userEditBean.roleType}"/>
+                                <!--h:commandButton value="Add role" action="#{userEditBean.updateRoles()}"/-->
+                                #{userEditBean.selectedUser.addRole(user.roleType)}
+                                #{userEditBean.updateRoles()}
+
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -164,7 +168,10 @@
 
                 </p:dataTable>
                 <br/>
+
                 <h:commandButton value="Back" action="homepage" ajax="false"/>
+
+
             </div>
         </h:form>
     </h:body>
