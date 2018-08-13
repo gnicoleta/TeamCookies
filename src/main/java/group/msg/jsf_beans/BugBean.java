@@ -68,6 +68,8 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     private List<Bug> bugList;
 
+    private List<Bug> selectedBugs;
+
 
     /*public BugBean(){
         bugList = new ArrayList<>();
@@ -280,7 +282,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     public StreamedContent downloadAttachment() throws IOException {
         Attachment attachment=null;
         try {
-            attachment = selectedBug.getAttachment();
+            attachment = selectedBugs.get(0).getAttachment();
 
         File file = byteToFile(attachment.getAttachmentByte(), "MyAttachment");
 
@@ -303,7 +305,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         PDFWriter pdfWriter=null;
         try {
             List<Bug> bugs = new ArrayList<>();
-            bugs.add(selectedBug);
+            bugs.add(selectedBugs.get(0));
 
             pdfWriter = downloadBean.getPDFWriter();
 
@@ -323,11 +325,19 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public StreamedContent getExcel() throws IOException {
 
-        ExcelWriter excelWriter= downloadBean.getExcelWriter();
-        excelWriter.createExcel(bugList,"Bug_Info");
+        ExcelWriter excelWriter=null;
+        try {
+            excelWriter = downloadBean.getExcelWriter();
+            excelWriter.createExcel(selectedBugs, "Bug_Info");
+
+            return excelWriter.downloadAttachment();
+        }catch (Exception e){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid bug");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
 
 
-        return excelWriter.downloadAttachment();
+        return null;
 
     }
 
