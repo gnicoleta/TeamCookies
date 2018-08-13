@@ -16,8 +16,6 @@ import java.util.List;
 public class UserServiceEJB {
 
 
-
-
     @Inject
     UsernameGenerator usernameGenerator;
 
@@ -36,10 +34,6 @@ public class UserServiceEJB {
         em.persist(user);
 
     }
-
-
-
-
 
 
     public void clear() {
@@ -72,6 +66,21 @@ public class UserServiceEJB {
         if (result.isEmpty()) {
             return false;
         } else if (result.get(0).getUsername().equals(username)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean findUserByUsernameDeleteRole(String username, Role role) {
+        Query q = em.createNamedQuery("User.findByUsername", User.class);
+        q.setParameter(1, username);
+        List<User> result = q.getResultList();
+        if (result.isEmpty()) {
+            return false;
+        } else if (result.get(0).getUsername().equals(username) && result.get(0).getUserRoles().contains(role)) {
+            result.get(0).getUserRoles().remove(role);
             return true;
         } else {
             return false;
@@ -131,31 +140,34 @@ public class UserServiceEJB {
         return false;
 
     }
+
     public void save(Rights right) {
         em.persist(right);
     }
-    public Rights findRightByType(String type){
+
+    public Rights findRightByType(String type) {
         Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
         q.setParameter(1, type);
         Rights result = (Rights) q.getSingleResult();
         return result;
     }
-    public String getUserInfo(User user){
-        String s="";
-        s+="Username="+user.getUsername()+
-                "\n"+"First Name="+user.getFirstName()+
-                "\n"+"Last Name="+user.getLastName()+
-                "\n"+"Email="+user.getEmail()+
-                "\n"+"Phone="+user.getMobileNumber();
+
+    public String getUserInfo(User user) {
+        String s = "";
+        s += "Username=" + user.getUsername() +
+                "\n" + "First Name=" + user.getFirstName() +
+                "\n" + "Last Name=" + user.getLastName() +
+                "\n" + "Email=" + user.getEmail() +
+                "\n" + "Phone=" + user.getMobileNumber();
         return s;
 
     }
 
-    public List<User> getUsersWithCertainRight(RightType rightType){
+    public List<User> getUsersWithCertainRight(RightType rightType) {
 
-        Query query1=em.createQuery("select distinct u from User u,u.userRoles ur join Rights rr where rr.typeString='USER_MANAGEMENT'");
+        Query query1 = em.createQuery("select distinct u from User u,u.userRoles ur join Rights rr where rr.typeString='USER_MANAGEMENT'");
 
-     return query1.getResultList();
+        return query1.getResultList();
 
     }
 
