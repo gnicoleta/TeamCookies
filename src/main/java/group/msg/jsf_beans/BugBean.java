@@ -262,8 +262,8 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         attachment.setAttachmentByte(b);
         attachment.setAttachmentType(event.getFile().getContentType());
         attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
-        selectedBug.setAttachment(attachment);
-        bugService.save(selectedBug);
+        selectedBugs.get(0).setAttachment(attachment);
+        bugService.save(selectedBugs.get(0));
         FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, message);
 
@@ -271,7 +271,8 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public void deleteAttachment() {
         try {
-            Attachment attachment = selectedBug.getAttachment();
+            Attachment attachment = selectedBugs.get(0).getAttachment();
+            selectedBugs.get(0).setAttachment(null);
             attachmentServiceEJB.delete(attachment);
         }catch (Exception e){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");

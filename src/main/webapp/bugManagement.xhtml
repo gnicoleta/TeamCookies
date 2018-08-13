@@ -183,11 +183,12 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">Attachment</f:facet>
-                    <p:growl id="messages" showDetail="true"/>
+
                     <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced"
                                   dragDropSupport="false"
                                   update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
                                   allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
+                    <p:growl id="messages" showDetail="true"/>
                     <p:commandButton value="Download attachment" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                         <p:fileDownload value="#{bugBean.downloadAttachment()}" />
                     </p:commandButton>
