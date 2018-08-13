@@ -72,6 +72,10 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
             requiredRight = RightType.USER_MANAGEMENT.toString();
         }
+        if (outcome.equals("bugManagement") || outcome.equals("AddBug")) {
+            hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
+            requiredRight = RightType.USER_MANAGEMENT.toString();
+        }
 
 
         if (hasRight) {
