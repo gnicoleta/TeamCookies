@@ -40,20 +40,15 @@
                 </p:toolbar>
             </p:panel>
         </h:form>
+
         <h:form id="datatableform">
-            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+            <p:dataTable id="table" value="#{bugBean}" var="bug"
+                         selection="#{bugBean.selectedBugs}" rowKey="#{bug.id}" paginator="true" rows="25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom">
-
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
                 <p:ajax event="rowSelect" listener="#{bugBean.rowSelected}"/>
-                <p:column>
-                    <f:facet name="footer">
-                        <p:commandButton value="Download excel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-                            <p:fileDownload value="#{bugBean.getExcel()}" />
-                        </p:commandButton>
-                    </f:facet>
-                </p:column>
+
 
                 <p:column sortBy="#{bug.id-1}" filterBy="#{bug.id-1}" filterMatchMode="contains">
                     <f:facet name="header">Id</f:facet>
@@ -188,11 +183,7 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">Attachment</f:facet>
-                    <p:growl id="messages" showDetail="true"/>
-                    <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced"
-                                  dragDropSupport="false"
-                                  update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
-                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
+
                     <p:commandButton value="Download attachment" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                         <p:fileDownload value="#{bugBean.downloadAttachment()}" />
                     </p:commandButton>
@@ -200,6 +191,12 @@
                         <p:fileDownload value="#{bugBean.getPDF()}" />
                     </p:commandButton>
                     <h:commandButton value="Delete attachment" action="#{bugBean.deleteAttachment}" ajax="true"/>
+
+                    <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced"
+                                  dragDropSupport="false"
+                                  update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
+                    <p:growl id="messages" showDetail="true"/>
                 </p:column>
 
                 <br/>
@@ -210,6 +207,11 @@
         </h:form>
 
         <h:form id="form">
+            <div align="left">
+            <p:commandButton value="Download excel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                <p:fileDownload value="#{bugBean.getExcel()}" />
+            </p:commandButton>
+            </div>
             <h:commandButton value="Back" action="homepage" ajax="false"/>
             <h:commandButton value="Add bug" action="AddBug" ajax="false"/>
         </h:form>
