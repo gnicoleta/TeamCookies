@@ -3,6 +3,7 @@ package group.msg.jsf_beans;
 import group.msg.beans.PasswordEncryptor;
 import group.msg.entities.Notification;
 import group.msg.entities.NotificationType;
+import group.msg.entities.Role;
 import group.msg.entities.User;
 import lombok.Data;
 import org.jboss.weld.context.ejb.Ejb;
@@ -84,8 +85,10 @@ public class AccountJSFBean implements Serializable {
         if(roleStrings.size()>0){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", roleStrings.get(0));
             RequestContext.getCurrentInstance().showMessageInDialog(message);
-            user.getUserRoles().add(roleServiceEJB.findRoleByType(roleStrings.get(0)));
+            Role role=roleServiceEJB.findRoleByType(roleStrings.get(0));
+            user.getUserRoles().add(role);
         }
+
 
         userServiceEJB.update(user);
         Notification notification=new Notification(NotificationType.USER_UPDATED);
@@ -95,5 +98,6 @@ public class AccountJSFBean implements Serializable {
 
         return "account";
     }
+
 
 }

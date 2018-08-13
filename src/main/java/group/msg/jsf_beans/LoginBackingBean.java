@@ -63,6 +63,8 @@ public class LoginBackingBean implements Serializable {
         boolean userPresentInDB = true;
         User user1 = null;
 
+
+
         try {
 
 
@@ -137,7 +139,5 @@ public class LoginBackingBean implements Serializable {
     //}
 
 
-    public String getCurrentlyLoggedInUsername() {
-        return user.getUsername();
-    }
+
 }
