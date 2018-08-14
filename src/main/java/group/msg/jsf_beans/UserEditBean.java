@@ -32,16 +32,11 @@ import java.util.stream.Collectors;
 @ViewScoped
 public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
-
     private String outcome;
     private String userName;
-
-
     private User selectedUser;
     private String outputMessage;
-
     private Role selectedRole;
-
     private List<User> usersList;
 
     @EJB
@@ -55,25 +50,18 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private String newLastName;
     private String newEmail;
     private String newMobileNumber;
-
     private RoleType roleType;
     private Role role;
-
     private Role roleToDelete;
     private RoleType roleTypeDelete;
-
     private String roleString;
-
     private Collection<Role> roles = new ArrayList<>();
-
     private String wtv = "not found";
-
 
     @PostConstruct
     public void init() {
         usersList = service.getAllUsers();
     }
-
 
     public void navigate() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -87,9 +75,9 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
             requiredRight = RightType.USER_MANAGEMENT.toString();
         }
-        if (outcome.equals("bugManagement") || outcome.equals("AddBug")) {
-            hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
-            requiredRight = RightType.USER_MANAGEMENT.toString();
+        if (outcome.equals("bugManagement")||outcome.equals("AddBug")) {
+            hasRight = service.userHasRight(user, RightType.BUG_MANAGEMENT);
+            requiredRight = RightType.BUG_MANAGEMENT.toString();
         }
 
 

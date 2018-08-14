@@ -61,14 +61,14 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private String description = null;
 
     @revisionValidation
-    private String version=null;
+    private String version = null;
 
     private String fixedInVersion;
     private LocalDateTime targetDate;
-    private SeverityType severityType=null;
+    private SeverityType severityType = null;
     private User createdBy;
     private String assignedTo = null;
-    private StatusType statusType =null;
+    private StatusType statusType = null;
     private Attachment attachment;
 
     private Bug selectedBug;
@@ -181,9 +181,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                 Object val1 = fieldToSort.get(bug);
                 Object val2 = fieldToSort.get(t1);
 
-                int comparisionResult = ((Comparable) val1).compareTo(val2);
+                int comparisonResult = ((Comparable) val1).compareTo(val2);
 
-                return SortOrder.ASCENDING.equals(sortOrder) ? comparisionResult : (-1) * comparisionResult;
+                return SortOrder.ASCENDING.equals(sortOrder) ? comparisonResult : (-1) * comparisonResult;
             } catch (Exception e) {
                 return 1;
             }
@@ -304,8 +304,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private String data;
     private User user = null;
     private StatusType aux;
+
     public void updateBug(CellEditEvent event) {
-        if(service.userHasRight(((User) WebHelper.getSession().getAttribute("currentUser")),RightType.BUG_MANAGEMENT)) {
+        if (service.userHasRight(((User) WebHelper.getSession().getAttribute("currentUser")), RightType.BUG_MANAGEMENT)) {
             if (title != null) {
                 selectedBug.setTitle(title);
             }
@@ -315,7 +316,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
             if (version != null) {
                 selectedBug.setVersion(version);
             }
-            if(severityType!=null) {
+            if (severityType != null) {
                 selectedBug.setSeverityType(severityType);
             }
             if (assignedTo != null) {
@@ -330,47 +331,43 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                 }
             }
 
-            if(statusType!=null)
-            {
-                if(statusType.equals(StatusType.CLOSED)) {
-                    if(service.userHasRight(((User) WebHelper.getSession().getAttribute("currentUser")),RightType.BUG_CLOSE)) {
+            if (statusType != null) {
+                if (statusType.equals(StatusType.CLOSED)) {
+                    if (service.userHasRight(((User) WebHelper.getSession().getAttribute("currentUser")), RightType.BUG_CLOSE)) {
                         selectedBug.setStatusType(statusType);
                         selectedBug.setFixedInVersion(selectedBug.getVersion());
                         sendClosedNotification();
-                    }
-                    else {
+                    } else {
                         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Current user does not have bug closing right!!");
                         RequestContext.getCurrentInstance().showMessageInDialog(message);
                     }
-                }
-                else {
+                } else {
                     aux = selectedBug.getStatusType();
                     selectedBug.setStatusType(statusType);
                     sendStatusUpdateNotification();
                 }
-            }
-            else
+            } else
                 sendNotification();
 
-        }
-        else {
+        } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Current user does not have bug editing right!!");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
     }
 
-    public void sendClosedNotification(){
+    public void sendClosedNotification() {
         bugService.update(selectedBug);
-        data = "BUG CLOSED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() +". Assigned to:"+selectedBug.getAssignedTo();
+        data = "BUG CLOSED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_CLOSED);
         notification.setInfo(data);
         notificationServiceEJB.save(notification);
         selectedBug.getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
     }
-    public void sendStatusUpdateNotification(){
+
+    public void sendStatusUpdateNotification() {
         bugService.update(selectedBug);
-        data = "BUG UPDATED!   Old status:"+aux.toString()+". New status:"+selectedBug.getStatusType()+".    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() +". Assigned to:"+selectedBug.getAssignedTo();
+        data = "BUG UPDATED!   Old status:" + aux.toString() + ". New status:" + selectedBug.getStatusType() + ".    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_STATUS_UPDATED);
         notification.setInfo(data);
         notificationServiceEJB.save(notification);
@@ -380,7 +377,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public void sendNotification() {
         bugService.update(selectedBug);
-        data = "BUG UPDATED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() +". Assigned to:"+selectedBug.getAssignedTo();
+        data = "BUG UPDATED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_UPDATED);
         notification.setInfo(data);
         notificationServiceEJB.save(notification);

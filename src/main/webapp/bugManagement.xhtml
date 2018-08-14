@@ -43,9 +43,10 @@
 
         <h:form id="datatableform">
             <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25" rowsPerPageTemplate="5,10,15,20,25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom" editInitEvent="dblclick">
+
                 <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
                 <p:column>
                     <f:facet name="footer">
@@ -163,7 +164,6 @@
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="NEW" itemValue="NEW"/>
                                     <f:selectItem itemLabel="CLOSED" itemValue="CLOSED"/>
-
                                 </p:selectOneMenu>
                             </c:if>
                         </f:facet>
@@ -182,11 +182,6 @@
                 </p:column>
                 <p:ajax event="cellEdit" listener="#{bugBean.updateBug}" update=":datatableform:table"/>
 
-
-                <p:column sortBy="#{bug.notification}" filterBy="#{bug.notification}" filterMatchMode="contains">
-                    <f:facet name="header">Notification</f:facet>
-                    #{bug.notification}
-                </p:column>
                 <p:column>
                     <f:facet name="header">Attachment</f:facet>
 
@@ -204,7 +199,6 @@
                                   allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
                     <p:growl id="messages" showDetail="true"/>
                 </p:column>
-
                 <br/>
                 <p:rowEditor/>
             </p:dataTable>

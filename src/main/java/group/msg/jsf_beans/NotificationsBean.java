@@ -1,5 +1,6 @@
 package group.msg.jsf_beans;
 
+import group.msg.entities.Bug;
 import group.msg.entities.Notification;
 
 import group.msg.entities.User;
@@ -8,7 +9,9 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -18,18 +21,32 @@ import java.util.stream.Collectors;
 
 @Data
 @Named
+@ManagedBean
 @ViewScoped
 public class NotificationsBean  extends LazyDataModel<Notification> implements Serializable {
     private Notification selectedNotification;
     private String outputMessage;
+    private int id;
     private List<Notification> notificationList;
+    @EJB
+    private NotificationServiceEJB notificationServiceEJB;
 
-
-    public void rowSelected(SelectEvent event) {
-
-        outputMessage =selectedNotification.getInfo();
-
+    public Notification getSelectedNotification(){
+        return selectedNotification;
     }
+    public void setSelectedNotification(Notification selectedNotification){
+        this.selectedNotification=selectedNotification;
+        notificationServiceEJB.update(selectedNotification);
+    }
+
+    @PostConstruct
+    public void init(){
+        notificationList=(List<Notification>)((User)WebHelper.getSession().getAttribute("currentUser")).getNotifications();
+    }
+
+//    public void rowSelected(SelectEvent event) {
+//        outputMessage =selectedNotification.getInfo();
+//    }
     @Override
     public Notification getRowData(String rowKey) {
         Integer id = Integer.parseInt(rowKey);
@@ -113,20 +130,28 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
         @Override
         public int compare(Notification notification, Notification t1) {
             try {
-                Object val1 = Notification.class.getField(sortField).get(notification);
-                Object val2 = Notification.class.getField(sortField).get(t1);
+                Field fieldToSort = null;
+                for (Field field : Notification.class.getDeclaredFields()) {
+                    if (field.getName().equals(sortField)) {
+                        fieldToSort = field;
+                    }
+                }
 
-                int comparationResult = ((Comparable) val1).compareTo(val2);
+                if (fieldToSort != null) {
+                    fieldToSort.setAccessible(true);
+                } else {
+                    return 1;
+                }
+                Object val1 = fieldToSort.get(notification);
+                Object val2 = fieldToSort.get(t1);
 
-                return SortOrder.ASCENDING.equals(sortOrder) ? comparationResult : (-1) * comparationResult;
+                int comparisonResult = ((Comparable) val1).compareTo(val2);
+
+                return SortOrder.ASCENDING.equals(sortOrder) ? comparisonResult : (-1) * comparisonResult;
             } catch (Exception e) {
                 return 1;
             }
         }
-    }
-    @PostConstruct
-    public void init(){
-        notificationList=(List<Notification>)((User)WebHelper.getSession().getAttribute("currentUser")).getNotifications();
     }
 
 
