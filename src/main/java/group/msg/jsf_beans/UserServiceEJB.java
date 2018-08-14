@@ -3,6 +3,7 @@ package group.msg.jsf_beans;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import javax.inject.Inject;
@@ -18,6 +19,9 @@ public class UserServiceEJB {
 
     @Inject
     UsernameGenerator usernameGenerator;
+
+    @EJB
+    RoleServiceEJB roleServiceEJB;
 
     @PersistenceContext
     private EntityManager em;
@@ -171,4 +175,12 @@ public class UserServiceEJB {
 
     }
 
+    public void addRole(RoleType roleType,User user) {
+        Role role = new Role();
+        role.setRole(roleType);
+        if (!user.getUserRoles().contains(role)) {
+            Role role1=roleServiceEJB.findRoleByType(roleType.toString());
+            user.getUserRoles().add(role1);
+        }
+    }
 }

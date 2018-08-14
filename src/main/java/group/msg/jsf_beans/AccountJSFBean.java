@@ -1,10 +1,7 @@
 package group.msg.jsf_beans;
 
 import group.msg.beans.PasswordEncryptor;
-import group.msg.entities.Notification;
-import group.msg.entities.NotificationType;
-import group.msg.entities.Role;
-import group.msg.entities.User;
+import group.msg.entities.*;
 import lombok.Data;
 import org.jboss.weld.context.ejb.Ejb;
 import org.primefaces.context.RequestContext;
@@ -29,7 +26,7 @@ public class AccountJSFBean implements Serializable {
     private String mobileNumber;
     private String oldPassword;
     private String password;
-    private LinkedList<String> roleStrings;
+    private String roleString;
     private  User user=(User) WebHelper.getSession().getAttribute("currentUser");
 
     @EJB
@@ -38,7 +35,7 @@ public class AccountJSFBean implements Serializable {
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
 
-    @Ejb
+    @EJB
     private RoleServiceEJB roleServiceEJB;
 
     @Inject
@@ -82,11 +79,8 @@ public class AccountJSFBean implements Serializable {
             }
 
         }
-        if(roleStrings.size()>0){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", roleStrings.get(0));
-            RequestContext.getCurrentInstance().showMessageInDialog(message);
-            Role role=roleServiceEJB.findRoleByType(roleStrings.get(0));
-            user.getUserRoles().add(role);
+        if(roleString.length()>0){
+           userServiceEJB.addRole(RoleType.valueOf(roleString),user);
         }
 
 
