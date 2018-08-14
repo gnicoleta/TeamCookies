@@ -39,7 +39,7 @@
                 </p:toolbar>
             </p:panel>
         </h:form>
-        <h:form>
+        <h:form id="form">
             <p:dataTable var="notification" id="notificationsTable" value="#{notificationsBean}"
                          selection="#{notificationsBean.selectedNotification}" selectionMode="single"
                          rowKey="#{notification.id}"
@@ -47,6 +47,8 @@
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          rowsPerPageTemplate="5,10,15"
                          paginatorPosition="bottom">
+
+                <p:ajax event="rowDblselect" listener="#{notificationsBean.onRowDblClickSelect}"/>
 
                 <p:column headerText="Id" sortBy="#{notification.id}" filterBy="#{notification.id}"
                           filterMatchMode="contains">

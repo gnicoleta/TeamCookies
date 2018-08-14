@@ -13,6 +13,7 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -27,13 +28,17 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
     private Notification selectedNotification;
     private String outputMessage;
     private int id;
+    private int bugId;
+
     private List<Notification> notificationList;
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
 
     public Notification getSelectedNotification(){
+        System.out.println("test");
         return selectedNotification;
     }
+
     public void setSelectedNotification(Notification selectedNotification){
         this.selectedNotification=selectedNotification;
         notificationServiceEJB.update(selectedNotification);
@@ -44,9 +49,7 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
         notificationList=(List<Notification>)((User)WebHelper.getSession().getAttribute("currentUser")).getNotifications();
     }
 
-//    public void rowSelected(SelectEvent event) {
-//        outputMessage =selectedNotification.getInfo();
-//    }
+
     @Override
     public Notification getRowData(String rowKey) {
         Integer id = Integer.parseInt(rowKey);
@@ -116,7 +119,10 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
         } else {
             return filteredList;
         }
+
     }
+
+
 
     public static class NotificationSorter implements Comparator<Notification> {
         private String sortField;
@@ -152,8 +158,15 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
                 return 1;
             }
         }
+
     }
 
+    @Inject
+    private BugBean bugs;
 
-
+    public void onRowDblClickSelect(final SelectEvent event) {
+        Notification obj = (Notification) event.getObject();
+        String aux = obj.getBugTitle();
+        bugs.navigate(aux);
+    }
 }

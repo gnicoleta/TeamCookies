@@ -17,6 +17,7 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.Location;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     @EJB
     private UserServiceEJB service;
 
-    @EJB
+    @Inject
     private BugServiceEJB bugService;
 
     @EJB
@@ -53,15 +55,14 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     @Inject
     private DownloadBean downloadBean;
 
-    @PersistenceContext
-    private EntityManager em;
-
     private Integer id;
     private String title = null;
     private String description = null;
 
     @revisionValidation
     private String version = null;
+
+    private int defaultValue;
 
     private String fixedInVersion;
     private LocalDateTime targetDate;
@@ -73,7 +74,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     private Bug selectedBug;
 
-    private List<Bug> bugList;
+    private List<Bug> bugList=new ArrayList<>();
     private List<Bug> selectedBugs;
 
     @PostConstruct
@@ -360,6 +361,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         data = "BUG CLOSED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_CLOSED);
         notification.setInfo(data);
+        notification.setBugTitle(selectedBug.getTitle());
         notificationServiceEJB.save(notification);
         selectedBug.getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
@@ -370,6 +372,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         data = "BUG UPDATED!   Old status:" + aux.toString() + ". New status:" + selectedBug.getStatusType() + ".    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_STATUS_UPDATED);
         notification.setInfo(data);
+        notification.setBugTitle(selectedBug.getTitle());
         notificationServiceEJB.save(notification);
         selectedBug.getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
@@ -380,8 +383,29 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         data = "BUG UPDATED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_UPDATED);
         notification.setInfo(data);
+        notification.setBugTitle(selectedBug.getTitle());
         notificationServiceEJB.save(notification);
         selectedBug.getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
+    }
+
+
+    public void navigate(String s){
+        Bug bug =  bugService.findBugByTitle(s);
+        if (!bugList.isEmpty()) {
+            bugList.clear();
+        }
+        bugList.add(bug);
+        if (!bugList.isEmpty()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            NavigationHandler navigationHandler = context.getApplication()
+                    .getNavigationHandler();
+            navigationHandler.handleNavigation(context, null, "bugPage"
+                    + "?faces-redirect=true");
+        }
+        else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "List is empty!!");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
     }
 }

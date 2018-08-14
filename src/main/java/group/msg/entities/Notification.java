@@ -20,7 +20,7 @@ public class Notification implements Serializable {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private int id;
 
     @Column(name = "notification")
     private NotificationType notificationType;
@@ -28,6 +28,8 @@ public class Notification implements Serializable {
     private String notificationTypeString;
 
     private String info;
+
+    private String bugTitle;
 
     @ManyToMany
     @JoinTable(name = "user_notification",

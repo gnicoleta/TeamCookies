@@ -57,12 +57,12 @@
                     </f:facet>
                 </p:column>
 
-                <p:column sortBy="#{bug.id}" filterBy="#{bug.id}" filterMatchMode="contains">
+                <p:column sortBy="#{bug.id-1}" filterBy="#{bug.id-1}" filterMatchMode="contains">
                     <f:facet name="header">Id</f:facet>
-                    #{bug.id}
+                    #{bug.id-1}
                 </p:column>
 
-                <p:column id="titleColumn" sortBy="#{bug.title}" filterBy="#{bug.title}" filterMatchMode="contains">
+                <p:column id="titleColumn" sortBy="#{bug.title}"  filterBy="#{bug.title}" filterMatchMode="contains">
                     <f:facet name="header">Title</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
