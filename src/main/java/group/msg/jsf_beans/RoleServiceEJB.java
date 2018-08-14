@@ -22,4 +22,5 @@ public class RoleServiceEJB {
         Role result = (Role) q.getSingleResult();
         return result;
     }
+
 }

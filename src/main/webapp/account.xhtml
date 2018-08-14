@@ -65,8 +65,10 @@
                 <h:outputText styleClass="myFont" value="New Password"/>
                 <p:password id="new_password" value="#{accountJSFBean.password}"/>
                 <br/>
-                <p:selectOneMenu id="console" value="#{accountJSFBean.roleStrings}" style="width:175px">
-                    <f:selectItem itemLabel="ADD A ROLE" itemDisabled="true"/>
+                <br/>
+
+                <p:selectOneMenu id="console" value="#{accountJSFBean.roleString}" style="width:175px">
+                    <f:selectItem itemLabel="Add a role" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager" itemValue="PM"/>
                     <f:selectItem itemLabel="Test manager" itemValue="TM"/>

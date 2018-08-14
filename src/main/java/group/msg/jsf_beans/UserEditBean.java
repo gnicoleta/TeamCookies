@@ -270,7 +270,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         if (roleType != null) {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
             String allInfo = "Added new role: (new)" + this.roleType;
-            selectedUser.addRole(this.roleType);
+            service.addRole(this.roleType,selectedUser);
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);

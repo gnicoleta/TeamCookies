@@ -102,12 +102,6 @@ public class User implements Serializable {
         return username;
     }
 
-    public void addRole(RoleType roleType) {
-        Role role = new Role();
-        role.setRole(roleType);
-        if (!this.userRoles.contains(role)) {
-            this.userRoles.add(role);
-        }
-    }
+
 
 }
