@@ -78,7 +78,7 @@ public class AccountJSFBean implements Serializable {
             }
 
         }
-        if (roleString.length() > 0) {
+        if (roleString!=null) {
 
 
             if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
@@ -87,6 +87,20 @@ public class AccountJSFBean implements Serializable {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + "USER_MANAGEMENT");
                 RequestContext.getCurrentInstance().showMessageInDialog(message);
             }
+
+        }
+        if (deleteRoleString!=null) {
+
+            if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
+                    info="111111111111111";
+                    Role role=new Role(RoleType.valueOf(deleteRoleString));
+                    userServiceEJB.deleteRoleFromUser(role,user.getUsername());
+            }
+            else{
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + "USER_MANAGEMENT");
+                RequestContext.getCurrentInstance().showMessageInDialog(message);
+            }
+
 
         }
 
