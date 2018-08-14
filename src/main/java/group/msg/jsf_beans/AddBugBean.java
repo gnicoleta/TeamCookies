@@ -22,6 +22,9 @@ public class AddBugBean implements Serializable {
     @EJB
     UserServiceEJB userServiceEJB;
 
+    @EJB
+    NotificationServiceEJB notificationServiceEJB;
+
 
     private String title;
     private String description;
@@ -37,7 +40,7 @@ public class AddBugBean implements Serializable {
     private User assignedTo;
 
     // private Attachment attachment;
-    private Notification notification;
+    private Notification notification=new Notification();
 
     private Bug bug;
 
@@ -62,12 +65,14 @@ public class AddBugBean implements Serializable {
             return "AddBug";
         }
         bug.setCreatedBy((User)WebHelper.getSession().getAttribute("currentUser"));
-
-
         bug.setAssignedTo(user);
-
+        String data = "NEW BUG!   " + "\n Title:" + title + ". Description:" + description + ". Version:" + version + ". Target date:" + targetDate + ". Severity type:" + severityTypeString;
+        notification.setInfo(data);
+        notification.setNotificationType(NotificationType.BUG_UPDATED);
+        notificationServiceEJB.save(notification);
+        user.getNotifications().add(notification);
+        ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
         bugServiceEJB.save(bug);
-
         return "bugManagement";
     }
 
