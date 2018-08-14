@@ -126,26 +126,26 @@
                         <f:facet name="input">
                             <p:growl id="statusType" showDetail="false"/>
                             <c:if test="#{(bugBean.selectedBugs.get(0).statusType eq 'NEW' or bugBean.selectedBugs.get(0).statusType eq null)}">
-                                <p:selectOneMenu id="statusMenu1" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu1" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
                                     <f:selectItem itemLabel="REJECTED" itemValue="REJECTED"/>
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBugs.get(0).statusType eq 'REJECTED'}">
-                                <p:selectOneMenu id="statusMenu2" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu2" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="CLOSED" itemValue="CLOSED"/>
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBugs.get(0).statusType eq 'INFO_NEEDED'}">
-                                <p:selectOneMenu id="statusMenu3" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu3" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBugs.get(0).statusType eq 'IN_PROGRESS'}">
-                                <p:selectOneMenu id="statusMenu4" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu4" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="FIXED" itemValue="FIXED"/>
                                     <f:selectItem itemLabel="REJECTED" itemValue="REJECTED"/>
@@ -153,7 +153,7 @@
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBugs.get(0).statusType eq 'FIXED'}">
-                                <p:selectOneMenu id="statusMenu5" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu5" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="NEW" itemValue="NEW"/>
                                     <f:selectItem itemLabel="CLOSED" itemValue="CLOSED"/>

@@ -70,7 +70,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private String assignedTo = null;
     private StatusType statusType =null;
     private Attachment attachment;
-
+    private Notification notification;
     private Bug selectedBug;
 
     private List<Bug> bugList;
