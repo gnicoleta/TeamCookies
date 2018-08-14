@@ -89,7 +89,11 @@
                             <f:facet name="input">
                                 <p:inputText id="c4" value="#{userEditBean.newLastName}"
                                              style="width:96%" required="true"/>
-                                #{userEditBean.updateLastName()}
+
+                                <h:outputText  value="#{userEditBean.newLastName}"></h:outputText>
+                                <p:commandButton value="Save" action="#{userEditBean.updateLastName()}"
+                                                 ajax="false"
+                                                 styleClass="aButton"/>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -154,8 +158,15 @@
                                 </ui:repeat>
                             </f:facet>
                             <f:facet name="input">
-                                <h:inputText value="#{userEditBean.roleStr}"/>
-                                    #{userEditBean.updateRoles()}
+                                <p:selectOneMenu id="roleMenu" effect="fade" value="#{userEditBean.roleType}" style="width:125px">
+                                    <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
+                                    <f:selectItem itemLabel="PM" itemValue="PM"/>
+                                    <f:selectItem itemLabel="DEV" itemValue="DEV"/>
+                                    <f:selectItem itemLabel="ADM" itemValue="ADM"/>
+                                    <f:selectItem itemLabel="TEST" itemValue="TEST"/>
+                                </p:selectOneMenu>
+                                #{userEditBean.updateRoles()}
+
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -164,9 +175,43 @@
 
                 </p:dataTable>
                 <br/>
+
+                <h:form>
+                    <p:growl id="growl" sticky="false" showDetail="true"/>
+                    <p:panel id="panel" header="Delete role from user" style="margin-bottom:10px;">
+                        <p:messages id="messages"/>
+                        <h:panelGrid columns="4" cellpadding="5">
+                            <h:outputLabel for="txt1" value="Insert Username"/>
+                            <p:inputText id="txt1" value="#{userEditBean.userName}" required="true" label="Text 1">
+                                <f:validateLength minimum="2"/>
+                            </p:inputText>
+
+                            <h:outputLabel for="txt2" value="Choose role to delete: " />
+                            <h:selectOneMenu id="txt2" value="#{userEditBean.roleTypeDelete}" required="true" label="Text 2">
+                                <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
+                                <f:selectItem itemLabel="PM" itemValue="PM"/>
+                                <f:selectItem itemLabel="DEV" itemValue="DEV"/>
+                                <f:selectItem itemLabel="ADM" itemValue="ADM"/>
+                                <f:selectItem itemLabel="TEST" itemValue="TEST"/>
+                            </h:selectOneMenu>
+
+
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Delete Role" action="#{userEditBean.deleteRole()}" update="growl"/>
+                    </h:panelGrid>
+                </h:form>
+
                 <h:commandButton value="Back" action="homepage" ajax="false"/>
+
+
             </div>
         </h:form>
+
+
+
     </h:body>
 
 </f:view>

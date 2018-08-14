@@ -38,16 +38,16 @@ insert into jbugger.role_right(role_id, right_id) VALUES (200,400 );
 insert into jbugger.role_right(role_id, right_id) VALUES (200,500 );
 
 insert into jbugger.role_right(role_id, right_id) VALUES (300,300 );
-insert into jbugger.role_right(role_id, right_id) VALUES (300,300 );
 insert into jbugger.role_right(role_id, right_id) VALUES (300,400 );
+insert into jbugger.role_right(role_id, right_id) VALUES (300,500 );
 
-insert into jbugger.role_right(role_id, right_id) VALUES (400,300 );
 insert into jbugger.role_right(role_id, right_id) VALUES (400,300 );
 insert into jbugger.role_right(role_id, right_id) VALUES (400,400 );
+insert into jbugger.role_right(role_id, right_id) VALUES (400,500 );
 
 insert into jbugger.role_right(role_id, right_id) VALUES (500,300 );
-insert into jbugger.role_right(role_id, right_id) VALUES (500,300 );
 insert into jbugger.role_right(role_id, right_id) VALUES (500,400 );
+insert into jbugger.role_right(role_id, right_id) VALUES (500,500 );
 
 
 insert into jbugger.user_role(role_id, user_id) VALUES (100,100 );
@@ -66,7 +66,6 @@ insert into jbugger.user_role(role_id, user_id) VALUES (500,101);
 insert into jbugger.user_role(role_id, user_id) VALUES (100,110);
 insert into jbugger.user_role(role_id, user_id) VALUES (200,120);
 
-insert into jbugger.user_role(role_id, user_id) VALUES (000,130);
 insert into jbugger.user_role(role_id, user_id) VALUES (100,130);
 insert into jbugger.user_role(role_id, user_id) VALUES (200,130);
 insert into jbugger.user_role(role_id, user_id) VALUES (300,130);

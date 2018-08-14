@@ -42,29 +42,39 @@
         <h:form align="left">
 
             <h:panelGrid columns="2">
-                <h:outputText styleClass="myFont" value="First Name" />
-                <p:inputText id="first_name"  value="#{accountJSFBean.firstName}"/>
+                <h:outputText styleClass="myFont" value="First Name"/>
+                <p:inputText id="first_name" value="#{accountJSFBean.firstName}"/>
                 <p:watermark for="first_name" value="#{accountJSFBean.user.firstName}" id="watermark1"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Last Name" />
-                <p:inputText id="last_name"  value="#{accountJSFBean.lastName}"/>
+                <h:outputText styleClass="myFont" value="Last Name"/>
+                <p:inputText id="last_name" value="#{accountJSFBean.lastName}"/>
                 <p:watermark for="last_name" value="#{accountJSFBean.user.lastName}" id="watermark2"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Email" />
-                <p:inputText id="email"  value="#{accountJSFBean.email}"/>
+                <h:outputText styleClass="myFont" value="Email"/>
+                <p:inputText id="email" value="#{accountJSFBean.email}"/>
                 <p:watermark for="email" value="#{accountJSFBean.user.email}" id="watermark3"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Phone Number" />
-                <p:inputText id="phone_number"  value="#{accountJSFBean.mobileNumber}"/>
+                <h:outputText styleClass="myFont" value="Phone Number"/>
+                <p:inputText id="phone_number" value="#{accountJSFBean.mobileNumber}"/>
                 <p:watermark for="phone_number" value="#{accountJSFBean.user.mobileNumber}" id="watermark4"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Old Password" />
-                <p:password id="old_password"  value="#{accountJSFBean.oldPassword}"/>
+                <h:outputText styleClass="myFont" value="Old Password"/>
+                <p:password id="old_password" value="#{accountJSFBean.oldPassword}"/>
                 <p:watermark for="old_password" value="old password is required" id="watermark5"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="New Password" />
-                <p:password id="new_password"  value="#{accountJSFBean.password}"/>
+                <h:outputText styleClass="myFont" value="New Password"/>
+                <p:password id="new_password" value="#{accountJSFBean.password}"/>
+                <br/>
+                <br/>
 
+                <p:selectOneMenu id="console" value="#{accountJSFBean.roleString}" style="width:175px">
+                    <f:selectItem itemLabel="Add a role" itemDisabled="true"/>
+                    <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
+                    <f:selectItem itemLabel="Project manager" itemValue="PM"/>
+                    <f:selectItem itemLabel="Test manager" itemValue="TM"/>
+                    <f:selectItem itemLabel="Developer" itemValue="DEV"/>
+                    <f:selectItem itemLabel="Tester" itemValue="TEST"/>
+                </p:selectOneMenu>
 
                 <p:commandButton value="Save" action="#{accountJSFBean.update()}"
                                  ajax="false"
