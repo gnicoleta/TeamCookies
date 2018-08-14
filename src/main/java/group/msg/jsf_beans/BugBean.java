@@ -214,18 +214,18 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     }
 
     public void rowSelected(SelectEvent event) {
-        this.updateBugTitle(selectedBug.getTitle());
-        this.updateBugDescription(selectedBug.getDescription());
+        this.updateBugTitle(selectedBugs.get(0).getTitle());
+        this.updateBugDescription(selectedBugs.get(0).getDescription());
     }
 
     public void updateBugTitle(String newTitle) {
-        selectedBug.setTitle(newTitle);
-        bugService.update(selectedBug);
+        selectedBugs.get(0).setTitle(newTitle);
+        bugService.update(selectedBugs.get(0));
     }
 
     public void updateBugDescription(String newDescription) {
-        selectedBug.setDescription(newDescription);
-        bugService.update(selectedBug);
+        selectedBugs.get(0).setDescription(newDescription);
+        bugService.update(selectedBugs.get(0));
     }
 
     /**Might be useful someday*/
