@@ -139,9 +139,9 @@
                                 <h:outputText value="#{user.userStatus}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:selectOneMenu id="statusMenu" value="#{user.userStatus}" style="width:125px">
-                                    <f:selectItem value="#{user.userStatus}" itemLabel="ACTIVE" itemValue="ACTIVE"/>
-                                    <f:selectItem value="#{user.userStatus}" itemLabel="INACTIVE" itemValue="INACTIVE"/>
+                                <p:selectOneMenu id="statusMenu" value="#{userEditBean.userStatus}" style="width:125px">
+                                    <f:selectItem itemLabel="ACTIVE" itemValue="ACTIVE"/>
+                                    <f:selectItem itemLabel="INACTIVE" itemValue="INACTIVE"/>
                                 </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
@@ -170,6 +170,9 @@
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
+
+                    <p:ajax event="cellEdit" listener="#{userEditBean.update()}" update=":form1:usersTable"/>
+
                     <br/>
                     <p:rowEditor/>
 
@@ -200,7 +203,7 @@
                     </p:panel>
 
                     <h:panelGrid columns="2">
-                        <p:commandButton value="Delete Role" action="#{userEditBean.deleteRole()}" update="growl"/>
+                        <p:commandButton value="Delete Role" action="#{userEditBean.deleteRole()}" update="growl :form1:usersTable"/>
                     </h:panelGrid>
                 </h:form>
 
