@@ -66,7 +66,7 @@
                 <p:password id="new_password" value="#{accountJSFBean.password}"/>
                 <br/>
                 <br/>
-
+                <br/>
                 <p:selectOneMenu id="console1" value="#{accountJSFBean.roleString}" style="width:175px">
                     <f:selectItem itemLabel="Add a role" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
@@ -75,6 +75,9 @@
                     <f:selectItem itemLabel="Developer" itemValue="DEV"/>
                     <f:selectItem itemLabel="Tester" itemValue="TEST"/>
                 </p:selectOneMenu>
+                <br/>
+                <br/>
+                <br/>
                 <p:selectOneMenu id="console2" value="#{accountJSFBean.deleteRoleString}" style="width:175px">
                     <f:selectItem itemLabel="Delete a role" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
@@ -84,11 +87,49 @@
                     <f:selectItem itemLabel="Tester" itemValue="TEST"/>
                 </p:selectOneMenu>
 
-                <p:commandButton value="Save" action="#{accountJSFBean.update()}"
-                                 ajax="false"
-                                 styleClass="aButton"/>
+            <h:outputText styleClass="myFont" value="Add right to a role"/>
+                <br/>
+                <p:selectOneMenu id="console3" value="#{accountJSFBean.addRightRole}" style="width:175px">
+                    <f:selectItem itemLabel="Select a role" itemDisabled="true"/>
+                    <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
+                    <f:selectItem itemLabel="Project manager" itemValue="PM"/>
+                    <f:selectItem itemLabel="Test manager" itemValue="TM"/>
+                    <f:selectItem itemLabel="Developer" itemValue="DEV"/>
+                    <f:selectItem itemLabel="Tester" itemValue="TEST"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="console4" value="#{accountJSFBean.addRight}" style="width:175px">
+                    <f:selectItem itemLabel="Select a right" itemDisabled="true"/>
+                    <f:selectItem itemLabel="PERMISSION MANAGEMENT" itemValue="PERMISSION_MANAGEMENT"/>
+                    <f:selectItem itemLabel="USER MANAGEMENT" itemValue="USER_MANAGEMENT"/>
+                    <f:selectItem itemLabel="BUG MANAGEMENT" itemValue="BUG_MANAGEMENT"/>
+                    <f:selectItem itemLabel="BUG CLOSE" itemValue="BUG_CLOSE"/>
+                    <f:selectItem itemLabel="BUG EXPORT PDF" itemValue="BUG_EXPORT_PDF"/>
+                </p:selectOneMenu>
+
+                <h:outputText styleClass="myFont" value="Delete right to a role"/>
+                <br/>
+                <p:selectOneMenu id="console5" value="#{accountJSFBean.deleteRightRole}" style="width:175px">
+                    <f:selectItem itemLabel="Select a role" itemDisabled="true"/>
+                    <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
+                    <f:selectItem itemLabel="Project manager" itemValue="PM"/>
+                    <f:selectItem itemLabel="Test manager" itemValue="TM"/>
+                    <f:selectItem itemLabel="Developer" itemValue="DEV"/>
+                    <f:selectItem itemLabel="Tester" itemValue="TEST"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="console6" value="#{accountJSFBean.deleteRight}" style="width:175px">
+                    <f:selectItem itemLabel="Select a right" itemDisabled="true"/>
+                    <f:selectItem itemLabel="PERMISSION MANAGEMENT" itemValue="PERMISSION_MANAGEMENT"/>
+                    <f:selectItem itemLabel="USER MANAGEMENT" itemValue="USER_MANAGEMENT"/>
+                    <f:selectItem itemLabel="BUG MANAGEMENT" itemValue="BUG_MANAGEMENT"/>
+                    <f:selectItem itemLabel="BUG CLOSE" itemValue="BUG_CLOSE"/>
+                    <f:selectItem itemLabel="BUG EXPORT PDF" itemValue="BUG_EXPORT_PDF"/>
+                </p:selectOneMenu>
+
             </h:panelGrid>
 
+            <p:commandButton value="Save" action="#{accountJSFBean.update()}"
+                             ajax="false"
+                             styleClass="aButton"/>
         </h:form>
 
 

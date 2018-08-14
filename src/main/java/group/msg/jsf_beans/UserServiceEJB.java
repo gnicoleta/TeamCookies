@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Stateless
@@ -77,19 +79,19 @@ public class UserServiceEJB {
 
     }
 
-    public boolean findUserByUsernameDeleteRole(String username, Role role) {
+    public Collection<Role> deleteRoleFromUser(Role role, String username) {
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
         List<User> result = q.getResultList();
         if (result.isEmpty()) {
-            return false;
+            return null;
         } else if (result.get(0).getUsername().equals(username) && result.get(0).getUserRoles().contains(role)) {
             result.get(0).getUserRoles().remove(role);
-            return true;
+            update(result.get(0));
+            return result.get(0).getUserRoles();
         } else {
-            return false;
+            return null;
         }
-
     }
 
     public List<User> getAllUsers() {
