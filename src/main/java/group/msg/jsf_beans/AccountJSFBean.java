@@ -27,10 +27,11 @@ public class AccountJSFBean implements Serializable {
     private String oldPassword;
     private String password;
     private String roleString;
-    private  User user=(User) WebHelper.getSession().getAttribute("currentUser");
+    private String deleteRoleString;
+    private User user = (User) WebHelper.getSession().getAttribute("currentUser");
 
     @EJB
-   private UserServiceEJB userServiceEJB;
+    private UserServiceEJB userServiceEJB;
 
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
@@ -41,37 +42,35 @@ public class AccountJSFBean implements Serializable {
     @Inject
     private PasswordEncryptor passwordEncryptor;
 
-    public String update(){
+    public String update() {
 
-        String info="";
+        String info = "";
 
-        if(firstName.length()>0) {
-            info+="First name: old="+user.getFirstName()+" new="+firstName+" ";
+        if (firstName.length() > 0) {
+            info += "First name: old=" + user.getFirstName() + " new=" + firstName + " ";
             user.setFirstName(firstName);
 
         }
-        if(lastName.length()>0){
-            info+="Last name: old="+user.getLastName()+" new="+lastName+" ";
+        if (lastName.length() > 0) {
+            info += "Last name: old=" + user.getLastName() + " new=" + lastName + " ";
             user.setLastName(lastName);
         }
-        if(email.length()>0) {
-            info+="Email: old="+user.getEmail()+" new="+email+" ";
+        if (email.length() > 0) {
+            info += "Email: old=" + user.getEmail() + " new=" + email + " ";
 
             user.setEmail(email);
         }
-        if(mobileNumber.length()>0){
-            info+="Mobile Number: old="+user.getMobileNumber()+" new="+mobileNumber+" ";
+        if (mobileNumber.length() > 0) {
+            info += "Mobile Number: old=" + user.getMobileNumber() + " new=" + mobileNumber + " ";
             user.setMobileNumber(mobileNumber);
         }
 
-        if(password.length()>0){
-            String encryptedOldPassword=passwordEncryptor.passwordEncryption(oldPassword);
-            if(encryptedOldPassword.equals(user.getPassword()))
-            {
-                info+="Password: old="+oldPassword+" new="+password+" ";
+        if (password.length() > 0) {
+            String encryptedOldPassword = passwordEncryptor.passwordEncryption(oldPassword);
+            if (encryptedOldPassword.equals(user.getPassword())) {
+                info += "Password: old=" + oldPassword + " new=" + password + " ";
                 user.setPassword(passwordEncryptor.passwordEncryption(password));
-            }
-           else{
+            } else {
 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Wrong old password");
                 RequestContext.getCurrentInstance().showMessageInDialog(message);
@@ -79,13 +78,20 @@ public class AccountJSFBean implements Serializable {
             }
 
         }
-        if(roleString.length()>0){
-           userServiceEJB.addRole(RoleType.valueOf(roleString),user);
+        if (roleString.length() > 0) {
+
+
+            if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
+                userServiceEJB.addRole(RoleType.valueOf(roleString), user);
+            } else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + "USER_MANAGEMENT");
+                RequestContext.getCurrentInstance().showMessageInDialog(message);
+            }
+
         }
 
-
         userServiceEJB.update(user);
-        Notification notification=new Notification(NotificationType.USER_UPDATED);
+        Notification notification = new Notification(NotificationType.USER_UPDATED);
         notification.setInfo(info);
         notificationServiceEJB.save(notification);
         user.getNotifications().add(notification);

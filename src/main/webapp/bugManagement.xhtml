@@ -43,9 +43,10 @@
 
         <h:form id="datatableform">
             <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25" rowsPerPageTemplate="5,10,15,20,25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom" editInitEvent="dblclick">
+
                 <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
                 <p:column>
                     <f:facet name="footer">
@@ -90,7 +91,7 @@
                             <h:outputText value="#{bug.version}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{bug.version}" style="width:96%"/>
+                            <p:inputText value="#{bugBean.version}" style="width:96%"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -110,12 +111,11 @@
                             <h:outputText value="#{bug.severityType}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:selectOneMenu id="severityMenu" effect="fade" value="#{bug.severityType}"
-                                             style="width:125px">
-                                <f:selectItem value="#{bug.severityType}" itemLabel="CRITICAL" itemValue="CRITICAL"/>
-                                <f:selectItem value="#{bug.severityType}" itemLabel="HIGH" itemValue="HIGH"/>
-                                <f:selectItem value="#{bug.severityType}" itemLabel="MEDIUM" itemValue="MEDIUM"/>
-                                <f:selectItem value="#{bug.severityType}" itemLabel="LOW" itemValue="LOW"/>
+                            <p:selectOneMenu id="severityMenu" effect="fade" value="#{bugBean.severityType}" style="width:125px">
+                                <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL"/>
+                                <f:selectItem itemLabel="HIGH" itemValue="HIGH"/>
+                                <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM"/>
+                                <f:selectItem itemLabel="LOW" itemValue="LOW"/>
                             </p:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>
@@ -133,27 +133,26 @@
                         <f:facet name="input">
                             <p:growl id="statusType" showDetail="false"/>
                             <c:if test="#{(bugBean.selectedBug.statusType eq 'NEW' or bugBean.selectedBug.statusType eq null)}">
-                                <p:selectOneMenu id="statusMenu1" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu1" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
                                     <f:selectItem itemLabel="REJECTED" itemValue="REJECTED"/>
-                                    <!--<p:ajax event="change" process="@form" listener="#{bugBean.bugStatusUpdated}"/>-->
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBug.statusType eq 'REJECTED'}">
-                                <p:selectOneMenu id="statusMenu2" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu2" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="CLOSED" itemValue="CLOSED" />
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBug.statusType eq 'INFO_NEEDED'}">
-                                <p:selectOneMenu id="statusMenu3" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu3" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBug.statusType eq 'IN_PROGRESS'}">
-                                <p:selectOneMenu id="statusMenu4" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu4" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="FIXED" itemValue="FIXED"/>
                                     <f:selectItem itemLabel="REJECTED" itemValue="REJECTED"/>
@@ -161,11 +160,10 @@
                                 </p:selectOneMenu>
                             </c:if>
                             <c:if test="#{bugBean.selectedBug.statusType eq 'FIXED'}">
-                                <p:selectOneMenu id="statusMenu5" effect="fade" value="#{bug.statusType}" style="width:125px">
+                                <p:selectOneMenu id="statusMenu5" effect="fade" value="#{bugBean.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="NEW" itemValue="NEW"/>
                                     <f:selectItem itemLabel="CLOSED" itemValue="CLOSED"/>
-
                                 </p:selectOneMenu>
                             </c:if>
                         </f:facet>
@@ -184,11 +182,6 @@
                 </p:column>
                 <p:ajax event="cellEdit" listener="#{bugBean.updateBug}" update=":datatableform:table"/>
 
-
-                <p:column sortBy="#{bug.notification}" filterBy="#{bug.notification}" filterMatchMode="contains">
-                    <f:facet name="header">Notification</f:facet>
-                    #{bug.notification}
-                </p:column>
                 <p:column>
                     <f:facet name="header">Attachment</f:facet>
 
@@ -206,7 +199,6 @@
                                   allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
                     <p:growl id="messages" showDetail="true"/>
                 </p:column>
-
                 <br/>
                 <p:rowEditor/>
             </p:dataTable>
