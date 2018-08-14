@@ -183,4 +183,5 @@ public class UserServiceEJB {
             user.getUserRoles().add(role1);
         }
     }
+
 }

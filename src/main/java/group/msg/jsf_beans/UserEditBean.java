@@ -279,22 +279,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         }
     }
 
-
-    public void notWorkingRoleUpdate() {
-        if (roleType != null) {
-            Notification notification = new Notification(NotificationType.USER_UPDATED);
-            String allInfo = "Added new role: (new)" + this.roleString;
-            Role role = roleService.findRoleByType(roleString);
-            selectedUser.getUserRoles().add(role);
-            notification.setInfo(allInfo);
-            notificationServiceEJB.save(notification);
-            selectedUser.getNotifications().add(notification);
-            service.update(selectedUser);
-            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
-        }
-    }
-
-
     public void updateLastName() {
         if (newLastName != null && newLastName != selectedUser.getLastName() && newLastName != "" && newLastName != " ") {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
