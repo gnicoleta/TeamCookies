@@ -67,8 +67,16 @@
                 <br/>
                 <br/>
 
-                <p:selectOneMenu id="console" value="#{accountJSFBean.roleString}" style="width:175px">
+                <p:selectOneMenu id="console1" value="#{accountJSFBean.roleString}" style="width:175px">
                     <f:selectItem itemLabel="Add a role" itemDisabled="true"/>
+                    <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
+                    <f:selectItem itemLabel="Project manager" itemValue="PM"/>
+                    <f:selectItem itemLabel="Test manager" itemValue="TM"/>
+                    <f:selectItem itemLabel="Developer" itemValue="DEV"/>
+                    <f:selectItem itemLabel="Tester" itemValue="TEST"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="console2" value="#{accountJSFBean.deleteRoleString}" style="width:175px">
+                    <f:selectItem itemLabel="Delete a role" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager" itemValue="PM"/>
                     <f:selectItem itemLabel="Test manager" itemValue="TM"/>
