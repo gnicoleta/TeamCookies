@@ -321,6 +321,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         Role role = new Role();
         role.setRole(roleTypeDelete);
         if(service.findUserByUsernameDeleteRole(userName, role)) {
+            service.findUserByUsernameDeleteRole(userName, role);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + roleType + role.getRole(), "Role was deleted."));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "Role not found."));

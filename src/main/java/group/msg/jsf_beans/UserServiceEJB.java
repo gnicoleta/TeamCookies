@@ -89,7 +89,12 @@ public class UserServiceEJB {
         } else {
             return false;
         }
+    }
 
+    public void deleteRole() {
+        //Query q = em.createNamedQuery("DELETE FROM jbugger.user_role WHERE role_id = 200 AND user_id = 2", User.class)
+        String sql = "DELETE FROM user_role WHERE user_role.role_id = ? AND user_role.user_id = ?";
+        Query q = em.createQuery(sql);
     }
 
     public List<User> getAllUsers() {

@@ -13,7 +13,9 @@ import java.util.Collection;
 @NamedQueries({
 
         @NamedQuery(name = "Role.findByRoleType",
-                query = "select sp from Role sp where sp.roleString like ?1")
+                query = "select sp from Role sp where sp.roleString like ?1"),
+        @NamedQuery(name = "Role.deleteById",
+                query = "delete from Role sp where sp.id = :id")
 
 
 })
