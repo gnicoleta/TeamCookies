@@ -29,7 +29,7 @@ public class Bug implements Serializable {
     //@descriptionValidation
     private String description;
 
-    @revisionValidation
+    //@revisionValidation
     private String version;
 
     @Column(name = "FIXED_IN_VERSION")
