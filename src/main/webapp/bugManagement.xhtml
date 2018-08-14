@@ -42,8 +42,8 @@
         </h:form>
 
         <h:form id="datatableform">
-            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25"
+            <p:dataTable id="table" value="#{bugBean}" var="bug"
+                         selection="#{bugBean.selectedBugs}" rowKey="#{bug.id}" paginator="true" rows="25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom" editInitEvent="dblclick">
 
