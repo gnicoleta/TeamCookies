@@ -1,6 +1,7 @@
 package group.msg.jsf_beans;
 
 
+
 import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.RightsForRoleGetterAndSetter;
 import group.msg.entities.*;
@@ -17,7 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,6 +81,70 @@ public class LoginBackingBean implements Serializable {
             if (user1.getUserStatus().equals(UserStatus.ACTIVE)) {
 
                 String encryptedInputPassword="admin";
+
+                if(user1.getUsername().equals("admin")){
+                    Rights right1=new Rights(RightType.PERMISSION_MANAGEMENT);
+                    Rights right2=new Rights(RightType.USER_MANAGEMENT);
+                    Rights right3=new Rights(RightType.BUG_MANAGEMENT);
+                    Rights right4=new Rights(RightType.BUG_CLOSE);
+                    Rights right5=new Rights(RightType.BUG_EXPORT_PDF);
+                    service.save(right1);
+                    service.save(right2);
+                    service.save(right3);
+                    service.save(right4);
+                    service.save(right5);
+
+
+                    Role role1=new Role(RoleType.ADM);
+                    Role role2=new Role(RoleType.PM);
+                    Role role3=new Role(RoleType.TM);
+                    Role role4=new Role(RoleType.DEV);
+                    Role role5=new Role(RoleType.TEST);
+
+                    LinkedList<Rights> rights1=new LinkedList<>();
+                    rights1.add(right1);
+                    rights1.add(right2);
+                    role1.setRoleRights(rights1);
+                    roleServiceEJB.save(role1);
+
+                    LinkedList<Rights> rights2=new LinkedList<>();
+                    rights2.add(right2);
+                    rights2.add(right3);
+                    rights2.add(right4);
+                    role2.setRoleRights(rights2);
+                    roleServiceEJB.save(role2);
+                    LinkedList<Rights> rights3=new LinkedList<>();
+                    rights3.add(right5);
+                    rights3.add(right3);
+                    rights3.add(right4);
+                    role3.setRoleRights(rights3);
+                    roleServiceEJB.save(role3);
+                    LinkedList<Rights> rights4=new LinkedList<>();
+                    rights4.add(right3);
+                    rights4.add(right4);
+                    rights4.add(right5);
+                    role4.setRoleRights(rights4);
+                    roleServiceEJB.save(role4);
+                    LinkedList<Rights> rights5=new LinkedList<>();
+                    rights5.add(right3);
+                    rights5.add(right4);
+                    rights5.add(right5);
+                    role5.setRoleRights(rights5);
+                    roleServiceEJB.save(role5);
+
+                    LinkedList<Role>roles=new LinkedList<>();
+                    roles.add(role1);
+                    roles.add(role2);
+                    roles.add(role3);
+                    roles.add(role4);
+                    roles.add(role5);
+                    user1.setUserRoles(roles);
+                    service.update(user1);
+
+                }
+
+
+
                 if(!pwd.equals("admin")) {
 
                      encryptedInputPassword = passwordEncryptor.passwordEncryption(pwd);

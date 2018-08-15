@@ -8,11 +8,12 @@
 <f:view>
     <h:head>
         <title>Register</title>
-        <h:outputStylesheet library="css" name="styles.css"/>
+        <h:outputStylesheet library="css" name="addpages.css"/>
     </h:head>
     <h:body>
+        <div class="menu">
         <h:form>
-            <p:panel>
+            <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
@@ -37,39 +38,56 @@
                     </p:toolbarGroup>
                     <br/>
                 </p:toolbar>
-            </p:panel>
+
         </h:form>
+        </div>
         <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
         <div class="centered">
+            <br/>
+            <br/>
             <h:form id="loginForm">
-                <h3 class="title">AddUser</h3>
-                <h:outputText styleClass="myFont" value="First Name" style="display:block;"/>
+
+                <h:panelGrid columns="4">
+
+                <h:outputText styleClass="myFont" value="      First Name" />
                 <p:inputText id="firsName" value="#{registerUserBean.firstName}" required="true" label="first name"/>
+                    <p:watermark for="firsName" value=" " id="watermark1"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Last Name" style="display:block;"/>
+                <h:outputText styleClass="myFont" value="      Last Name" />
                 <p:inputText id="lastName" value="#{registerUserBean.lastName}" required="true" label="last name"/>
+                    <p:watermark for="lastName" value=" " id="watermark2"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Password" style="display:block;"/>
+                <h:outputText styleClass="myFont" value="      Password" />
                 <p:password id="password" required="true" value="#{registerUserBean.password}"/>
+                    <p:watermark for="password" value=" " id="watermark3"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Email" style="display:block;"/>
+                <h:outputText styleClass="myFont" value="      Email" />
                 <p:inputText id="email" required="true" value="#{registerUserBean.email}"/>
+                    <p:watermark for="email" value=" " id="watermark4"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Phone Number" style="display:block;"/>
+                <h:outputText styleClass="myFont" value="      Phone Number" />
                 <p:inputText id="phone_number" required="true" value="#{registerUserBean.mobileNumber}"/>
+                    <p:watermark for="phone_number" value=" " id="watermark5"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Select User Roles" style="display:block;"/>
-                <p:selectManyCheckbox id="select_roles" required="true" value="#{registerUserBean.selectedRolesStrings}">
+                <h:outputText styleClass="myFont" value="      Select User Roles" />
+                <p:selectManyMenu showCheckbox="true" style="width:220px" id="select_roles" required="true" value="#{registerUserBean.selectedRolesStrings}">
                     <f:selectItem itemLabel="Administrator(ADM)" styleClass="myFont" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager(PM)" styleClass="myFont" itemValue="PM"/>
                     <f:selectItem itemLabel="Test managet(TM)" styleClass="myFont" itemValue="TM"/>
                     <f:selectItem itemLabel="Developer(DEV)" styleClass="myFont" itemValue="DEV"/>
                     <f:selectItem itemLabel="Tester(TEST)" styleClass="myFont" itemValue="TEST"/>
-                </p:selectManyCheckbox>
+                </p:selectManyMenu>
+                    <p:watermark for="select_roles" value=" " id="watermark6"/>
+
                 <br/>
                 <br/>
                 <br/>
 
+
+                </h:panelGrid>
+                <br/>
+                <br/>
+                <br/>
                 <p:commandButton value="Add User" action="#{registerUserBean.registerUser}"
                                  ajax="false"
                                  styleClass="aButton"/>
@@ -81,6 +99,9 @@
         <h:form>
             <h:commandButton value="Back" action="homepage" ajax="false"/>
         </h:form>
+        <div class="footer">
+        <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
+    </div>
     </h:body>
 </f:view>
 </html>
