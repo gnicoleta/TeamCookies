@@ -198,13 +198,13 @@
                                 <f:selectItem itemLabel="ADM" itemValue="ADM"/>
                                 <f:selectItem itemLabel="TEST" itemValue="TEST"/>
                             </h:selectOneMenu>
-
-
+                            
                         </h:panelGrid>
                     </p:panel>
 
                     <h:panelGrid columns="2">
-                        <p:commandButton value="Delete Role" action="#{userEditBean.deleteRole()}" update="growl :form1:usersTable"/>
+                        <p:commandButton value="Delete Role" action="#{userEditBean.deleteRole()}"
+                                         update="growl :form1:usersTable"/>
                     </h:panelGrid>
 
                     <br/>

@@ -21,51 +21,15 @@ public class RoleServiceEJB {
     public void save(Role role) {
         em.persist(role);
     }
+
     public void update(Role role) {
         em.merge(role);
     }
 
-    public Role findRoleByType(String type){
+    public Role findRoleByType(String type) {
         Query q = em.createNamedQuery("Role.findByRoleType", Role.class);
         q.setParameter(1, type);
         Role result = (Role) q.getSingleResult();
         return result;
     }
-
-
-    public Role deleteRightFromRole(String type, String rightType) {
-        Query q = em.createNamedQuery("Role.findByRoleType", Role.class);
-        q.setParameter(1, type);
-        Role role = (Role) q.getSingleResult();
-
-        if (role != null) {
-            Collection<Rights> rights = role.getRoleRights();
-
-            Rights rgt = new Rights();
-            rgt = rightServiceEJB.findRightByType(rightType);
-            if (!rights.contains(rgt)) {
-                rights.remove(rgt);
-                role.setRoleRights(rights);
-                update(role);
-            }
-
-            return role;
-        } else {
-            return null;
-        }
-    }
-
-    public Role addRightToRole(String type, String rightType) {
-
-        Query q = em.createNamedQuery("Role.findByRoleType", Role.class);
-        q.setParameter(1, type);
-        Role role = (Role) q.getSingleResult();
-
-        Collection<Rights> rights = role.getRoleRights();
-        rights.add(rightServiceEJB.findRightByType(rightType));
-        role.setRoleRights(rights);
-        update(role);
-        return role;
-    }
-
 }

@@ -57,13 +57,8 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private RightType rightType;
     private RoleType roleTypeRights;
 
-    //to add right to role
     private String rghtTypeStr;
     private String roleTypeStr;
-
-    //to remove right from role
-   // private RightType rghtTypeToRemoveStr;
-   // private String roleTypeToRemoveStr;
 
     @PostConstruct
     public void init() {
@@ -82,7 +77,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
             requiredRight = RightType.USER_MANAGEMENT.toString();
         }
-        if (outcome.equals("bugManagement")||outcome.equals("AddBug")) {
+        if (outcome.equals("bugManagement") || outcome.equals("AddBug")) {
             hasRight = service.userHasRight(user, RightType.BUG_MANAGEMENT);
             requiredRight = RightType.BUG_MANAGEMENT.toString();
         }
@@ -321,7 +316,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         Role role = roleServiceEJB.findRoleByType(roleTypeStr);
         Rights rght = new Rights();
 
-        if(role!=null) {
+        if (role != null) {
             Collection<Rights> rights = role.getRoleRights();
             rght = rightServiceEJB.findRightByType(rghtTypeStr);
             rights.add(rght);
@@ -341,7 +336,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         Role role = roleServiceEJB.findRoleByType(roleTypeStr);
         Rights rght = new Rights();
 
-        if(role!=null) {
+        if (role != null) {
             Collection<Rights> rights = role.getRoleRights();
             rght = rightServiceEJB.findRightByType(rghtTypeStr);
             rights.remove(rght);
