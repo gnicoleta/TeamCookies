@@ -1,5 +1,6 @@
 package group.msg.jsf_beans;
 
+import group.msg.entities.Bug;
 import group.msg.entities.Notification;
 
 import javax.ejb.Stateless;
@@ -14,6 +15,10 @@ public class NotificationServiceEJB {
 
     public void save(Notification notification) {
         em.persist(notification);
+    }
+
+    public void update(Notification notification) {
+        em.merge(notification);
     }
 
     public Notification findNotificationByRtype(String type){

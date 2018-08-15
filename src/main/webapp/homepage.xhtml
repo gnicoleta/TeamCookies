@@ -22,59 +22,54 @@
                             <f:selectItem itemValue="register" itemLabel="Add User"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                         </p:selectOneMenu>
-                            <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
-                                <f:selectItem itemLabel="Bug Management"/>
-                                <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
-                                <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
-                                <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                            </p:selectOneMenu>
-                            <p:commandButton value="Account" action="account" styleClass="aButton"/>
-                        </p:toolbarGroup>
+                        <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                            <f:selectItem itemLabel="Bug Management"/>
+                            <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
+                            <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Account" action="account" styleClass="aButton"/>
+                    </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Logout" action="#{userEditBean.logout}"
                                          ajax="false"
                                          styleClass="aButton"/>
                     </p:toolbarGroup>
-                        <br/>
+                    <br/>
                 </p:toolbar>
             </p:panel>
         </h:form>
+        <h:form id="form">
+            <p:dataTable var="notification" id="notificationsTable" value="#{notificationsBean}"
+                         selection="#{notificationsBean.selectedNotification}" selectionMode="single"
+                         rowKey="#{notification.id}"
+                         lazy="true" paginator="true" rows="10"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15"
+                         paginatorPosition="bottom">
 
-        <p:dataTable var="notification" id="notificationsTable" value="#{notificationsBean}"
-                     selection="#{notificationsBean.selectedNotification}"
-                     selectionMode="single"
-                     rowKey="#{notification.id}"
-                     lazy="true"
-                     paginator="true" rows="10"
-                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                     rowsPerPageTemplate="5,10,15"
+                <p:ajax event="rowDblselect" listener="#{notificationsBean.onRowDblClickSelect}"/>
 
-                     paginatorPosition="bottom">
+                <p:column headerText="Id" sortBy="#{notification.id}" filterBy="#{notification.id}"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{notification.id}"/>
+                </p:column>
 
-            <p:ajax event="rowSelect" listener="#{notificationsBean.rowSelected}"/>
+                <p:column sortBy="#{notification.notificationType}" filterBy="#{notification.notificationType}"
+                          filterMatchMode="contains">
+                    <f:facet name="header">Notification Type</f:facet>
+                    <h:outputText value="#{notification.notificationType}"/>
+                </p:column>
 
+                <p:column sortBy="#{notification.info}" filterBy="#{notification.info}" filterMatchMode="contains">
+                    <f:facet name="header">Info</f:facet>
+                    <h:outputText value="#{notification.info}"/>
+                </p:column>
 
-            <p:column id="c1" headerText="Id" sortBy="#{notification.id}" filterBy="#{notification.id}"
-                      filterMatchMode="contains">
-                <h:outputText value="#{notification.id}"/>
-            </p:column>
-
-            <p:column sortBy="#{notification.notificationType}" filterBy="#{notification.notificationType}"
-                      filterMatchMode="contains">
-                <f:facet name="header">Notification Type</f:facet>
-                <h:outputText value="#{notification.notificationType}"/>
-            </p:column>
-            <p:column sortBy="#{notification.info}" filterBy="#{notification.info}" filterMatchMode="contains">
-                <f:facet name="header">Info</f:facet>
-                <h:outputText value="#{notification.info}"/>
-            </p:column>
-
-
-            <br/>
-            <p:rowEditor/>
-
-        </p:dataTable>
-
+                <br/>
+                <p:rowEditor/>
+            </p:dataTable>
+        </h:form>
 
     </h:body>
 </f:view>

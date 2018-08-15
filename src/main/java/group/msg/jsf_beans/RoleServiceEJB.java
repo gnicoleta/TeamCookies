@@ -1,5 +1,6 @@
 package group.msg.jsf_beans;
 
+
 import group.msg.entities.Role;
 
 import javax.ejb.Stateless;
@@ -14,6 +15,9 @@ public class RoleServiceEJB {
 
     public void save(Role role) {
         em.persist(role);
+    }
+    public void update(Role role) {
+        em.merge(role);
     }
 
     public Role findRoleByType(String type){

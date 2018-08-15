@@ -16,9 +16,11 @@ import group.msg.validator.bugInfoValidator.revisionValidation;
 @Table
 @NamedQueries({
         @NamedQuery(name = "Bug.findAll",
-                query = "select e from Bug e order by e.id asc")
-
+                query = "select e from Bug e order by e.id asc"),
+        @NamedQuery(name = "Bug.findBugByTitle",
+                query = "select b from Bug b where b.title like ?1")
 })
+
 public class Bug implements Serializable {
     @Id
     @GeneratedValue
@@ -40,6 +42,8 @@ public class Bug implements Serializable {
 
     @Column(name = "SEVERITY")
     private SeverityType severityType;
+
+    private int defaultValue;
 
 
     @OneToOne

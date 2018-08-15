@@ -13,6 +13,9 @@ public class RightServiceEJB {
 
     @PersistenceContext
     private EntityManager em;
+    public void update(Rights right) {
+        em.merge(right);
+    }
 
     public void save(Rights right) {
         em.persist(right);

@@ -32,48 +32,28 @@ import java.util.stream.Collectors;
 @ViewScoped
 public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
-
-    private String outcome;
-    private String userName;
-
-
-    private User selectedUser;
-    private String outputMessage;
-
-    private Role selectedRole;
-
-    private List<User> usersList;
-
     @EJB
     private UserServiceEJB service;
-    private RoleServiceEJB roleService;
-
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
 
+    private String outcome;
+    private User selectedUser;
+    private String outputMessage;
+    private List<User> usersList;
+    private String userName;
+    private UserStatus userStatus;
     private String newFirstName;
     private String newLastName;
     private String newEmail;
     private String newMobileNumber;
-
     private RoleType roleType;
-    private Role role;
-
-    private Role roleToDelete;
     private RoleType roleTypeDelete;
-
-    private String roleString;
-
-    private Collection<Role> roles = new ArrayList<>();
-
-    private String wtv = "not found";
-
 
     @PostConstruct
     public void init() {
         usersList = service.getAllUsers();
     }
-
 
     public void navigate() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -87,18 +67,15 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
             requiredRight = RightType.USER_MANAGEMENT.toString();
         }
-        if (outcome.equals("bugManagement") || outcome.equals("AddBug")) {
-            hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
-            requiredRight = RightType.USER_MANAGEMENT.toString();
+        if (outcome.equals("bugManagement")||outcome.equals("AddBug")) {
+            hasRight = service.userHasRight(user, RightType.BUG_MANAGEMENT);
+            requiredRight = RightType.BUG_MANAGEMENT.toString();
         }
-
 
         if (hasRight) {
             navigationHandler.handleNavigation(context, null, outcome
                     + "?faces-redirect=true");
         } else {
-
-
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + requiredRight);
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
@@ -108,7 +85,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "login";
     }
-
 
     public void ifExistsDelete() {
         if (service.ifExistsDelete(userName)) {
@@ -154,15 +130,12 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
                                 fieldToFilter = field;
                             }
                         }
-
                         if (fieldToFilter != null) {
                             fieldToFilter.setAccessible(true);
                         } else {
                             continue;
                         }
-
                         String fieldValue = String.valueOf(fieldToFilter.get(user));
-
                         if (filterValue.equals("") || filterValue == null || fieldValue.startsWith(filterValue.toString())) {
                             match = true;
                         } else {
@@ -234,7 +207,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
-            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
         }
     }
 
@@ -247,10 +219,8 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
-            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
         }
     }
-
 
     public void updateMobileNumber() {
         if (newMobileNumber != null && newMobileNumber != selectedUser.getMobileNumber() && newMobileNumber != "" && newMobileNumber != " ") {
@@ -261,21 +231,18 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
-            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
         }
     }
-
 
     public void updateRoles() {
         if (roleType != null) {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
             String allInfo = "Added new role: (new)" + this.roleType;
-            service.addRole(this.roleType,selectedUser);
+            service.addRole(this.roleType, selectedUser);
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
-            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
         }
     }
 
@@ -288,13 +255,29 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             notificationServiceEJB.save(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
-            RequestContext.getCurrentInstance().execute("window.location.reload(true)");
         }
     }
 
+    public void update() {
+        updateFirstName();
+        updateLastName();
+        updateEmail();
+        updateMobileNumber();
+        updateRoles();
+        updateStatus();
+    }
 
-    public void roleList() {
-        this.roles = selectedUser.getUserRoles();
+    public void updateStatus() {
+        if (userStatus != null) {
+            selectedUser.setUserStatus(userStatus);
+            service.update(selectedUser);
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "Staus changed: (new)" + userStatus + " - (old)" + selectedUser.getUserStatus();
+            notification.setInfo(allInfo);
+            notificationServiceEJB.save(notification);
+            selectedUser.getNotifications().add(notification);
+            ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
+        }
     }
 
     public void refresh() {
@@ -304,14 +287,17 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void deleteRole() {
         Role role = new Role();
         role.setRole(roleTypeDelete);
-        if(service.findUserByUsernameDeleteRole(userName, role)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + roleType + role.getRole(), "Role was deleted."));
+        if (service.deleteRoleFromUser(role, userName) != null) {
+            Notification notification = new Notification(NotificationType.USER_UPDATED);
+            String allInfo = "Role: " + roleTypeDelete + " was deleted";
+            selectedUser.setUserRoles(service.deleteRoleFromUser(role, userName));
+            notification.setInfo(allInfo);
+            notificationServiceEJB.save(notification);
+            service.update(selectedUser);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole() + " was deleted", "User: " + selectedUser.getUsername()));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "Role not found."));
         }
 
-        //RequestContext.getCurrentInstance().execute("window.location.reload(true)");
     }
-
-
 }
