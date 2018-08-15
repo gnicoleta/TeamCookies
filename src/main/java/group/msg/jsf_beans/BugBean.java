@@ -393,35 +393,35 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     }
 
     public void sendClosedNotification() {
-        bugService.update(selectedBug);
-        data = "BUG CLOSED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
+        bugService.update(selectedBugs.get(0));
+        data = "BUG CLOSED!    Title:" + selectedBugs.get(0).getTitle() + ". Description:" + selectedBugs.get(0).getDescription() + ". Version:" + selectedBugs.get(0).getVersion() + ". Target date:" + selectedBugs.get(0).getTargetDate() + ". Severity type:" + selectedBugs.get(0).getSeverityType() + ". Assigned to:" + selectedBugs.get(0).getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_CLOSED);
         notification.setInfo(data);
-        notification.setBugTitle(selectedBug.getTitle());
+        notification.setBugTitle(selectedBugs.get(0).getTitle());
         notificationServiceEJB.save(notification);
-        selectedBug.getAssignedTo().getNotifications().add(notification);
+        selectedBugs.get(0).getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
     }
 
     public void sendStatusUpdateNotification() {
-        bugService.update(selectedBug);
-        data = "BUG UPDATED!   Old status:" + aux.toString() + ". New status:" + selectedBug.getStatusType() + ".    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
+        bugService.update(selectedBugs.get(0));
+        data = "BUG UPDATED!   Old status:" + aux.toString() + ". New status:" + selectedBugs.get(0).getStatusType() + ".    Title:" + selectedBugs.get(0).getTitle() + ". Description:" + selectedBugs.get(0).getDescription() + ". Version:" + selectedBugs.get(0).getVersion() + ". Target date:" + selectedBugs.get(0).getTargetDate() + ". Severity type:" + selectedBugs.get(0).getSeverityType() + ". Assigned to:" + selectedBugs.get(0).getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_STATUS_UPDATED);
         notification.setInfo(data);
-        notification.setBugTitle(selectedBug.getTitle());
+        notification.setBugTitle(selectedBugs.get(0).getTitle());
         notificationServiceEJB.save(notification);
-        selectedBug.getAssignedTo().getNotifications().add(notification);
+        selectedBugs.get(0).getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
     }
 
     public void sendNotification() {
-        bugService.update(selectedBug);
-        data = "BUG UPDATED!    Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
+        bugService.update(selectedBugs.get(0));
+        data = "BUG UPDATED!    Title:" + selectedBugs.get(0).getTitle() + ". Description:" + selectedBugs.get(0).getDescription() + ". Version:" + selectedBugs.get(0).getVersion() + ". Target date:" + selectedBugs.get(0).getTargetDate() + ". Severity type:" + selectedBugs.get(0).getSeverityType() + ". Assigned to:" + selectedBugs.get(0).getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_UPDATED);
         notification.setInfo(data);
-        notification.setBugTitle(selectedBug.getTitle());
+        notification.setBugTitle(selectedBugs.get(0).getTitle());
         notificationServiceEJB.save(notification);
-        selectedBug.getAssignedTo().getNotifications().add(notification);
+        selectedBugs.get(0).getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
     }
 
