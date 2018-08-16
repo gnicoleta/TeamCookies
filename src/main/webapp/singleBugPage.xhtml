@@ -9,7 +9,7 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 <f:view id="view">
     <h:head>
-        <h:outputStylesheet library="css" name="styles.css"/>
+        <h:outputStylesheet library="css" name="addpages.css"/>
     </h:head>
     <h:body>
         <h:form>
@@ -18,13 +18,13 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
                         <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="User Management"/>
+                            <f:selectItem itemLabel="User Management" itemDisabled="true"/>
                             <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
                             <f:selectItem itemValue="register" itemLabel="Add User"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                         </p:selectOneMenu>
                         <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="Bug Management"/>
+                            <f:selectItem itemLabel="Bug Management" itemDisabled="true"/>
                             <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
                             <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
@@ -42,76 +42,63 @@
         </h:form>
 
         <h:form id="datatableform">
-            <p:dataTable id="table" value="#{bugBean}" var="bug" selectionMode="single"
-                         selection="#{bugBean.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25" rowsPerPageTemplate="5,10,15,20,25"
+            <p:dataTable id="table" value="#{bugBeanEditView}" var="bug" selectionMode="single"
+                         selection="#{bugBeanEditView.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25" rowsPerPageTemplate="5,10,15,20,25"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom" editInitEvent="dblclick">
 
                 <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
+
                 <p:column>
-                    <f:facet name="footer">
-                        <p:commandLink>
-                            <h:outputText value="Download list"/>
-                            <p:dataExporter type="xls" target="datatableform" fileName="bugs"/>
-                        </p:commandLink>
-                    </f:facet>
-                </p:column>
-
-                <p:column sortBy="#{bug.id-1}" filterBy="#{bug.id-1}" filterMatchMode="contains">
-                    <f:facet name="header">Id</f:facet>
-                    #{bug.id-1}
-                </p:column>
-
-                <p:column id="titleColumn" sortBy="#{bug.title}"  filterBy="#{bug.title}" filterMatchMode="contains">
                     <f:facet name="header">Title</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.title}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{bugBean.title}" style="width:96%" required="true" render="@all"/>
+                            <p:inputText value="#{bugBeanEditView.title}" style="width:96%" required="true" render="@all"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column sortBy="#{bug.description}" filterBy="#{bug.description}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Description</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.description}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{bugBean.description}" style="width:96%"/>
+                            <p:inputText value="#{bugBeanEditView.description}" style="width:96%"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column sortBy="#{bug.version}" filterBy="#{bug.version}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Version</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.version}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{bugBean.version}" style="width:96%"/>
+                            <p:inputText value="#{bugBeanEditView.version}" style="width:96%"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column sortBy="#{bug.fixedInVersion}" filterBy="#{bug.fixedInVersion}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Fixed in version</f:facet>
                     #{bug.fixedInVersion}
                 </p:column>
-                <p:column sortBy="#{bug.targetDate}" filterBy="#{bug.targetDate}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Target date</f:facet>
                     #{bug.targetDate}
                 </p:column>
-                <p:column sortBy="#{bug.severityType}" filterBy="#{bug.severityType}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Severity type</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.severityType}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:selectOneMenu id="severityMenu" effect="fade" value="#{bugBean.severityType}" style="width:125px">
+                            <p:selectOneMenu id="severityMenu" effect="fade" value="#{bugBeanEditView.severityType}" style="width:125px">
                                 <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL"/>
                                 <f:selectItem itemLabel="HIGH" itemValue="HIGH"/>
                                 <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM"/>
@@ -120,11 +107,11 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column sortBy="#{bug.createdBy}" filterBy="#{bug.createdBy}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Created by</f:facet>
                     #{bug.createdBy}
                 </p:column>
-                <p:column sortBy="#{bug.statusType}" filterBy="#{bug.statusType}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Status type</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
@@ -132,35 +119,35 @@
                         </f:facet>
                         <f:facet name="input">
                             <p:growl id="statusType" showDetail="false"/>
-                            <c:if test="#{(bugBean.selectedBug.statusType eq 'NEW' or bugBean.selectedBug.statusType eq null)}">
-                                <p:selectOneMenu id="statusMenu1" effect="fade" value="#{bugBean.statusType}" style="width:125px">
+                            <c:if test="#{(bugBeanEditView.selectedBug.statusType eq 'NEW' or bugBeanEditView.selectedBug.statusType eq null)}">
+                                <p:selectOneMenu id="statusMenu1" effect="fade" value="#{bugBeanEditView.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
                                     <f:selectItem itemLabel="REJECTED" itemValue="REJECTED"/>
                                 </p:selectOneMenu>
                             </c:if>
-                            <c:if test="#{bugBean.selectedBug.statusType eq 'REJECTED'}">
-                                <p:selectOneMenu id="statusMenu2" effect="fade" value="#{bugBean.statusType}" style="width:125px">
+                            <c:if test="#{bugBeanEditView.selectedBug.statusType eq 'REJECTED'}">
+                                <p:selectOneMenu id="statusMenu2" effect="fade" value="#{bugBeanEditView.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="CLOSED" itemValue="CLOSED" />
                                 </p:selectOneMenu>
                             </c:if>
-                            <c:if test="#{bugBean.selectedBug.statusType eq 'INFO_NEEDED'}">
-                                <p:selectOneMenu id="statusMenu3" effect="fade" value="#{bugBean.statusType}" style="width:125px">
+                            <c:if test="#{bugBeanEditView.selectedBug.statusType eq 'INFO_NEEDED'}">
+                                <p:selectOneMenu id="statusMenu3" effect="fade" value="#{bugBeanEditView.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="IN_PROGRESS" itemValue="IN_PROGRESS"/>
                                 </p:selectOneMenu>
                             </c:if>
-                            <c:if test="#{bugBean.selectedBug.statusType eq 'IN_PROGRESS'}">
-                                <p:selectOneMenu id="statusMenu4" effect="fade" value="#{bugBean.statusType}" style="width:125px">
+                            <c:if test="#{bugBeanEditView.selectedBug.statusType eq 'IN_PROGRESS'}">
+                                <p:selectOneMenu id="statusMenu4" effect="fade" value="#{bugBeanEditView.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="FIXED" itemValue="FIXED"/>
                                     <f:selectItem itemLabel="REJECTED" itemValue="REJECTED"/>
                                     <f:selectItem itemLabel="INFO_NEEDED" itemValue="INFO_NEEDED"/>
                                 </p:selectOneMenu>
                             </c:if>
-                            <c:if test="#{bugBean.selectedBug.statusType eq 'FIXED'}">
-                                <p:selectOneMenu id="statusMenu5" effect="fade" value="#{bugBean.statusType}" style="width:125px">
+                            <c:if test="#{bugBeanEditView.selectedBug.statusType eq 'FIXED'}">
+                                <p:selectOneMenu id="statusMenu5" effect="fade" value="#{bugBeanEditView.statusType}" style="width:125px">
                                     <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                     <f:selectItem itemLabel="NEW" itemValue="NEW"/>
                                     <f:selectItem itemLabel="CLOSED" itemValue="CLOSED"/>
@@ -169,18 +156,18 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column sortBy="#{bug.assignedTo}" filterBy="#{bug.assignedTo}" filterMatchMode="contains">
+                <p:column>
                     <f:facet name="header">Assigned to</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.assignedTo}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{bugBean.assignedTo}" style="width:96%"/>
+                            <p:inputText value="#{bugBeanEditView.assignedTo}" style="width:96%"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:ajax event="cellEdit" listener="#{bugBean.updateBug}" update=":datatableform:table"/>
+                <p:ajax event="cellEdit" listener="#{bugBeanEditView.updateBug}" update=":datatableform:table"/>
 
                 <p:column>
                     <f:facet name="header">Attachment</f:facet>
@@ -207,11 +194,6 @@
         </h:form>
 
         <h:form id="form">
-            <div align="left">
-                <p:commandButton value="Download excel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-                    <p:fileDownload value="#{bugBean.getExcel()}" />
-                </p:commandButton>
-            </div>
             <h:commandButton value="Back" action="homepage" ajax="false"/>
             <h:commandButton value="Add bug" action="AddBug" ajax="false"/>
         </h:form>

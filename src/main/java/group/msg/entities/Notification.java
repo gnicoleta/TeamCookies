@@ -29,7 +29,7 @@ public class Notification implements Serializable {
 
     private String info;
 
-    private String bugTitle;
+    private int bugId;
 
     @Column(name="notification_date")
     private Date notificationDate = new Date(System.currentTimeMillis());

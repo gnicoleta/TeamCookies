@@ -31,9 +31,9 @@ public class BugServiceEJB {
         List<Bug> result = q.getResultList();
         return result;
     }
-    public Bug findBugByTitle(String bugTitle) {
-        Query q = em.createNamedQuery("Bug.findBugByTitle");
-        q.setParameter(1, bugTitle);
+    public Bug findBugById(int bugId) {
+        Query q = em.createQuery("select b from Bug b where b.id = :id");
+        q.setParameter("id", bugId);
         return (Bug) q.getSingleResult();
     }
 
