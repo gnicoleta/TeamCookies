@@ -85,6 +85,7 @@ public class AddBugBean implements Serializable {
             String data = "NEW BUG!   " + "\n Title:" + title + ". Description:" + description + ". Version:" + version + ". Target date:" + targetDate + ". Severity type:" + severityTypeString;
             notification.setInfo(data);
             notification.setNotificationType(NotificationType.BUG_UPDATED);
+            bugServiceEJB.save(bug);
             notification.setBugId(bug.getId());
             notificationServiceEJB.save(notification);
             user.getNotifications().add(notification);
@@ -97,7 +98,7 @@ public class AddBugBean implements Serializable {
             e.printStackTrace();
         }
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
-        bugServiceEJB.save(bug);
+
         return "bugManagement";
     }
 
