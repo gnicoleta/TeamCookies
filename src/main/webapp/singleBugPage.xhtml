@@ -35,6 +35,11 @@
                         <p:commandButton value="Logout" action="#{userEditBean.logout}"
                                          ajax="false"
                                          styleClass="aButton"/>
+                        <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                         valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                            <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                            <f:selectItems value="#{langChange.countries}"/>
+                        </p:selectOneMenu>
                     </p:toolbarGroup>
                     <br/>
                 </p:toolbar>

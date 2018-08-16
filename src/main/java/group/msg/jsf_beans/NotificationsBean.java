@@ -3,6 +3,7 @@ package group.msg.jsf_beans;
 import group.msg.entities.Bug;
 import group.msg.entities.Notification;
 
+import group.msg.entities.NotificationType;
 import group.msg.entities.User;
 import lombok.Data;
 import org.primefaces.event.SelectEvent;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @Named
 @ManagedBean
 @ViewScoped
-public class NotificationsBean  extends LazyDataModel<Notification> implements Serializable {
+public class NotificationsBean extends LazyDataModel<Notification> implements Serializable {
     private Notification selectedNotification;
     private String outputMessage;
     private int id;
@@ -36,19 +37,19 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
 
-    public Notification getSelectedNotification(){
+    public Notification getSelectedNotification() {
         System.out.println("test");
         return selectedNotification;
     }
 
-    public void setSelectedNotification(Notification selectedNotification){
-        this.selectedNotification=selectedNotification;
+    public void setSelectedNotification(Notification selectedNotification) {
+        this.selectedNotification = selectedNotification;
         notificationServiceEJB.update(selectedNotification);
     }
 
     @PostConstruct
-    public void init(){
-        notificationList=(List<Notification>)((User)WebHelper.getSession().getAttribute("currentUser")).getNotifications();
+    public void init() {
+        notificationList = (List<Notification>) ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications();
     }
 
 
@@ -125,7 +126,6 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
     }
 
 
-
     public static class NotificationSorter implements Comparator<Notification> {
         private String sortField;
         private SortOrder sortOrder;
@@ -168,12 +168,14 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
 
     public void onRowDblClickSelect(final SelectEvent event) {
         Notification obj = (Notification) event.getObject();
-        int aux = obj.getBugId();
-        WebHelper.getSession().setAttribute("bugId", aux);
-        FacesContext context = FacesContext.getCurrentInstance();
+        if (obj.getNotificationType().equals(NotificationType.BUG_STATUS_UPDATED) || obj.getNotificationType().equals(NotificationType.BUG_UPDATED) || obj.getNotificationType().equals(NotificationType.BUG_CLOSED)) {
+            int aux = obj.getBugId();
+            WebHelper.getSession().setAttribute("bugId", aux);
+            FacesContext context = FacesContext.getCurrentInstance();
             NavigationHandler navigationHandler = context.getApplication()
                     .getNavigationHandler();
             navigationHandler.handleNavigation(context, null, "singleBugPage"
                     + "?faces-redirect=true");
+        }
     }
 }

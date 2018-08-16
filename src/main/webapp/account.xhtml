@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
 >
-<f:view>
+<f:view locale="#{langChange.getLocale()}">
     <h:head>
         <title>Account</title>
         <h:outputStylesheet library="css" name="addpages.css"/>
@@ -16,30 +16,35 @@
         <h:form>
             <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
             <p:toolbar>
-            <p:toolbarGroup align="left">
-                        <p:commandButton value="Home" action="homepage" styleClass="aButton" icon="ui-icon-home"/>
-                        <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="User Management" itemDisabled="true"/>
-                            <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
-                            <f:selectItem itemValue="register" itemLabel="Add User"/>
-                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                        </p:selectOneMenu>
-                        <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="Bug Management" itemDisabled="true"/>
-                            <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
-                            <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
-                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                        </p:selectOneMenu>
-                        <p:commandButton value="Account" action="account" styleClass="aButton"/>
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Logout" action="#{userEditBean.logout}"
-                                         ajax="false"
-                                         styleClass="aButton"/>
-                    </p:toolbarGroup>
+
+                <p:toolbarGroup align="left" >
+                    <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"/>
+                    <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                        <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
+                        <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
+                        <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
+                        <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                    </p:selectOneMenu>
+                    <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                        <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
+                        <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
+                        <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
+                        <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="#{msg.account}" action="account" styleClass="aButton"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="Logout" action="#{userEditBean.logout}"
+                                     ajax="false"
+                                     styleClass="aButton"/>
+                    <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                     valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                        <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                        <f:selectItems value="#{langChange.countries}"/>
+                    </p:selectOneMenu>
+                </p:toolbarGroup>
+                <br/>
             </p:toolbar>
-
-
 
         </h:form>
 
@@ -49,11 +54,11 @@
         <h:form align="left">
 
             <h:panelGrid columns="4">
-                <h:outputText styleClass="myFont" value="      First Name"/>
+                <h:outputText styleClass="myFont" value="      #{msg.first_name}"/>
                 <p:inputText id="first_name" value="#{accountJSFBean.firstName}"/>
                 <p:watermark for="first_name" value="#{accountJSFBean.user.firstName}" id="watermark1"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Last Name"/>
+                <h:outputText styleClass="myFont" value="      #{msg.last_name}"/>
                 <p:inputText id="last_name" value="#{accountJSFBean.lastName}"/>
                 <p:watermark for="last_name" value="#{accountJSFBean.user.lastName}" id="watermark2"/>
                 <br/>
@@ -61,22 +66,22 @@
                 <p:inputText id="email" value="#{accountJSFBean.email}"/>
                 <p:watermark for="email" value="#{accountJSFBean.user.email}" id="watermark3"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Phone Number"/>
+                <h:outputText styleClass="myFont" value="      #{msg.mobile_number}"/>
                 <p:inputText id="phone_number" value="#{accountJSFBean.mobileNumber}"/>
                 <p:watermark for="phone_number" value="#{accountJSFBean.user.mobileNumber}" id="watermark4"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Old Password"/>
+                <h:outputText styleClass="myFont" value="      #{msg.old_password}"/>
                 <p:password id="old_password" value="#{accountJSFBean.oldPassword}"/>
-                <p:watermark for="old_password" value="old password is required" id="watermark5"/>
+                <p:watermark for="old_password" value="#{msg.old_password_is_required}" id="watermark5"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      New Password"/>
+                <h:outputText styleClass="myFont" value="     #{msg.new_password}"/>
                 <p:password id="new_password" value="#{accountJSFBean.password}"/>
                 <p:watermark for="new_password" value=" " id="watermark6"/>
                 <br/>
                 <br/>
                 <h:outputText styleClass="myFont" value="                  "/>
                 <p:selectOneMenu id="console1" value="#{accountJSFBean.roleString}" style="width:220px">
-                    <f:selectItem itemLabel="Add a role" itemDisabled="true"/>
+                    <f:selectItem itemLabel="#{msg.add_role}" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager" itemValue="PM"/>
                     <f:selectItem itemLabel="Test manager" itemValue="TM"/>
@@ -88,7 +93,7 @@
                 <br/>
                 <h:outputText styleClass="myFont" value="                  "/>
                 <p:selectOneMenu id="console2" value="#{accountJSFBean.deleteRoleString}" style="width:220px">
-                    <f:selectItem itemLabel="Delete a role" itemDisabled="true"/>
+                    <f:selectItem itemLabel="#{msg.delete_role}" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager" itemValue="PM"/>
                     <f:selectItem itemLabel="Test manager" itemValue="TM"/>
@@ -104,9 +109,16 @@
             <br/>
             <br/>
             <br/>
-            <p:commandButton value="Save" action="#{accountJSFBean.update()}"
+            <p:commandButton value="#{msg.save}" action="#{accountJSFBean.update()}"
                              ajax="false"
                              styleClass="aButton"/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </h:form>
 
         <div class="footer">
