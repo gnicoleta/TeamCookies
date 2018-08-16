@@ -16,14 +16,14 @@
             <p:panel>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
-                        <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                        <p:commandButton value="Home" action="homepage" styleClass="aButton" icon="ui-icon-home"/>
+                        <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                             <f:selectItem itemLabel="User Management" itemDisabled="true"/>
                             <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
                             <f:selectItem itemValue="register" itemLabel="Add User"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                         </p:selectOneMenu>
-                        <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                        <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                             <f:selectItem itemLabel="Bug Management" itemDisabled="true"/>
                             <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
                             <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
@@ -35,6 +35,11 @@
                         <p:commandButton value="Logout" action="#{userEditBean.logout}"
                                          ajax="false"
                                          styleClass="aButton"/>
+                        <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                         valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                            <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                            <f:selectItems value="#{langChange.countries}"/>
+                        </p:selectOneMenu>
                     </p:toolbarGroup>
                     <br/>
                 </p:toolbar>
@@ -43,8 +48,7 @@
 
         <h:form id="datatableform">
             <p:dataTable id="table" value="#{bugBeanEditView}" var="bug" selectionMode="single"
-                         selection="#{bugBeanEditView.selectedBug}" rowKey="#{bug.id}" paginator="true" rows="25" rowsPerPageTemplate="5,10,15,20,25"
-                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         selection="#{bugBeanEditView.selectedBug}" rowKey="#{bug.id}" rows="25"
                          lazy="true" editable="true" editMode="cell" cellEditMode="lazy" paginatorPosition="bottom" editInitEvent="dblclick">
 
                 <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
@@ -175,10 +179,7 @@
                     <p:commandButton value="Download attachment" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                         <p:fileDownload value="#{bugBean.downloadAttachment()}" />
                     </p:commandButton>
-                    <p:commandButton value="Download bug" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-                        <p:fileDownload value="#{bugBean.getPDF()}" />
-                    </p:commandButton>
-                    <h:commandButton value="Delete attachment" action="#{bugBean.deleteAttachment}" ajax="true"/>
+                    <p:commandButton value="Delete attachment" action="#{bugBean.deleteAttachment}" ajax="true" icon="ui-icon-minusthick"/>
 
                     <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced"
                                   dragDropSupport="false"
@@ -189,14 +190,21 @@
                 <br/>
                 <p:rowEditor/>
             </p:dataTable>
-            <br/>
-
         </h:form>
-
-        <h:form id="form">
-            <h:commandButton value="Back" action="homepage" ajax="false"/>
-            <h:commandButton value="Add bug" action="AddBug" ajax="false"/>
+        <h:form>
+            <p:commandButton value="Download bug data" ajax="false"
+                             onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                <p:fileDownload value="#{bugBeanEditView.getPDF()}"/>
+            </p:commandButton>
+            <p:commandButton value="Load all bugs" ajax="false" action="bugManagement"/>
         </h:form>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
     </h:body>
 </f:view>
 </html>
