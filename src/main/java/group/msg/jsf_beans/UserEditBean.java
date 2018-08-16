@@ -361,17 +361,17 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void deleteRight() {
 
         Role role = roleServiceEJB.findRoleByType(roleTypeStr);
-        Rights rght = new Rights();
+        Rights right = new Rights();
 
         if (role != null) {
             Collection<Rights> rights = role.getRoleRights();
-            rght = rightServiceEJB.findRightByType(rghtTypeStr);
-            rights.remove(rght);
+            right = rightServiceEJB.findRightByType(rghtTypeStr);
+            rights.remove(right);
             role.setRoleRights(rights);
             roleServiceEJB.update(role);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole(), "Right: " + rght.getType() + " was removed"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole(), "Right: " + right.getType() + " was removed"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole() + " was not found", "Right: " + rght.getType() + " was not found"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole() + " was not found", "Right: " + right.getType() + " was not found"));
 
         }
         roleServiceEJB.update(role);

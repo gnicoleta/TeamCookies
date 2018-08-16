@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -50,22 +51,46 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
 
     @PostConstruct
     public void init() {
-        if (!bugListForView.isEmpty()) {
-            bugListForView.clear();
+        try {
+            try {
+                if (!bugListForView.isEmpty()) {
+                    bugListForView.clear();
+                }
+                Bug bug = bugService.findBugById((int) WebHelper.getSession().getAttribute("bugId"));
+                bugListForView.add(bug);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }catch (NoResultException e){
+            e.printStackTrace();
         }
-        Bug bug = bugService.findBugById((int) WebHelper.getSession().getAttribute("bugId"));
-        bugListForView.add(bug);
     }
 
     @Override
     public Bug getRowData(String rowKey) {
-        Integer id = Integer.parseInt(rowKey);
-        return bugListForView.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+        try {
+            try {
+                Integer id = Integer.parseInt(rowKey);
+                return bugListForView.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }catch (NoResultException e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
     public Object getRowKey(Bug object) {
-        return object.getId();
+        try {
+            return object.getId();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
@@ -103,6 +128,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
                         }
                     } catch (Exception e) {
                         match = false;
+                        e.printStackTrace();
                     }
                 }
             }
@@ -122,6 +148,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
             try {
                 return filteredList.subList(first, first + pageSize);
             } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
                 return filteredList.subList(first, first + (dataSize % pageSize));
             }
         } else {
@@ -161,6 +188,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
 
                 return SortOrder.ASCENDING.equals(sortOrder) ? comparisonResult : (-1) * comparisonResult;
             } catch (Exception e) {
+                e.printStackTrace();
                 return 1;
             }
         }
