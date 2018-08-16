@@ -173,7 +173,7 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
         FacesContext context = FacesContext.getCurrentInstance();
             NavigationHandler navigationHandler = context.getApplication()
                     .getNavigationHandler();
-            navigationHandler.handleNavigation(context, null, "bugPage"
+            navigationHandler.handleNavigation(context, null, "singleBugPage"
                     + "?faces-redirect=true");
     }
 }

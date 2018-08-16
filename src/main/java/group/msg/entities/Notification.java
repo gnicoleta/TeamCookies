@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @Entity
@@ -13,7 +14,6 @@ import java.util.Collection;
 
         @NamedQuery(name = "Notification.findByNotificationType",
                 query = "select sp from Notification sp where sp.notificationTypeString like ?1")
-
 
 })
 public class Notification implements Serializable {
@@ -30,6 +30,9 @@ public class Notification implements Serializable {
     private String info;
 
     private int bugId;
+
+    @Column(name="notification_date")
+    private Date notificationDate = new Date(System.currentTimeMillis());
 
     @ManyToMany
     @JoinTable(name = "user_notification",

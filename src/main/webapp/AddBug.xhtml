@@ -79,6 +79,13 @@
                     <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM"/>
                     <f:selectItem itemLabel="LOW" itemValue="LOW"/>
                 </p:selectOneMenu>
+                    <h:outputText styleClass="myFont" value="      Attachment"/>
+                    <p:fileUpload fileUploadListener="#{addBugBean.handleFileUpload}" mode="advanced"
+                                  dragDropSupport="false"
+                                  update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
+                    <p:growl id="messages" showDetail="true"/>
+
                     <p:watermark for="console" value=" " id="watermark8"/>
                 </h:panelGrid>
                 <br/>

@@ -112,7 +112,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
 
         int dataSize = filteredList.size();
         if (sortField != null) {
-            filteredList.sort(new BugBean.BugSorter(sortField, sortOrder));
+            filteredList.sort(new BugBeanEditView.BugSorter(sortField, sortOrder));
         }
         this.setRowCount(dataSize);
 

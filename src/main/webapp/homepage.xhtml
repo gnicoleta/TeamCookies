@@ -61,11 +61,6 @@
 
                 <p:ajax event="rowDblselect" listener="#{notificationsBean.onRowDblClickSelect}"/>
 
-                <p:column headerText="Id" sortBy="#{notification.id}" filterBy="#{notification.id}"
-                          filterMatchMode="contains">
-                    <h:outputText value="#{notification.id}"/>
-                </p:column>
-
                 <p:column sortBy="#{notification.notificationType}" filterBy="#{notification.notificationType}"
                           filterMatchMode="contains">
                     <f:facet name="header">#{msg.notification_type}</f:facet>
