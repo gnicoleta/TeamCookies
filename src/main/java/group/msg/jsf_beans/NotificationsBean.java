@@ -182,9 +182,9 @@ public class NotificationsBean extends LazyDataModel<Notification> implements Se
         int aux = obj.getBugId();
         WebHelper.getSession().setAttribute("bugId", aux);
         FacesContext context = FacesContext.getCurrentInstance();
-            NavigationHandler navigationHandler = context.getApplication()
-                    .getNavigationHandler();
-            navigationHandler.handleNavigation(context, null, "singleBugPage"
-                    + "?faces-redirect=true");
+        NavigationHandler navigationHandler = context.getApplication()
+                .getNavigationHandler();
+        navigationHandler.handleNavigation(context, null, "singleBugPage"
+                + "?faces-redirect=true");
     }
 }

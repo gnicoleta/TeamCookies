@@ -8,6 +8,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -66,6 +67,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
     public Object getRowKey(Bug object) {
         return object.getId();
     }
+
     @Override
     public java.util.List<Bug> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         java.util.List<Bug> filteredList = new ArrayList<>();

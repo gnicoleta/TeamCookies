@@ -4,7 +4,6 @@ package group.msg.jsf_beans;
 import group.msg.beans.PasswordEncryptor;
 import group.msg.entities.*;
 import lombok.Data;
-
 import org.primefaces.context.RequestContext;
 
 import javax.ejb.EJB;
@@ -12,10 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-
 import java.io.Serializable;
-
 import java.util.Collection;
 
 

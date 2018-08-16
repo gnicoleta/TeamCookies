@@ -48,7 +48,7 @@
             <h:form>
                 <br/>
                 <h:outputText styleClass="myFont" value="#{msg.select_language}" style="display:block;"/>
-                <h:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                <h:selectOneMenu value="#{langChange.languageCode}" onchange="submit()"
                                  valueChangeListener="#{langChange.countryLocaleCodeChanged}">
                     <f:selectItems value="#{langChange.countries}"/>
 
