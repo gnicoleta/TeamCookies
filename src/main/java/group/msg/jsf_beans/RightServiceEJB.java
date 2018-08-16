@@ -13,6 +13,7 @@ public class RightServiceEJB {
 
     @PersistenceContext
     private EntityManager em;
+
     public void update(Rights right) {
         em.merge(right);
     }
@@ -21,7 +22,7 @@ public class RightServiceEJB {
         em.persist(right);
     }
 
-    public Rights findRightByType(String type){
+    public Rights findRightByType(String type) {
         Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
         q.setParameter(1, type);
         Rights result = (Rights) q.getSingleResult();

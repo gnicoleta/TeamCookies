@@ -177,13 +177,14 @@ public class UserServiceEJB {
 
     }
 
-    public void addRole(RoleType roleType,User user) {
+    public void addRole(RoleType roleType, User user) {
         Role role = new Role();
         role.setRole(roleType);
         if (!user.getUserRoles().contains(role)) {
-            Role role1=roleServiceEJB.findRoleByType(roleType.toString());
+            Role role1 = roleServiceEJB.findRoleByType(roleType.toString());
             user.getUserRoles().add(role1);
         }
     }
+
 
 }

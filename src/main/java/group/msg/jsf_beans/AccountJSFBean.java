@@ -146,7 +146,9 @@ public class AccountJSFBean implements Serializable {
                 Collection<Rights> rights=role.getRoleRights();
                 Rights rights1=null;
                 boolean contains=false;
-                
+
+                info+=rights.size();
+
                 for(Rights right:rights){
                     if(right.getTypeString().equals(RightType.valueOf(deleteRight))){
                         rights1=right;
@@ -161,10 +163,7 @@ public class AccountJSFBean implements Serializable {
                 roleServiceEJB.update(role);
                 info+=role.getRoleString()+"---"+deleteRight;
 
-
             }
-
-
         }
         if(info.length()>0) {
             userServiceEJB.update(user);

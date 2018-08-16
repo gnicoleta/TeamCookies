@@ -10,11 +10,12 @@
 <f:view>
     <h:head>
         <title>User list</title>
-        <h:outputStylesheet library="css" name="styles.css"/>
+        <h:outputStylesheet library="css" name="addpages.css"/>
     </h:head>
     <h:body>
+        <div class="menu" >
         <h:form>
-            <p:panel>
+            <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
@@ -39,10 +40,13 @@
                     </p:toolbarGroup>
                     <br/>
                 </p:toolbar>
-            </p:panel>
+
         </h:form>
+        </div>
         <h:form id="form1">
             <div>
+                <br/>
+
                 <p:dataTable var="user" id="usersTable" value="#{userEditBean}"
                              selection="#{userEditBean.selectedUser}" selectionMode="single" rowKey="#{user.id}"
                              lazy="true" paginator="true" rows="15"
@@ -198,22 +202,65 @@
                                 <f:selectItem itemLabel="ADM" itemValue="ADM"/>
                                 <f:selectItem itemLabel="TEST" itemValue="TEST"/>
                             </h:selectOneMenu>
+                            
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Delete Role" action="#{userEditBean.deleteRole()}"
+                                         update="growl :form1:usersTable"/>
+                    </h:panelGrid>
+
+                    <br/>
+
+                    <p:panel id="panelRole" header="Remove right from role" style="margin-bottom:10px;">
+                        <h:panelGrid columns="4" cellpadding="5">
+                            <h:outputLabel for="txt2" value="Choose role: "/>
+                            <h:selectOneMenu value="#{userEditBean.roleTypeStr}" required="true"
+                                             label="Role ">
+                                <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
+                                <f:selectItem itemLabel="PM" itemValue="PM"/>
+                                <f:selectItem itemLabel="DEV" itemValue="DEV"/>
+                                <f:selectItem itemLabel="ADM" itemValue="ADM"/>
+                                <f:selectItem itemLabel="TEST" itemValue="TEST"/>
+                            </h:selectOneMenu>
+
+                            <h:outputLabel for="txt2" value="Right: "/>
+                            <h:selectOneMenu value="#{userEditBean.rghtTypeStr}" required="true"
+                                             label="Rights ">
+                                <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
+                                <f:selectItem itemLabel="PERMISSION_MANAGEMENT" itemValue="PERMISSION_MANAGEMENT"/>
+                                <f:selectItem itemLabel="USER_MANAGEMENT" itemValue="USER_MANAGEMENT"/>
+                                <f:selectItem itemLabel="BUG_MANAGEMENT" itemValue="BUG_MANAGEMENT"/>
+                                <f:selectItem itemLabel="BUG_CLOSE" itemValue="BUG_CLOSE"/>
+                                <f:selectItem itemLabel="BUG_EXPORT_PDF" itemValue="BUG_EXPORT_PDF"/>
+                            </h:selectOneMenu>
 
 
                         </h:panelGrid>
                     </p:panel>
 
                     <h:panelGrid columns="2">
-                        <p:commandButton value="Delete Role" action="#{userEditBean.deleteRole()}" update="growl"/>
+                        <p:commandButton value="Delete Right" action="#{userEditBean.deleteRight()}" update="growl"/>
+                        <br/>
+                        <p:commandButton value="Add Right" action="#{userEditBean.addRight()}" update="growl"/>
                     </h:panelGrid>
+
                 </h:form>
 
                 <h:commandButton value="Back" action="homepage" ajax="false"/>
 
-
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
             </div>
         </h:form>
-
+        <div class="footer">
+        <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
+    </div>
 
     </h:body>
 

@@ -36,6 +36,10 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private UserServiceEJB service;
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
+    @EJB
+    private RoleServiceEJB roleServiceEJB;
+    @EJB
+    private RightServiceEJB rightServiceEJB;
 
     private String outcome;
     private User selectedUser;
@@ -49,6 +53,12 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private String newMobileNumber;
     private RoleType roleType;
     private RoleType roleTypeDelete;
+
+    private RightType rightType;
+    private RoleType roleTypeRights;
+
+    private String rghtTypeStr;
+    private String roleTypeStr;
 
     @PostConstruct
     public void init() {
@@ -67,7 +77,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
             requiredRight = RightType.USER_MANAGEMENT.toString();
         }
-        if (outcome.equals("bugManagement")||outcome.equals("AddBug")) {
+        if (outcome.equals("bugManagement") || outcome.equals("AddBug")) {
             hasRight = service.userHasRight(user, RightType.BUG_MANAGEMENT);
             requiredRight = RightType.BUG_MANAGEMENT.toString();
         }
@@ -299,5 +309,44 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User not found", "Role not found."));
         }
 
+    }
+
+    public void addRight() {
+
+        Role role = roleServiceEJB.findRoleByType(roleTypeStr);
+        Rights rght = new Rights();
+
+        if (role != null) {
+            Collection<Rights> rights = role.getRoleRights();
+            rght = rightServiceEJB.findRightByType(rghtTypeStr);
+            rights.add(rght);
+            role.setRoleRights(rights);
+            roleServiceEJB.update(role);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole(), "Right: " + rght.getType() + " was added"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole() + " was not found", "Right: " + rght.getType() + " was not found"));
+
+        }
+        roleServiceEJB.update(role);
+
+    }
+
+    public void deleteRight() {
+
+        Role role = roleServiceEJB.findRoleByType(roleTypeStr);
+        Rights rght = new Rights();
+
+        if (role != null) {
+            Collection<Rights> rights = role.getRoleRights();
+            rght = rightServiceEJB.findRightByType(rghtTypeStr);
+            rights.remove(rght);
+            role.setRoleRights(rights);
+            roleServiceEJB.update(role);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole(), "Right: " + rght.getType() + " was removed"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Role: " + role.getRole() + " was not found", "Right: " + rght.getType() + " was not found"));
+
+        }
+        roleServiceEJB.update(role);
     }
 }

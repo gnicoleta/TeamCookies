@@ -9,11 +9,12 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 <f:view id="view">
     <h:head>
-        <h:outputStylesheet library="css" name="styles.css"/>
+        <h:outputStylesheet library="css" name="addpages.css"/>
     </h:head>
     <h:body>
+        <div class="menu">
         <h:form>
-            <p:panel>
+            <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
@@ -38,7 +39,7 @@
                     </p:toolbarGroup>
                     <br/>
                 </p:toolbar>
-            </p:panel>
+
         </h:form>
 
         <h:form id="datatableform">
@@ -208,7 +209,13 @@
             </div>
             <h:commandButton value="Back" action="homepage" ajax="false"/>
             <h:commandButton value="Add bug" action="AddBug" ajax="false"/>
+            <br/>
+            <br/>
+            <br/>
         </h:form>
+        <div class="footer">
+            <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
+        </div>
     </h:body>
 </f:view>
 </html>

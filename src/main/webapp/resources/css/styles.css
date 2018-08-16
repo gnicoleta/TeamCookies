@@ -5,23 +5,73 @@
 /* bring your own prefixes */
     transform: translate(-50%, -50%);
     margin: 0 auto;
+
+
 }
 html,body{
     width: 100%;
     height: 100%;
     margin:0;
-    background-color: grey;
+    background-color: rgb(232,232,232);
+}
+.table{
+    width: 100%;
+
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    padding: 0;
+    align-content: center;
+    background-color: rgb(232,232,232);
+
+
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(70,70,70);
+    color: white;
+    text-align: center;
+}
+.header{
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+    align-content: center;
+    background-color: rgb(232,232,232);
+
+    position: fixed;
+
+}
+.ftr{
+
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+
+    background-size:100% 100%;
+    position: fixed;
+}
+.img{
+    position: center;
 }
 .title{
-    color: white;
+    color:rgb(248,110,81);
     font-family: Calibri;
     font-size: 30px;
     position: center;
 }
 .myFont{
     font-family: Calibri;
-    color:white;
-    font-size: 20px;
+    color:rgb(248,110,81);
+    font-size: 30px;
+
 }
 
 .myOtherFont{
@@ -32,6 +82,9 @@ html,body{
 .aButton{
     width: 200px;
     height: 30px;
+}
+.menu{
+    background-color: rgb(50,50,50);
 }
 form{
     text-align: center;

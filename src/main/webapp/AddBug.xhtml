@@ -8,11 +8,13 @@
 <f:view>
     <h:head>
         <title>Add Bug</title>
-        <h:outputStylesheet library="css" name="styles.css"/>
+        <h:outputStylesheet library="css" name="addpages.css"/>
     </h:head>
     <h:body>
+        <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
+        <div class="menu">
         <h:form>
-            <p:panel>
+            <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
@@ -37,37 +39,47 @@
                     </p:toolbarGroup>
                     <br/>
                 </p:toolbar>
-            </p:panel>
-        </h:form>
-        <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
-        <div class="centered">
-            <h:form id="add_bug">
-                <h3 class="title">Add Bug</h3>
-                <h:outputText styleClass="myFont" value="Title" style="display:block;"/>
-                <p:inputText id="Title" value="#{addBugBean.title}" required="true" label="Title"/>
-                <br/>
-                <h:outputText styleClass="myFont" value="Description" style="display:block;"/>
-                <p:inputText id="description" value="#{addBugBean.description}" required="true" label="description"/>
-                <br/>
-                <h:outputText styleClass="myFont" value="Version" style="display:block;"/>
-                <p:inputText id="version" value="#{addBugBean.version}" required="true" label="version"/>
-                <br/>
-                <h:outputText styleClass="myFont" value="Assigned to user" style="display:block;"/>
-                <p:inputText id="assignedTo" value="#{addBugBean.username}" required="true" label="assignedTo"/>
-                <br/>
-                <br/>
-                <p:outputLabel for="inline" styleClass="myFont" value="Target Date" style="display:block;"/>
-                <p:calendar id="inline" navigator="true"  value="#{addBugBean.targetDate}" mode="inline"/>
-                <br/>
-                <p:outputLabel for="console" styleClass="myFont" value="Severity Type" style="display:block;"/>
 
-                <p:selectOneMenu id="console" value="#{addBugBean.severityTypeString}" style="width:175px">
+        </h:form>
+        </div>
+        <br/>
+        <br/>
+            <h:form align="left" >
+
+
+                <h:panelGrid columns="4">
+                <h:outputText styleClass="myFont" value="      Title" />
+                <p:inputText id="Title" value="#{addBugBean.title}" required="true" label="Title"/>
+                    <p:watermark for="Title"  value=" " id="watermark3"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="      Description" />
+                <p:inputText id="description" value="#{addBugBean.description}" required="true" label="description"/>
+                    <p:watermark  for="description" value=" " id="watermark4"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="      Version" />
+                <p:inputText id="version" value="#{addBugBean.version}" required="true" label="version"/>
+                    <p:watermark  for="version"  value=" " id="watermark5"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="      Assigned to user" />
+                <p:inputText id="assignedTo" value="#{addBugBean.username}" required="true" label="assignedTo"/>
+                    <p:watermark  for="assignedTo" value=" " id="watermark6"/>
+                <br/>
+                <br/>
+                <h:outputText styleClass="myFont" value="      Target Date"/>
+                <p:calendar id="inline" navigator="true"  style="width:220px" value="#{addBugBean.targetDate}" mode="inline"/>
+                    <p:watermark for="inline" value=" " id="watermark7"/>
+                <br/>
+                <h:outputText styleClass="myFont" value="      Severity Type"/>
+
+                <p:selectOneMenu id="console" value="#{addBugBean.severityTypeString}" style="width:220px">
                     <f:selectItem itemLabel="Choose severity type" itemDisabled="true"/>
                     <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL"/>
                     <f:selectItem itemLabel="HIGH" itemValue="HIGH"/>
                     <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM"/>
                     <f:selectItem itemLabel="LOW" itemValue="LOW"/>
                 </p:selectOneMenu>
+                    <p:watermark for="console" value=" " id="watermark8"/>
+                </h:panelGrid>
                 <br/>
                 <br/>
                 <br/>
@@ -76,13 +88,9 @@
                                  styleClass="aButton"/>
                 <br/>
             </h:form>
-            <h:form>
-                <h:commandButton value="Back" action="bugManagement" ajax="false"/>
-            </h:form>
-
+        <div class="footer">
+            <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
         </div>
-        <br/>
-
     </h:body>
 </f:view>
 </html>

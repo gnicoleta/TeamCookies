@@ -63,11 +63,7 @@ public class LoginBackingBean implements Serializable {
         boolean userPresentInDB = true;
         User user1 = null;
 
-
-
         try {
-
-
             user1 = service.getUserByUsername(username);
         } catch (Exception e) {
             userPresentInDB = false;

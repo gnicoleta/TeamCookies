@@ -8,13 +8,15 @@
 <f:view>
     <h:head>
         <title>Account</title>
+        <h:outputStylesheet library="css" name="addpages.css"/>
 
     </h:head>
     <h:body>
+        <div class="menu">
         <h:form>
-            <p:panel>
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
+            <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
+            <p:toolbar>
+            <p:toolbarGroup align="left">
                         <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
                         <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
                             <f:selectItem itemLabel="User Management"/>
@@ -35,39 +37,45 @@
                                          ajax="false"
                                          styleClass="aButton"/>
                     </p:toolbarGroup>
-                    <br/>
-                </p:toolbar>
-            </p:panel>
+            </p:toolbar>
+
+
+
         </h:form>
+
+        </div>
+        <br/>
+        <br/>
         <h:form align="left">
 
-            <h:panelGrid columns="2">
-                <h:outputText styleClass="myFont" value="First Name"/>
+            <h:panelGrid columns="4">
+                <h:outputText styleClass="myFont" value="      First Name"/>
                 <p:inputText id="first_name" value="#{accountJSFBean.firstName}"/>
                 <p:watermark for="first_name" value="#{accountJSFBean.user.firstName}" id="watermark1"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Last Name"/>
+                <h:outputText styleClass="myFont" value="      Last Name"/>
                 <p:inputText id="last_name" value="#{accountJSFBean.lastName}"/>
                 <p:watermark for="last_name" value="#{accountJSFBean.user.lastName}" id="watermark2"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Email"/>
+                <h:outputText styleClass="myFont" value="      Email"/>
                 <p:inputText id="email" value="#{accountJSFBean.email}"/>
                 <p:watermark for="email" value="#{accountJSFBean.user.email}" id="watermark3"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Phone Number"/>
+                <h:outputText styleClass="myFont" value="      Phone Number"/>
                 <p:inputText id="phone_number" value="#{accountJSFBean.mobileNumber}"/>
                 <p:watermark for="phone_number" value="#{accountJSFBean.user.mobileNumber}" id="watermark4"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="Old Password"/>
+                <h:outputText styleClass="myFont" value="      Old Password"/>
                 <p:password id="old_password" value="#{accountJSFBean.oldPassword}"/>
                 <p:watermark for="old_password" value="old password is required" id="watermark5"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="New Password"/>
+                <h:outputText styleClass="myFont" value="      New Password"/>
                 <p:password id="new_password" value="#{accountJSFBean.password}"/>
+                <p:watermark for="new_password" value=" " id="watermark6"/>
                 <br/>
                 <br/>
-                <br/>
-                <p:selectOneMenu id="console1" value="#{accountJSFBean.roleString}" style="width:175px">
+                <h:outputText styleClass="myFont" value="                  "/>
+                <p:selectOneMenu id="console1" value="#{accountJSFBean.roleString}" style="width:220px">
                     <f:selectItem itemLabel="Add a role" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager" itemValue="PM"/>
@@ -75,10 +83,11 @@
                     <f:selectItem itemLabel="Developer" itemValue="DEV"/>
                     <f:selectItem itemLabel="Tester" itemValue="TEST"/>
                 </p:selectOneMenu>
+                <p:watermark for="console1" value=" " id="watermark7"/>
                 <br/>
                 <br/>
-                <br/>
-                <p:selectOneMenu id="console2" value="#{accountJSFBean.deleteRoleString}" style="width:175px">
+                <h:outputText styleClass="myFont" value="                  "/>
+                <p:selectOneMenu id="console2" value="#{accountJSFBean.deleteRoleString}" style="width:220px">
                     <f:selectItem itemLabel="Delete a role" itemDisabled="true"/>
                     <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager" itemValue="PM"/>
@@ -86,53 +95,23 @@
                     <f:selectItem itemLabel="Developer" itemValue="DEV"/>
                     <f:selectItem itemLabel="Tester" itemValue="TEST"/>
                 </p:selectOneMenu>
+                <p:watermark for="console2" value=" " id="watermark8"/>
 
-            <h:outputText styleClass="myFont" value="Add right to a role"/>
-                <br/>
-                <p:selectOneMenu id="console3" value="#{accountJSFBean.addRightRole}" style="width:175px">
-                    <f:selectItem itemLabel="Select a role" itemDisabled="true"/>
-                    <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
-                    <f:selectItem itemLabel="Project manager" itemValue="PM"/>
-                    <f:selectItem itemLabel="Test manager" itemValue="TM"/>
-                    <f:selectItem itemLabel="Developer" itemValue="DEV"/>
-                    <f:selectItem itemLabel="Tester" itemValue="TEST"/>
-                </p:selectOneMenu>
-                <p:selectOneMenu id="console4" value="#{accountJSFBean.addRight}" style="width:175px">
-                    <f:selectItem itemLabel="Select a right" itemDisabled="true"/>
-                    <f:selectItem itemLabel="PERMISSION MANAGEMENT" itemValue="PERMISSION_MANAGEMENT"/>
-                    <f:selectItem itemLabel="USER MANAGEMENT" itemValue="USER_MANAGEMENT"/>
-                    <f:selectItem itemLabel="BUG MANAGEMENT" itemValue="BUG_MANAGEMENT"/>
-                    <f:selectItem itemLabel="BUG CLOSE" itemValue="BUG_CLOSE"/>
-                    <f:selectItem itemLabel="BUG EXPORT PDF" itemValue="BUG_EXPORT_PDF"/>
-                </p:selectOneMenu>
 
-                <h:outputText styleClass="myFont" value="Delete right to a role"/>
-                <br/>
-                <p:selectOneMenu id="console5" value="#{accountJSFBean.deleteRightRole}" style="width:175px">
-                    <f:selectItem itemLabel="Select a role" itemDisabled="true"/>
-                    <f:selectItem itemLabel="Administrator" itemValue="ADM"/>
-                    <f:selectItem itemLabel="Project manager" itemValue="PM"/>
-                    <f:selectItem itemLabel="Test manager" itemValue="TM"/>
-                    <f:selectItem itemLabel="Developer" itemValue="DEV"/>
-                    <f:selectItem itemLabel="Tester" itemValue="TEST"/>
-                </p:selectOneMenu>
-                <p:selectOneMenu id="console6" value="#{accountJSFBean.deleteRight}" style="width:175px">
-                    <f:selectItem itemLabel="Select a right" itemDisabled="true"/>
-                    <f:selectItem itemLabel="PERMISSION MANAGEMENT" itemValue="PERMISSION_MANAGEMENT"/>
-                    <f:selectItem itemLabel="USER MANAGEMENT" itemValue="USER_MANAGEMENT"/>
-                    <f:selectItem itemLabel="BUG MANAGEMENT" itemValue="BUG_MANAGEMENT"/>
-                    <f:selectItem itemLabel="BUG CLOSE" itemValue="BUG_CLOSE"/>
-                    <f:selectItem itemLabel="BUG EXPORT PDF" itemValue="BUG_EXPORT_PDF"/>
-                </p:selectOneMenu>
 
             </h:panelGrid>
 
+            <br/>
+            <br/>
+            <br/>
             <p:commandButton value="Save" action="#{accountJSFBean.update()}"
                              ajax="false"
                              styleClass="aButton"/>
         </h:form>
 
-
+        <div class="footer">
+            <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
+        </div>
     </h:body>
 </f:view>
 </html>
