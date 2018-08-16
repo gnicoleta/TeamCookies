@@ -57,12 +57,6 @@
 
                     <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}"/>
 
-
-                    <p:column id="c1" headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}"
-                              filterMatchMode="contains">
-                        <h:outputText value="#{user.id}"/>
-                    </p:column>
-
                     <p:column sortBy="#{user.username}" filterBy="#{user.username}" filterMatchMode="contains">
                         <f:facet name="header">Username</f:facet>
                         <h:outputText value="#{user.username}"/>

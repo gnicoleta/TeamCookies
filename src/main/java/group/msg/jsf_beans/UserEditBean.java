@@ -224,10 +224,11 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void updateFirstName() {
         if (newFirstName != null && newFirstName != selectedUser.getFirstName() && newFirstName != "" && newFirstName != " ") {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
-            String allInfo = "First Name changed: (new)" + newFirstName + " - (old)" + selectedUser.getFirstName();
+            String allInfo = "First Name changed to: (new)" + newFirstName + " from (old)" + selectedUser.getFirstName() + " for user: " + selectedUser.getUsername();
             selectedUser.setFirstName(newFirstName);
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
+            ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
         }
@@ -236,10 +237,11 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void updateEmail() {
         if (newEmail != null && newEmail != selectedUser.getEmail() && newEmail != "" && newEmail != " ") {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
-            String allInfo = "Email changed: (new)" + newEmail + " - (old)" + selectedUser.getEmail();
+            String allInfo = "Email changed to: (new)" + newEmail + " from (old)" + selectedUser.getEmail() + " for user: " + selectedUser.getUsername();
             selectedUser.setEmail(newEmail);
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
+            ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
         }
@@ -248,10 +250,11 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void updateMobileNumber() {
         if (newMobileNumber != null && newMobileNumber != selectedUser.getMobileNumber() && newMobileNumber != "" && newMobileNumber != " ") {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
-            String allInfo = "Mobile Number changed: (new)" + newMobileNumber + " - (old)" + selectedUser.getMobileNumber();
+            String allInfo = "Mobile Number changed to: (new)" + newMobileNumber + " from (old)" + selectedUser.getMobileNumber() + " for user: " + selectedUser.getUsername();
             selectedUser.setMobileNumber(newMobileNumber);
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
+            ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
         }
@@ -264,6 +267,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             service.addRole(this.roleType, selectedUser);
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
+            ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
         }
@@ -272,10 +276,11 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void updateLastName() {
         if (newLastName != null && newLastName != selectedUser.getLastName() && newLastName != "" && newLastName != " ") {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
-            String allInfo = "Last Name changed: (new)" + newLastName + " - (old)" + selectedUser.getLastName();
+            String allInfo = "Last Name changed to: (new)" + newLastName + " from (old)" + selectedUser.getLastName() + " for user: " + selectedUser.getUsername();
             selectedUser.setLastName(newLastName);
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
+            ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
             selectedUser.getNotifications().add(notification);
             service.update(selectedUser);
         }
@@ -293,13 +298,13 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void updateStatus() {
         if (userStatus != null) {
             selectedUser.setUserStatus(userStatus);
-            service.update(selectedUser);
             Notification notification = new Notification(NotificationType.USER_UPDATED);
-            String allInfo = "Staus changed: (new)" + userStatus + " - (old)" + selectedUser.getUserStatus();
+            String allInfo = "Staus changed to: (new)" + userStatus + " for user: " + selectedUser.getUsername();
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
-            selectedUser.getNotifications().add(notification);
             ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
+            selectedUser.getNotifications().add(notification);
+            service.update(selectedUser);
         }
     }
 
