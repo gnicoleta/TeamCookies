@@ -21,14 +21,14 @@
             <p:toolbar>
 
                 <p:toolbarGroup align="left">
-                    <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"/>
-                    <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                    <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton" icon="ui-icon-home"/>
+                    <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                         <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
                         <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
                         <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
                         <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                     </p:selectOneMenu>
-                    <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                    <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                         <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
                         <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
                         <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
@@ -40,6 +40,11 @@
                     <p:commandButton value="Logout" action="#{userEditBean.logout}"
                                      ajax="false"
                                      styleClass="aButton"/>
+                    <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                     valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                        <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                        <f:selectItems value="#{langChange.countries}"/>
+                    </p:selectOneMenu>
                 </p:toolbarGroup>
                 <br/>
             </p:toolbar>
@@ -78,16 +83,7 @@
 
         </h:form>
 
-        <h:form>
-            <br/>
-            <h:outputText styleClass="myFont" value="#{msg.select_language}" style="display:block;"/>
-            <h:selectOneMenu value="#{langChange.languageCode}" onchange="submit()"
-                             valueChangeListener="#{langChange.countryLocaleCodeChanged}">
-                <f:selectItems value="#{langChange.countries}"/>
 
-
-            </h:selectOneMenu>
-        </h:form>
 
         <div class="footer">
             <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>

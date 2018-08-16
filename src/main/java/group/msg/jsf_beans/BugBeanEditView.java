@@ -9,13 +9,16 @@ import org.primefaces.event.CellEditEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import org.primefaces.model.StreamedContent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,6 +35,8 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
     private UserServiceEJB service;
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
+    @Inject
+    private DownloadBean downloadBean;
 
     private Integer id;
     private List<Bug> bugListForView = new ArrayList<>();
@@ -288,5 +293,20 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
         notificationServiceEJB.save(notification);
         selectedBug.getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
+    }
+
+    public StreamedContent getPDF() throws IOException {
+        PDFWriter pdfWriter = null;
+        try {
+            List<Bug> bugs = new ArrayList<>();
+            bugs.add(bugService.findBugById((int) WebHelper.getSession().getAttribute("bugId")));
+            pdfWriter = downloadBean.getPDFWriter();
+            pdfWriter.createPDF(bugs, "Bug_Info");
+            return pdfWriter.getFile();
+        } catch (Exception e) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid bug");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
+        return null;
     }
 }

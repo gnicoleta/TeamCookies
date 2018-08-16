@@ -1,6 +1,7 @@
 package group.msg.jsf_beans;
 
 import group.msg.entities.Notification;
+import group.msg.entities.NotificationType;
 import group.msg.entities.User;
 import lombok.Data;
 import org.primefaces.event.SelectEvent;
@@ -179,12 +180,14 @@ public class NotificationsBean extends LazyDataModel<Notification> implements Se
 
     public void onRowDblClickSelect(final SelectEvent event) {
         Notification obj = (Notification) event.getObject();
-        int aux = obj.getBugId();
-        WebHelper.getSession().setAttribute("bugId", aux);
-        FacesContext context = FacesContext.getCurrentInstance();
-        NavigationHandler navigationHandler = context.getApplication()
-                .getNavigationHandler();
-        navigationHandler.handleNavigation(context, null, "singleBugPage"
-                + "?faces-redirect=true");
+        if (obj.getNotificationType().equals(NotificationType.BUG_STATUS_UPDATED) || obj.getNotificationType().equals(NotificationType.BUG_UPDATED) || obj.getNotificationType().equals(NotificationType.BUG_CLOSED)) {
+            int aux = obj.getBugId();
+            WebHelper.getSession().setAttribute("bugId", aux);
+            FacesContext context = FacesContext.getCurrentInstance();
+            NavigationHandler navigationHandler = context.getApplication()
+                    .getNavigationHandler();
+            navigationHandler.handleNavigation(context, null, "singleBugPage"
+                    + "?faces-redirect=true");
+        }
     }
 }

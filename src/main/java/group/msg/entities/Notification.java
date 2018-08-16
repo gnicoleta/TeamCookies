@@ -29,6 +29,7 @@ public class Notification implements Serializable {
 
     private String info;
 
+    @Transient
     private int bugId;
 
     @Column(name="notification_date")

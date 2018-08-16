@@ -18,14 +18,14 @@
                 <p:toolbar>
 
                     <p:toolbarGroup align="left" >
-                        <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"/>
-                        <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                        <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton" icon="ui-icon-home"/>
+                        <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                             <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
                             <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
                             <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                         </p:selectOneMenu>
-                        <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                        <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                             <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
                             <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
                             <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
@@ -37,6 +37,11 @@
                         <p:commandButton value="Logout" action="#{userEditBean.logout}"
                                          ajax="false"
                                          styleClass="aButton"/>
+                        <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                         valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                            <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                            <f:selectItems value="#{langChange.countries}"/>
+                        </p:selectOneMenu>
                     </p:toolbarGroup>
                     <br/>
                 </p:toolbar>
@@ -60,7 +65,7 @@
                 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
                 <p:column id="titleColumn" sortBy="#{bug.title}" filterBy="#{bug.title}" filterMatchMode="contains">
-                    <f:facet name="header">Title</f:facet>
+                    <f:facet name="header">#{msg.title}</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.title}"/>
@@ -71,7 +76,7 @@
                     </p:cellEditor>
                 </p:column>
                 <p:column sortBy="#{bug.description}" filterBy="#{bug.description}" filterMatchMode="contains">
-                    <f:facet name="header">Description</f:facet>
+                    <f:facet name="header">#{msg.description}</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.description}"/>
@@ -82,7 +87,7 @@
                     </p:cellEditor>
                 </p:column>
                 <p:column sortBy="#{bug.version}" filterBy="#{bug.version}" filterMatchMode="contains">
-                    <f:facet name="header">Version</f:facet>
+                    <f:facet name="header">#{msg.version}</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.version}"/>
@@ -94,15 +99,15 @@
                 </p:column>
 
                 <p:column sortBy="#{bug.fixedInVersion}" filterBy="#{bug.fixedInVersion}" filterMatchMode="contains">
-                    <f:facet name="header">Fixed in version</f:facet>
+                    <f:facet name="header">#{msg.fixed_in_version}</f:facet>
                     #{bug.fixedInVersion}
                 </p:column>
                 <p:column sortBy="#{bug.targetDate}" filterBy="#{bug.targetDate}" filterMatchMode="contains">
-                    <f:facet name="header">Target date</f:facet>
+                    <f:facet name="header">#{msg.target_date}</f:facet>
                     #{bug.targetDate}
                 </p:column>
                 <p:column sortBy="#{bug.severityType}" filterBy="#{bug.severityType}" filterMatchMode="contains">
-                    <f:facet name="header">Severity type</f:facet>
+                    <f:facet name="header">#{msg.severity}</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.severityType}"/>
@@ -119,11 +124,11 @@
                     </p:cellEditor>
                 </p:column>
                 <p:column sortBy="#{bug.createdBy}" filterBy="#{bug.createdBy}" filterMatchMode="contains">
-                    <f:facet name="header">Created by</f:facet>
+                    <f:facet name="header">#{msg.created_by}</f:facet>
                     #{bug.createdBy}
                 </p:column>
                 <p:column sortBy="#{bug.statusType}" filterBy="#{bug.statusType}" filterMatchMode="contains">
-                    <f:facet name="header">Status type</f:facet>
+                    <f:facet name="header">Status</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.statusType}"/>
@@ -173,7 +178,7 @@
                     </p:cellEditor>
                 </p:column>
                 <p:column sortBy="#{bug.assignedTo}" filterBy="#{bug.assignedTo}" filterMatchMode="contains">
-                    <f:facet name="header">Assigned to</f:facet>
+                    <f:facet name="header">#{msg.assigned_to_user}</f:facet>
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{bug.assignedTo}"/>
@@ -186,12 +191,12 @@
                 <p:ajax event="cellEdit" listener="#{bugBean.updateBug}" update=":datatableform:table"/>
 
                 <p:column>
-                    <f:facet name="header">Attachment</f:facet>
-                    <p:commandButton value="Download attachment" ajax="true"
+                    <f:facet name="header">#{msg.attachment}</f:facet>
+                    <p:commandButton value="#{msg.download_attachment}" ajax="true"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                         <p:fileDownload value="#{bugBean.downloadAttachment()}"/>
                     </p:commandButton>
-                    <p:commandButton value="Delete attachment" ajax="true" action="#{bugBean.deleteAttachment}" icon="ui-icon-minusthick"/>
+                    <p:commandButton value="#{msg.delete_attachment}" ajax="true" action="#{bugBean.deleteAttachment}" icon="ui-icon-minusthick"/>
 
                     <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced"
                                   dragDropSupport="false"
@@ -204,36 +209,27 @@
             </p:dataTable>
             <br/>
 
-        </h:form>
 
-        <h:form id="form">
             <p:toolbar>
                 <p:toolbarGroup align="left">
-                    <p:commandButton value="Download excel" ajax="false"
+                    <p:commandButton value="#{msg.download_excel}" ajax="false"
                                      onclick="PrimeFaces.monitorDownload(start, stop);"
                                      icon="ui-icon-arrowthick-1-s">
                         <p:fileDownload value="#{bugBean.getExcel()}"/>
                     </p:commandButton>
-                    <p:commandButton value="Download selected bug" ajax="false"
+                    <p:commandButton value="#{msg.download_selected_bug}" ajax="false"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                         <p:fileDownload value="#{bugBean.getPDF()}"/>
                     </p:commandButton>
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">
-                        <p:commandButton value="Add bug" action="AddBug" ajax="false" icon="ui-icon-plusthick"/>
+                        <p:commandButton value="#{msg.add_bug}" action="AddBug" ajax="false" icon="ui-icon-plusthick"/>
                 </p:toolbarGroup>
             </p:toolbar>
         </h:form>
         <h:form>
             <br/>
 
-            <h:outputText styleClass="myFont" value="#{msg.select_language}" style="display:block;"/>
-            <h:selectOneMenu value="#{langChange.languageCode}" onchange="submit()"
-                             valueChangeListener="#{langChange.countryLocaleCodeChanged}">
-                <f:selectItems value="#{langChange.countries}"/>
-
-
-            </h:selectOneMenu>
             <br/>
             <br/>
             <br/>
