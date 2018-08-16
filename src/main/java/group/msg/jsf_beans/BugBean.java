@@ -192,15 +192,6 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         }
     }
 
-//    public Bug getSelectedBug() {
-//        return selectedBugs.get(0);
-//    }
-//
-//    public void setSelectedBug(Bug selectedBug) {
-//        this.selectedBugs.get(0) = selectedBug;
-//        bugService.update(selectedBugs.get(0));
-//    }
-
     public File byteToFile(byte[] byteFile, String filename) {
         File file = new File(filename);
         FileOutputStream stream = null;

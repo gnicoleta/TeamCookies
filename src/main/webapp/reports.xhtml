@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
+<f:view locale="#{langChange.getLocale()}">
+    <h:head>
+        <title>Reports</title>
+        <h:outputStylesheet library="css" name="addpages.css"/>
+
+    </h:head>
+    <h:body>
+        <div class="menu">
+            <h:form>
+                <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"/>
+                        <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                            <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
+                            <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                            <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
+                            <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="#{msg.account}" action="account" styleClass="aButton"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Logout" action="#{userEditBean.logout}"
+                                         ajax="false"
+                                         styleClass="aButton"/>
+                        <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                         valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                            <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                            <f:selectItems value="#{langChange.countries}"/>
+                        </p:selectOneMenu>
+                    </p:toolbarGroup>
+                    <br/>
+                </p:toolbar>
+            </h:form>
+            <h:form>
+                <p:chart type="pie" model="#{reportBean.piecharModel}" style="width:400px;height:300px"/>
+                <p:chart type="bar" model="#{reportBean.barModel}" style="height:300px"/>
+                <p:chart type="bar" model="#{reportBean.barModel2}" style="height:300px"/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            </h:form>
+        </div>
+        <div class="footer">
+            <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
+        </div>
+    </h:body>
+</f:view>
+</html>

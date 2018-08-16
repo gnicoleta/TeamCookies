@@ -188,6 +188,7 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
+
                 <p:ajax event="cellEdit" listener="#{bugBean.updateBug}" update=":datatableform:table"/>
 
                 <p:column>
@@ -222,11 +223,14 @@
                 <p:toolbarGroup align="right">
                         <p:commandButton value="#{msg.add_bug}" action="AddBug" ajax="false" icon="ui-icon-plusthick"/>
                 </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="#{msg.reports}" action="reports" ajax="false" icon="ui-icon-plusthick"/>
+                </p:toolbarGroup>
             </p:toolbar>
+
         </h:form>
         <h:form>
             <br/>
-
             <br/>
             <br/>
             <br/>
