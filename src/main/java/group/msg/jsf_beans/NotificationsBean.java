@@ -1,8 +1,6 @@
 package group.msg.jsf_beans;
 
-import group.msg.entities.Bug;
 import group.msg.entities.Notification;
-
 import group.msg.entities.User;
 import lombok.Data;
 import org.primefaces.event.SelectEvent;
@@ -18,39 +16,36 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Data
 @Named
 @ManagedBean
 @ViewScoped
-public class NotificationsBean  extends LazyDataModel<Notification> implements Serializable {
+public class NotificationsBean extends LazyDataModel<Notification> implements Serializable {
     private Notification selectedNotification;
     private String outputMessage;
     private int id;
     private int bugId;
 
-    @Inject
-    private Logger logger;
 
     private List<Notification> notificationList;
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
 
-    public Notification getSelectedNotification(){
+    public Notification getSelectedNotification() {
         System.out.println("test");
         return selectedNotification;
     }
 
-    public void setSelectedNotification(Notification selectedNotification){
-        this.selectedNotification=selectedNotification;
+    public void setSelectedNotification(Notification selectedNotification) {
+        this.selectedNotification = selectedNotification;
         notificationServiceEJB.update(selectedNotification);
     }
 
     @PostConstruct
-    public void init(){
-        notificationList=(List<Notification>)((User)WebHelper.getSession().getAttribute("currentUser")).getNotifications();
+    public void init() {
+        notificationList = (List<Notification>) ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications();
     }
 
 
@@ -59,8 +54,8 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
         try {
             Integer id = Integer.parseInt(rowKey);
             return notificationList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -69,8 +64,8 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
     public Object getRowKey(Notification object) {
         try {
             return object.getId();
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -109,7 +104,7 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
                         }
                     } catch (Exception e) {
                         match = false;
-                        logger.info(Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
                     }
                 }
             }
@@ -129,7 +124,7 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
             try {
                 return filteredList.subList(first, first + pageSize);
             } catch (IndexOutOfBoundsException e) {
-                logger.info(Arrays.toString(e.getStackTrace()));
+                e.printStackTrace();
                 return filteredList.subList(first, first + (dataSize % pageSize));
             }
         } else {
@@ -137,7 +132,6 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
         }
 
     }
-
 
 
     public static class NotificationSorter implements Comparator<Notification> {
@@ -186,8 +180,8 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
             Notification obj = (Notification) event.getObject();
             String aux = obj.getBugTitle();
             bugs.navigate(aux);
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 }

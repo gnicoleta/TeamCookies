@@ -7,16 +7,13 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.logging.Logger;
 
 @Data
 @Named
@@ -55,8 +52,6 @@ public class AddBugBean implements Serializable {
 
     private Bug bug;
 
-    @Inject
-    private Logger logger;
 
     public String addBug() {
         try {
@@ -70,13 +65,13 @@ public class AddBugBean implements Serializable {
             SeverityType severityType = SeverityType.valueOf(severityTypeString);
             bug.setSeverityType(severityType);
         } catch (NullPointerException e) {
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
         User user = null;
         try {
             user = userServiceEJB.getUserByUsername(username);
         } catch (Exception e) {
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Assigned user does not exist!!");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
             return "AddBug";
@@ -93,8 +88,8 @@ public class AddBugBean implements Serializable {
                 attachmentServiceEJB.save(attachment);
                 bug.setAttachment(attachment);
             }
-        }catch (Exception e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
         bugServiceEJB.save(bug);
@@ -112,10 +107,10 @@ public class AddBugBean implements Serializable {
                 FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
                 FacesContext.getCurrentInstance().addMessage(null, message);
             } catch (NullPointerException e) {
-                logger.info(Arrays.toString(e.getStackTrace()));
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

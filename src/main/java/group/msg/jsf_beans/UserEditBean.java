@@ -4,29 +4,20 @@ package group.msg.jsf_beans;
 import group.msg.entities.*;
 import lombok.Data;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.Column;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Data
@@ -62,8 +53,6 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private String rghtTypeStr;
     private String roleTypeStr;
 
-    @Inject
-    private Logger logger;
 
     @PostConstruct
     public void init() {
@@ -95,8 +84,8 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + requiredRight);
                 RequestContext.getCurrentInstance().showMessageInDialog(message);
             }
-        }catch (Exception e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -126,8 +115,8 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         try {
             Integer id = Integer.parseInt(rowKey);
             return usersList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -137,8 +126,8 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public Object getRowKey(User object) {
         try {
             return object.getId();
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -175,7 +164,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
                         }
                     } catch (Exception e) {
                         match = false;
-                        logger.info(Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
                     }
                 }
             }
@@ -195,7 +184,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             try {
                 return filteredList.subList(first, first + pageSize);
             } catch (IndexOutOfBoundsException e) {
-                logger.info(Arrays.toString(e.getStackTrace()));
+                e.printStackTrace();
                 return filteredList.subList(first, first + (dataSize % pageSize));
 
             }

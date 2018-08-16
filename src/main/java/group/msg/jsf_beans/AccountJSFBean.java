@@ -13,10 +13,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+
 import java.io.Serializable;
-import java.util.Arrays;
+
 import java.util.Collection;
-import java.util.logging.Logger;
 
 
 @Data
@@ -52,12 +52,10 @@ public class AccountJSFBean implements Serializable {
     @Inject
     private PasswordEncryptor passwordEncryptor;
 
-    @Inject
-    private Logger logger;
 
     public String update() {
 
-        String info ="";
+        String info = "";
 
         try {
             if (firstName.length() > 0) {
@@ -93,11 +91,11 @@ public class AccountJSFBean implements Serializable {
                 }
 
             }
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         if (roleString != null) {
-        info+="1";
+            info += "1";
 
             if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
                 userServiceEJB.addRole(RoleType.valueOf(roleString), user);
@@ -108,19 +106,19 @@ public class AccountJSFBean implements Serializable {
 
         }
         if (deleteRoleString != null) {
-            info+="1";
+            info += "1";
             if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
 
                 Role role1 = null;
-                boolean contains=false;
+                boolean contains = false;
                 Collection<Role> roles = user.getUserRoles();
                 for (Role role : roles) {
                     if (role.getRoleString().equals(deleteRoleString)) {
                         role1 = role;
-                        contains=true;
+                        contains = true;
                     }
                 }
-                if(contains){
+                if (contains) {
                     roles.remove(role1);
                 }
 
@@ -136,13 +134,13 @@ public class AccountJSFBean implements Serializable {
         }
 
         if (addRightRole != null) {
-            if(addRight!=null){
-                Role role=roleServiceEJB.findRoleByType(addRightRole);
-                Collection<Rights> rights=role.getRoleRights();
+            if (addRight != null) {
+                Role role = roleServiceEJB.findRoleByType(addRightRole);
+                Collection<Rights> rights = role.getRoleRights();
                 rights.add(rightServiceEJB.findRightByType(addRight));
                 role.setRoleRights(rights);
                 roleServiceEJB.update(role);
-                info+=role.getRoleString()+"---"+addRight;
+                info += role.getRoleString() + "---" + addRight;
 
 
             }
@@ -151,31 +149,31 @@ public class AccountJSFBean implements Serializable {
         }
 
         if (deleteRightRole != null) {
-            if(deleteRight!=null){
-                Role role=roleServiceEJB.findRoleByType(deleteRightRole);
-                Collection<Rights> rights=role.getRoleRights();
-                Rights rights1=null;
-                boolean contains=false;
+            if (deleteRight != null) {
+                Role role = roleServiceEJB.findRoleByType(deleteRightRole);
+                Collection<Rights> rights = role.getRoleRights();
+                Rights rights1 = null;
+                boolean contains = false;
 
-                info+=rights.size();
+                info += rights.size();
 
-                for(Rights right:rights){
-                    if(right.getTypeString().equals(RightType.valueOf(deleteRight))){
-                        rights1=right;
-                        contains=true;
-                        info+="kdosakdos";
+                for (Rights right : rights) {
+                    if (right.getTypeString().equals(RightType.valueOf(deleteRight))) {
+                        rights1 = right;
+                        contains = true;
+                        info += "kdosakdos";
                     }
                 }
-                if(contains){
+                if (contains) {
                     rights.remove(rights1);
                 }
                 role.setRoleRights(rights);
                 roleServiceEJB.update(role);
-                info+=role.getRoleString()+"---"+deleteRight;
+                info += role.getRoleString() + "---" + deleteRight;
 
             }
         }
-        if(info.length()>0) {
+        if (info.length() > 0) {
             userServiceEJB.update(user);
             Notification notification = new Notification(NotificationType.USER_UPDATED);
             notification.setInfo(info);

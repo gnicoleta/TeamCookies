@@ -12,14 +12,12 @@ public class UsernameGenerator implements Serializable {
     @PersistenceContext
     private EntityManager em;
 
-    @Inject
-    private Logger logger;
 
     public String generateUsername(String firstName, String lastName, EntityManager entityManager) {
         try {
             em = entityManager;
         }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
         StringBuilder result = new StringBuilder();
 
@@ -41,7 +39,7 @@ public class UsernameGenerator implements Serializable {
                 result.append(firstName.charAt(0));
             }
         }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
 
         try {
@@ -57,7 +55,7 @@ public class UsernameGenerator implements Serializable {
             }
         } catch (NullPointerException e) {
 
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
 
 

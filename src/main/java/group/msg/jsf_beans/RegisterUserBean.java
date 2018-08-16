@@ -14,10 +14,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Data
 @Named
@@ -44,16 +42,13 @@ public class RegisterUserBean implements Serializable {
     private List<User> users;
 
     @Inject
-    private Logger logger;
-
-    @Inject
     RightsForRoleGetterAndSetter rightsForRoleGetterAndSetter;
 
     @EJB
     private UserServiceEJB service;
 
     @EJB
-    private  NotificationServiceEJB notificationServiceEJB;
+    private NotificationServiceEJB notificationServiceEJB;
 
     @EJB
     private RoleServiceEJB roleServiceEJB;
@@ -78,8 +73,8 @@ public class RegisterUserBean implements Serializable {
             }
             temp += "\n";
             return temp;
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -145,10 +140,10 @@ public class RegisterUserBean implements Serializable {
 
                 return "register";
             } catch (NullPointerException e) {
-                logger.info(Arrays.toString(e.getStackTrace()));
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return null;

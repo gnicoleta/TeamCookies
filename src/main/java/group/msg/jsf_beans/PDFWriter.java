@@ -11,15 +11,15 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import javax.inject.Inject;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 
 public class PDFWriter implements Serializable {
@@ -30,21 +30,19 @@ public class PDFWriter implements Serializable {
 
     private PDDocument document;
 
-    @Inject
-    private Logger logger;
 
-    private List<String> separateLines(String bug, PDPage page, PDPageContentStream contentStream) throws IOException{
+    private List<String> separateLines(String bug, PDPage page, PDPageContentStream contentStream) throws IOException {
         PDFont pdfFont = PDType1Font.TIMES_ROMAN;
         float fontSize = 12;
         leading = 1.5f * fontSize;
 
         PDRectangle mediabox = page.getMediaBox();
         float margin = 72;
-        float width = mediabox.getWidth() - 2*margin;
+        float width = mediabox.getWidth() - 2 * margin;
         float startX = mediabox.getLowerLeftX() + margin;
         float startY = mediabox.getUpperRightY() - margin;
 
-        String bugContent =bug;
+        String bugContent = bug;
         List<String> lines = new ArrayList<>();
 
         for (String text : bugContent.split(System.lineSeparator())) {
@@ -81,23 +79,23 @@ public class PDFWriter implements Serializable {
 
         try {
             pdfPath = Paths.get(filename + ".pdf");
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        document=new PDDocument();
+        document = new PDDocument();
 
-        Iterator it=null;
+        Iterator it = null;
         try {
-             it = bugs.iterator();
-        }catch (NullPointerException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+            it = bugs.iterator();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        while(it.hasNext()) {
-            Bug bug=null;
+        while (it.hasNext()) {
+            Bug bug = null;
             try {
-                 bug = (Bug) it.next();
-            }catch (NullPointerException e){
-                logger.info(Arrays.toString(e.getStackTrace()));
+                bug = (Bug) it.next();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
 
             PDPage pdPage = new PDPage();
@@ -108,10 +106,9 @@ public class PDFWriter implements Serializable {
             PDPageContentStream contentStream = new PDPageContentStream(document, document.getPage(pageIndex));
 
             contentStream.beginText();
-            List<String> lines=separateLines(bug.toString(),pdPage,contentStream);
+            List<String> lines = separateLines(bug.toString(), pdPage, contentStream);
 
-            for (String line: lines)
-            {
+            for (String line : lines) {
                 contentStream.showText(line);
                 contentStream.newLineAtOffset(0, -leading);
             }
@@ -126,18 +123,17 @@ public class PDFWriter implements Serializable {
     }
 
 
-    public StreamedContent getFile(){
-        StreamedContent file=null;
+    public StreamedContent getFile() {
+        StreamedContent file = null;
         try {
             InputStream stream = new FileInputStream(pdfPath.toFile().getAbsolutePath());
             file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug.pdf");
-        }catch (IOException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return file;
     }
-
 
 
 }

@@ -15,13 +15,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Data
 @Named
@@ -79,10 +74,10 @@ public class LoginBackingBean implements Serializable {
 
             if (user1.getUserStatus().equals(UserStatus.ACTIVE)) {
 
-                String encryptedInputPassword="admin";
-                if(!pwd.equals("admin")) {
+                String encryptedInputPassword = "admin";
+                if (!pwd.equals("admin")) {
 
-                     encryptedInputPassword = passwordEncryptor.passwordEncryption(pwd);
+                    encryptedInputPassword = passwordEncryptor.passwordEncryption(pwd);
                 }
 
                 if (encryptedInputPassword.equals(user1.getPassword())) {
@@ -137,7 +132,6 @@ public class LoginBackingBean implements Serializable {
         }
     }
     //}
-
 
 
 }

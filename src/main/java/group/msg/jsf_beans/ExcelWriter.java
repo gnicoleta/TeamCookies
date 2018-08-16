@@ -9,13 +9,10 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import javax.activation.MimetypesFileTypeMap;
-import javax.inject.Inject;
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
-public class ExcelWriter implements Serializable{
+public class ExcelWriter implements Serializable {
 
     private static String[] columns = {"Id", "Title", "Description", "Version", "Fixed in version", "Target date", "Severity type",
             "Created by", "Assigned user", "Status Type", "Notification"};
@@ -23,8 +20,6 @@ public class ExcelWriter implements Serializable{
     private FileOutputStream fileOut;
     private File excelPath;
 
-    @Inject
-    private Logger logger;
 
     public void createExcel(List<Bug> bugs, String filename) throws IOException {
         // Create a Workbook
@@ -82,8 +77,8 @@ public class ExcelWriter implements Serializable{
                 row.createCell(8).setCellValue(bug.getAssignedTo().getUsername());
                 row.createCell(9).setCellValue(bug.getStatusType().toString());
                 row.createCell(10).setCellValue(bug.getNotification().getNotificationType().toString());
-            }catch (NullPointerException e){
-                logger.info(Arrays.toString(e.getStackTrace()));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
 
         }
@@ -97,11 +92,11 @@ public class ExcelWriter implements Serializable{
             try {
                 excelPath = new File(filename + ".xlsx");
             } catch (NullPointerException e) {
-                logger.info(Arrays.toString(e.getStackTrace()));
+                e.printStackTrace();
             }
             fileOut = new FileOutputStream(excelPath);
-        }catch (FileNotFoundException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
         workbook.write(fileOut);
         fileOut.close();
@@ -116,11 +111,11 @@ public class ExcelWriter implements Serializable{
 
         InputStream stream = new FileInputStream(excelPath.getAbsolutePath());
 
-        String contentType=new MimetypesFileTypeMap().getContentType(excelPath);
+        String contentType = new MimetypesFileTypeMap().getContentType(excelPath);
 
-        String extension=FilenameUtils.getExtension(excelPath.getName());
+        String extension = FilenameUtils.getExtension(excelPath.getName());
 
-        return new DefaultStreamedContent(stream, contentType, "Downloaded_excel_bug."+extension);
+        return new DefaultStreamedContent(stream, contentType, "Downloaded_excel_bug." + extension);
     }
 
 }

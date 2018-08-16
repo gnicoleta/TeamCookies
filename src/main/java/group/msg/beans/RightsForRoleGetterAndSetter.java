@@ -2,18 +2,13 @@ package group.msg.beans;
 
 import group.msg.entities.RightType;
 import group.msg.entities.RoleType;
-import lombok.Data;
 
-import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.*;
-import java.util.logging.Logger;
 
 
 public class RightsForRoleGetterAndSetter implements Serializable {
 
-    @Inject
-    private Logger logger;
 
     private List<RightType> admRights = new ArrayList<>();
     private List<RightType> pmRights = new ArrayList<>();
@@ -61,10 +56,10 @@ public class RightsForRoleGetterAndSetter implements Serializable {
                     }
                 }
             } catch (NullPointerException e) {
-                logger.info(Arrays.toString(e.getStackTrace()));
+               e.printStackTrace();
             }
         } catch (Exception e) {
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
         return -1;
 
@@ -76,7 +71,7 @@ public class RightsForRoleGetterAndSetter implements Serializable {
         try {
             index = findRightIndex(rightType, listOfLists.get(listIndex));
         } catch (IndexOutOfBoundsException e) {
-            logger.info(Arrays.toString(e.getStackTrace()));
+           e.printStackTrace();
         }
         if (index == -1) {
             listOfLists.get(listIndex).add(rightType);
@@ -93,7 +88,7 @@ public class RightsForRoleGetterAndSetter implements Serializable {
         try {
             index = findRightIndex(rightType, listOfLists.get(listIndex));
         } catch (IndexOutOfBoundsException e) {
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
         if (index == -1) {
             return false;
@@ -123,7 +118,7 @@ public class RightsForRoleGetterAndSetter implements Serializable {
                 return testRights;
             }
         } catch (NullPointerException e) {
-            logger.info(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
         return null;
     }
