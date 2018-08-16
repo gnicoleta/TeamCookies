@@ -17,14 +17,14 @@
             <p:toolbar>
 
                 <p:toolbarGroup align="left" >
-                    <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"/>
-                    <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
+                    <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton" icon="ui-icon-home"/>
+                    <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                         <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
                         <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
                         <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
                         <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                     </p:selectOneMenu>
-                    <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
+                    <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}" ajax="false">
                         <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
                         <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
                         <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
