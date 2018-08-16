@@ -33,6 +33,7 @@ public class BugServiceEJB {
     public void update(Bug bug) {
         try {
             em.merge(bug);
+            logger.info("Bug updated: "+bug.toString());
         } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
