@@ -4,7 +4,10 @@ import group.msg.beans.PasswordEncryptor;
 import group.msg.beans.RightsForRoleGetterAndSetter;
 import group.msg.beans.UsernameGenerator;
 import group.msg.entities.*;
+import group.msg.validator.emailValidation.emailValidation;
+import group.msg.validator.mobileNumberValidation.mobileNumberValidation;
 import lombok.Data;
+import lombok.NonNull;
 import org.jboss.weld.context.ejb.Ejb;
 
 import javax.annotation.PostConstruct;
@@ -29,10 +32,19 @@ public class RegisterUserBean implements Serializable {
     @Inject
     UsernameGenerator usernameGenerator;
 
+    public RegisterUserBean() {
+    }
+
     private String firstName;
     private String lastName;
     private String password;
+
+    @NonNull
+    @emailValidation
     private String email;
+
+    @mobileNumberValidation
+    @NonNull
     private String mobileNumber;
     private LinkedList<String> selectedRolesStrings;
     private LinkedList<Role> selectedRoles = new LinkedList<>();
