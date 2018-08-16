@@ -82,12 +82,14 @@ public class AddBugBean implements Serializable {
             String data = "NEW BUG!   " + "\n Title:" + title + ". Description:" + description + ". Version:" + version + ". Target date:" + targetDate + ". Severity type:" + severityTypeString;
             notification.setInfo(data);
             notification.setNotificationType(NotificationType.BUG_UPDATED);
+            notification.setBugId(bug.getId());
             notificationServiceEJB.save(notification);
             user.getNotifications().add(notification);
             if (attachment != null) {
                 attachmentServiceEJB.save(attachment);
                 bug.setAttachment(attachment);
             }
+            notificationServiceEJB.update(notification);
         } catch (Exception e) {
             e.printStackTrace();
         }

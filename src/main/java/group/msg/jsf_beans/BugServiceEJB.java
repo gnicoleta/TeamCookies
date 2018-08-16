@@ -65,6 +65,21 @@ public class BugServiceEJB {
             } catch (NullPointerException e) {
                 logger.info(Arrays.toString(e.getStackTrace()));
             }
+        } catch (NoResultException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
+    }
+    public Bug findBugById(int bugId) {
+        try {
+            try {
+                Query q = em.createQuery("select b from Bug b where b.id = :id");
+                q.setParameter("id", bugId);
+                return (Bug) q.getSingleResult();
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
         }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }

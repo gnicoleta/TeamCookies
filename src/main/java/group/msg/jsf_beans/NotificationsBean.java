@@ -10,6 +10,8 @@ import org.primefaces.model.SortOrder;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.NavigationHandler;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -173,15 +175,16 @@ public class NotificationsBean extends LazyDataModel<Notification> implements Se
     }
 
     @Inject
-    private BugBean bugs;
+    private BugBeanEditView bugs;
 
     public void onRowDblClickSelect(final SelectEvent event) {
-        try {
-            Notification obj = (Notification) event.getObject();
-            String aux = obj.getBugTitle();
-            bugs.navigate(aux);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        Notification obj = (Notification) event.getObject();
+        int aux = obj.getBugId();
+        WebHelper.getSession().setAttribute("bugId", aux);
+        FacesContext context = FacesContext.getCurrentInstance();
+            NavigationHandler navigationHandler = context.getApplication()
+                    .getNavigationHandler();
+            navigationHandler.handleNavigation(context, null, "singleBugPage"
+                    + "?faces-redirect=true");
     }
 }

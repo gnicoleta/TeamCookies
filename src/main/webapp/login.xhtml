@@ -4,11 +4,14 @@
 <html xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
+
 >
 <f:view>
     <h:head>
         <title>Login</title>
         <h:outputStylesheet library="css" name="styles.css"/>
+
+
     </h:head>
     <h:body>
 
@@ -28,11 +31,9 @@
                 <p:inputText id="username" value="#{loginBackingBean.username}" required="true" label="Username"/>
                 <br/><br/>
 
-                <h:outputText styleClass="myFont" value="Password" style="display:block;"/>
+                <h:outputText styleClass="myFont" value="#{msg.password}" style="display:block;"/>
                 <p:password id="password" value="#{loginBackingBean.pwd}" required="true" label="Password"/>
                 <br/><br/>
-
-
 
 
                 <br/>
@@ -43,21 +44,27 @@
                                  styleClass="aButton"/>
 
                 <br/>
+            </h:form>
+            <h:form>
+                <br/>
+                <h:outputText styleClass="myFont" value="#{msg.select_language}" style="display:block;"/>
+                <h:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                 valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                    <f:selectItems value="#{langChange.countries}"/>
 
 
+                </h:selectOneMenu>
             </h:form>
             <br/>
 
 
-
-
-        <br/>
+            <br/>
             <img src="resources/images/msgck.png" alt="The ENIAC"/>
-
 
 
         </div>
 
     </h:body>
 </f:view>
+
 </html>

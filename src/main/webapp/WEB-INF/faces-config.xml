@@ -7,11 +7,9 @@
     <application>
         <locale-config>
             <default-locale>en</default-locale>
-            <supported-locale>en</supported-locale>
-            <supported-locale>ro</supported-locale>
         </locale-config>
         <resource-bundle>
-            <base-name>messages</base-name>
+            <base-name>i18n/message</base-name>
             <var>msg</var>
         </resource-bundle>
     </application>

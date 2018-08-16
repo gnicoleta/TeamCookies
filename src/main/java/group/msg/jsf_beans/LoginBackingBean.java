@@ -121,6 +121,7 @@ public class LoginBackingBean implements Serializable {
                     }
                 }
             }
+            //notificationServiceEJB.deleteNotificationsAfter30Days();
             {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "account is deactivated ");
                 RequestContext.getCurrentInstance().showMessageInDialog(message);

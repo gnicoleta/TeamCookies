@@ -7,7 +7,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -17,13 +16,10 @@ import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -50,9 +46,6 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     @Inject
     private DownloadBean downloadBean;
 
-    @PersistenceContext
-    private EntityManager em;
-
     private Integer id;
     private String title = null;
     private String description = null;
@@ -74,7 +67,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private Bug selectedBug;
 
     private List<Bug> bugList = new ArrayList<>();
-    private List<Bug> selectedBugs=null;
+    private List<Bug> selectedBugs = null;
 
     @PostConstruct
     public void init() {
@@ -207,52 +200,14 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         }
     }
 
-    public Bug getSelectedBug() {
-        return selectedBug;
-    }
-
-    public void setSelectedBug(Bug selectedBug) {
-        this.selectedBug = selectedBug;
-    }
-
-    public void rowSelected(SelectEvent event) {
-        try {
-            try {
-                this.updateBugTitle(selectedBugs.get(0).getTitle());
-                this.updateBugDescription(selectedBugs.get(0).getDescription());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void updateBugTitle(String newTitle) {
-        try {
-            try {
-                selectedBugs.get(0).setTitle(newTitle);
-                bugService.update(selectedBugs.get(0));
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void updateBugDescription(String newDescription) {
-        try {
-            try {
-                selectedBugs.get(0).setDescription(newDescription);
-                bugService.update(selectedBugs.get(0));
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
-        }
-    }
+//    public Bug getSelectedBug() {
+//        return selectedBugs.get(0);
+//    }
+//
+//    public void setSelectedBug(Bug selectedBug) {
+//        this.selectedBugs.get(0) = selectedBug;
+//        bugService.update(selectedBugs.get(0));
+//    }
 
     /**
      * Might be useful someday
@@ -299,7 +254,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
-            }catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
         } catch (Exception e) {
@@ -314,7 +269,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                 Attachment attachment = selectedBugs.get(0).getAttachment();
                 selectedBugs.get(0).setAttachment(null);
                 attachmentServiceEJB.delete(attachment);
-            }catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
         } catch (Exception e) {
@@ -343,7 +298,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
         } catch (Exception e) {
@@ -372,7 +327,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
         } catch (Exception e) {
@@ -466,7 +421,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         data = "BUG CLOSED!    Title:" + selectedBugs.get(0).getTitle() + ". Description:" + selectedBugs.get(0).getDescription() + ". Version:" + selectedBugs.get(0).getVersion() + ". Target date:" + selectedBugs.get(0).getTargetDate() + ". Severity type:" + selectedBugs.get(0).getSeverityType() + ". Assigned to:" + selectedBugs.get(0).getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_CLOSED);
         notification.setInfo(data);
-        notification.setBugTitle(selectedBugs.get(0).getTitle());
+        notification.setBugId(selectedBugs.get(0).getId());
         notificationServiceEJB.save(notification);
         selectedBugs.get(0).getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
@@ -477,7 +432,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         data = "BUG UPDATED!   Old status:" + aux.toString() + ". New status:" + selectedBugs.get(0).getStatusType() + ".    Title:" + selectedBugs.get(0).getTitle() + ". Description:" + selectedBugs.get(0).getDescription() + ". Version:" + selectedBugs.get(0).getVersion() + ". Target date:" + selectedBugs.get(0).getTargetDate() + ". Severity type:" + selectedBugs.get(0).getSeverityType() + ". Assigned to:" + selectedBugs.get(0).getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_STATUS_UPDATED);
         notification.setInfo(data);
-        notification.setBugTitle(selectedBugs.get(0).getTitle());
+        notification.setBugId(selectedBugs.get(0).getId());
         notificationServiceEJB.save(notification);
         selectedBugs.get(0).getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
@@ -485,35 +440,36 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public void sendNotification() {
         bugService.update(selectedBugs.get(0));
-        data = "BUG UPDATED!    Title:" + selectedBugs.get(0).getTitle() + ". Description:" + selectedBugs.get(0).getDescription() + ". Version:" + selectedBugs.get(0).getVersion() + ". Target date:" + selectedBugs.get(0).getTargetDate() + ". Severity type:" + selectedBugs.get(0).getSeverityType() + ". Assigned to:" + selectedBugs.get(0).getAssignedTo();
+        data = "BUG UPDATED!  Id:" + selectedBugs.get(0).getId() + "  Title:" + selectedBugs.get(0).getTitle() + ". Description:" + selectedBugs.get(0).getDescription() + ". Version:" + selectedBugs.get(0).getVersion() + ". Target date:" + selectedBugs.get(0).getTargetDate() + ". Severity type:" + selectedBugs.get(0).getSeverityType() + ". Assigned to:" + selectedBugs.get(0).getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_UPDATED);
         notification.setInfo(data);
-        notification.setBugTitle(selectedBugs.get(0).getTitle());
+        int info = selectedBugs.get(0).getId();
+        notification.setBugId(info);
         notificationServiceEJB.save(notification);
         selectedBugs.get(0).getAssignedTo().getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
     }
 
 
-    public void navigate(String s) {
-        Bug bug = bugService.findBugByTitle(s);
-        try {
-            if (!bugList.isEmpty()) {
-                bugList.clear();
-            }
-            bugList.add(bug);
-            if (!bugList.isEmpty()) {
-                FacesContext context = FacesContext.getCurrentInstance();
-                NavigationHandler navigationHandler = context.getApplication()
-                        .getNavigationHandler();
-                navigationHandler.handleNavigation(context, null, "bugPage"
-                        + "?faces-redirect=true");
-            } else {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "List is empty!!");
-                RequestContext.getCurrentInstance().showMessageInDialog(message);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void navigate(String s) {
+//        Bug bug = bugService.findBugByTitle(s);
+//        try {
+//            if (!bugList.isEmpty()) {
+//                bugList.clear();
+//            }
+//            bugList.add(bug);
+//            if (!bugList.isEmpty()) {
+//                FacesContext context = FacesContext.getCurrentInstance();
+//                NavigationHandler navigationHandler = context.getApplication()
+//                        .getNavigationHandler();
+//                navigationHandler.handleNavigation(context, null, "bugPage"
+//                        + "?faces-redirect=true");
+//            } else {
+//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "List is empty!!");
+//                RequestContext.getCurrentInstance().showMessageInDialog(message);
+//            }
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
