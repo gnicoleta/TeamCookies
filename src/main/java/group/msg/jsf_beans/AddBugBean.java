@@ -40,12 +40,12 @@ public class AddBugBean implements Serializable {
     private User assignedTo;
 
     // private Attachment attachment;
-    private Notification notification=new Notification();
+    private Notification notification;
 
     private Bug bug;
 
     public String addBug() {
-
+        notification=new Notification();
         bug = new Bug();
         bug.setTitle(title);
         bug.setDescription(description);
@@ -69,11 +69,12 @@ public class AddBugBean implements Serializable {
         String data = "NEW BUG!   " + "\n Title:" + title + ". Description:" + description + ". Version:" + version + ". Target date:" + targetDate + ". Severity type:" + severityTypeString;
         notification.setInfo(data);
         notification.setNotificationType(NotificationType.BUG_UPDATED);
+        bugServiceEJB.save(bug);
+        notification.setBugId(bug.getId());
         notificationServiceEJB.save(notification);
         user.getNotifications().add(notification);
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
-        bugServiceEJB.save(bug);
+        notificationServiceEJB.update(notification);
         return "bugManagement";
     }
-
 }

@@ -29,7 +29,7 @@ public class Notification implements Serializable {
 
     private String info;
 
-    private String bugTitle;
+    private int bugId;
 
     @ManyToMany
     @JoinTable(name = "user_notification",

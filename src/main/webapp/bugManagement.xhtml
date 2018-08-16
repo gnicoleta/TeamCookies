@@ -19,13 +19,13 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
                         <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="User Management"/>
+                            <f:selectItem itemLabel="User Management" itemDisabled="true"/>
                             <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
                             <f:selectItem itemValue="register" itemLabel="Add User"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                         </p:selectOneMenu>
                         <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="Bug Management"/>
+                            <f:selectItem itemLabel="Bug Management" itemDisabled="true"/>
                             <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
                             <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
