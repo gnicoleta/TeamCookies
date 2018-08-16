@@ -74,7 +74,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private Bug selectedBug;
 
     private List<Bug> bugList = new ArrayList<>();
-    private List<Bug> selectedBugs;
+    private List<Bug> selectedBugs=null;
 
     @PostConstruct
     public void init() {
