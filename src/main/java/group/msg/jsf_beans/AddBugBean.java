@@ -1,6 +1,8 @@
 package group.msg.jsf_beans;
 
 import group.msg.entities.*;
+import group.msg.validator.bugInfoValidator.descriptionValidation;
+import group.msg.validator.bugInfoValidator.revisionValidation;
 import lombok.Data;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
@@ -34,7 +36,11 @@ public class AddBugBean implements Serializable {
 
 
     private String title;
+
+    @descriptionValidation
     private String description;
+
+    @revisionValidation
     private String version;
     private String severityTypeString;
     private Date targetDate;
@@ -42,11 +48,9 @@ public class AddBugBean implements Serializable {
     private String username;
 
     private Attachment attachment;
-
-    //private User createdBy;
+    
     private User assignedTo;
 
-    // private Attachment attachment;
     private Notification notification = new Notification();
 
     private Bug bug;

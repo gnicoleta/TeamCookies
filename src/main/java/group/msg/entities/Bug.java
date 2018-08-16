@@ -1,5 +1,7 @@
 package group.msg.entities;
 
+import group.msg.validator.bugInfoValidator.descriptionValidation;
+import group.msg.validator.bugInfoValidator.revisionValidation;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,10 +25,10 @@ public class Bug implements Serializable {
 
     private String title;
 
-    //@descriptionValidation
+    @descriptionValidation
     private String description;
 
-    //@revisionValidation
+    @revisionValidation
     private String version;
 
     @Column(name = "FIXED_IN_VERSION")

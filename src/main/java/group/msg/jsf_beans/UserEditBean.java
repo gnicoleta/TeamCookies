@@ -2,6 +2,8 @@ package group.msg.jsf_beans;
 
 
 import group.msg.entities.*;
+import group.msg.validator.emailValidation.emailValidation;
+import group.msg.validator.mobileNumberValidation.mobileNumberValidation;
 import lombok.Data;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -19,6 +21,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import lombok.NonNull;
 
 @Data
 @Named
@@ -42,8 +46,18 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private UserStatus userStatus;
     private String newFirstName;
     private String newLastName;
+
+    @NonNull
+    @emailValidation
     private String newEmail;
+
+    public UserEditBean() {
+    }
+
+    @mobileNumberValidation
+    @NonNull
     private String newMobileNumber;
+
     private RoleType roleType;
     private RoleType roleTypeDelete;
 
