@@ -21,7 +21,7 @@ import java.util.Map;
 @Named
 public class LangChange implements Serializable {
 
-    private String languageCode;
+    private String languagecode;
 
 
     public Locale getLocale() {
