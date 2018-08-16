@@ -217,27 +217,39 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public void rowSelected(SelectEvent event) {
         try {
-            this.updateBugTitle(selectedBugs.get(0).getTitle());
-            this.updateBugDescription(selectedBugs.get(0).getDescription());
-        } catch (NullPointerException e) {
+            try {
+                this.updateBugTitle(selectedBugs.get(0).getTitle());
+                this.updateBugDescription(selectedBugs.get(0).getDescription());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }catch (IndexOutOfBoundsException e){
             e.printStackTrace();
         }
     }
 
     public void updateBugTitle(String newTitle) {
         try {
-            selectedBugs.get(0).setTitle(newTitle);
-            bugService.update(selectedBugs.get(0));
-        } catch (NullPointerException e) {
+            try {
+                selectedBugs.get(0).setTitle(newTitle);
+                bugService.update(selectedBugs.get(0));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }catch (IndexOutOfBoundsException e){
             e.printStackTrace();
         }
     }
 
     public void updateBugDescription(String newDescription) {
         try {
-            selectedBugs.get(0).setDescription(newDescription);
-            bugService.update(selectedBugs.get(0));
-        } catch (NullPointerException e) {
+            try {
+                selectedBugs.get(0).setDescription(newDescription);
+                bugService.update(selectedBugs.get(0));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }catch (IndexOutOfBoundsException e){
             e.printStackTrace();
         }
     }
@@ -274,16 +286,20 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     public void handleFileUpload(FileUploadEvent event) {
         try {
             try {
-                byte[] b = event.getFile().getContents();
-                Attachment attachment = new Attachment();
-                attachment.setAttachmentByte(b);
-                attachment.setAttachmentType(event.getFile().getContentType());
-                attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
-                selectedBugs.get(0).setAttachment(attachment);
-                bugService.save(selectedBugs.get(0));
-                FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-                FacesContext.getCurrentInstance().addMessage(null, message);
-            } catch (NullPointerException e) {
+                try {
+                    byte[] b = event.getFile().getContents();
+                    Attachment attachment = new Attachment();
+                    attachment.setAttachmentByte(b);
+                    attachment.setAttachmentType(event.getFile().getContentType());
+                    attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
+                    selectedBugs.get(0).setAttachment(attachment);
+                    bugService.save(selectedBugs.get(0));
+                    FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }catch (IndexOutOfBoundsException e){
                 e.printStackTrace();
             }
         } catch (Exception e) {
@@ -294,9 +310,13 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public void deleteAttachment() {
         try {
-            Attachment attachment = selectedBugs.get(0).getAttachment();
-            selectedBugs.get(0).setAttachment(null);
-            attachmentServiceEJB.delete(attachment);
+            try {
+                Attachment attachment = selectedBugs.get(0).getAttachment();
+                selectedBugs.get(0).setAttachment(null);
+                attachmentServiceEJB.delete(attachment);
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
@@ -307,17 +327,25 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     public StreamedContent downloadAttachment() throws IOException {
         Attachment attachment = null;
         try {
-            attachment = selectedBugs.get(0).getAttachment();
+            try {
+                try {
+                    attachment = selectedBugs.get(0).getAttachment();
 
-            File file = byteToFile(attachment.getAttachmentByte(), "MyAttachment");
+                    File file = byteToFile(attachment.getAttachmentByte(), "MyAttachment");
 
-            InputStream stream = new FileInputStream(file.getAbsolutePath());
+                    InputStream stream = new FileInputStream(file.getAbsolutePath());
 
 
-            String contentType = attachment.getAttachmentType();
-            String extension = attachment.getExtensionType();
+                    String contentType = attachment.getAttachmentType();
+                    String extension = attachment.getExtensionType();
 
-            return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment." + extension);
+                    return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment." + extension);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
@@ -330,15 +358,23 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     public StreamedContent getPDF() throws IOException {
         PDFWriter pdfWriter = null;
         try {
-            List<Bug> bugs = new ArrayList<>();
-            bugs.add(selectedBugs.get(0));
+            try {
+                try {
+                    List<Bug> bugs = new ArrayList<>();
+                    bugs.add(selectedBugs.get(0));
 
-            pdfWriter = downloadBean.getPDFWriter();
+                    pdfWriter = downloadBean.getPDFWriter();
 
-            pdfWriter.createPDF(bugs, "Bug_Info");
+                    pdfWriter.createPDF(bugs, "Bug_Info");
 
 
-            return pdfWriter.getFile();
+                    return pdfWriter.getFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid bug");
@@ -354,6 +390,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
         ExcelWriter excelWriter = null;
         try {
+            
             excelWriter = downloadBean.getExcelWriter();
             excelWriter.createExcel(selectedBugs, "Bug_Info");
 
