@@ -11,12 +11,15 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+import javax.inject.Inject;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class PDFWriter implements Serializable {
@@ -26,6 +29,9 @@ public class PDFWriter implements Serializable {
     private float leading;
 
     private PDDocument document;
+
+    @Inject
+    private Logger logger;
 
     private List<String> separateLines(String bug, PDPage page, PDPageContentStream contentStream) throws IOException{
         PDFont pdfFont = PDType1Font.TIMES_ROMAN;
@@ -73,13 +79,26 @@ public class PDFWriter implements Serializable {
 
     public void createPDF(List<Bug> bugs, String filename) throws IOException {
 
-        pdfPath=Paths.get(filename+".pdf");
+        try {
+            pdfPath = Paths.get(filename + ".pdf");
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
         document=new PDDocument();
 
-        Iterator it=bugs.iterator();
-
+        Iterator it=null;
+        try {
+             it = bugs.iterator();
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
         while(it.hasNext()) {
-            Bug bug = (Bug) it.next();
+            Bug bug=null;
+            try {
+                 bug = (Bug) it.next();
+            }catch (NullPointerException e){
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
 
             PDPage pdPage = new PDPage();
             document.addPage(pdPage);
@@ -107,10 +126,14 @@ public class PDFWriter implements Serializable {
     }
 
 
-    public StreamedContent getFile() throws IOException {
-        InputStream stream =new FileInputStream(pdfPath.toFile().getAbsolutePath());
-        StreamedContent file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug.pdf");
-
+    public StreamedContent getFile(){
+        StreamedContent file=null;
+        try {
+            InputStream stream = new FileInputStream(pdfPath.toFile().getAbsolutePath());
+            file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_bug.pdf");
+        }catch (IOException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
 
         return file;
     }

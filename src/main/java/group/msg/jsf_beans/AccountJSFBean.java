@@ -14,7 +14,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 
 @Data
@@ -50,41 +52,49 @@ public class AccountJSFBean implements Serializable {
     @Inject
     private PasswordEncryptor passwordEncryptor;
 
+    @Inject
+    private Logger logger;
+
     public String update() {
 
         String info ="";
 
-        if (firstName.length() > 0) {
-            info += "First name: old=" + user.getFirstName() + " new=" + firstName + " ";
-            user.setFirstName(firstName);
+        try {
+            if (firstName.length() > 0) {
+                info += "First name: old=" + user.getFirstName() + " new=" + firstName + " ";
+                user.setFirstName(firstName);
 
-        }
-        if (lastName.length() > 0) {
-            info += "Last name: old=" + user.getLastName() + " new=" + lastName + " ";
-            user.setLastName(lastName);
-        }
-        if (email.length() > 0) {
-            info += "Email: old=" + user.getEmail() + " new=" + email + " ";
+            }
+            if (lastName.length() > 0) {
+                info += "Last name: old=" + user.getLastName() + " new=" + lastName + " ";
+                user.setLastName(lastName);
+            }
+            if (email.length() > 0) {
+                info += "Email: old=" + user.getEmail() + " new=" + email + " ";
 
-            user.setEmail(email);
-        }
-        if (mobileNumber.length() > 0) {
-            info += "Mobile Number: old=" + user.getMobileNumber() + " new=" + mobileNumber + " ";
-            user.setMobileNumber(mobileNumber);
-        }
-
-        if (password.length() > 0) {
-            String encryptedOldPassword = passwordEncryptor.passwordEncryption(oldPassword);
-            if (encryptedOldPassword.equals(user.getPassword())) {
-                info += "Password: old=" + oldPassword + " new=" + password + " ";
-                user.setPassword(passwordEncryptor.passwordEncryption(password));
-            } else {
-
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Wrong old password");
-                RequestContext.getCurrentInstance().showMessageInDialog(message);
-                return "account";
+                user.setEmail(email);
+            }
+            if (mobileNumber.length() > 0) {
+                info += "Mobile Number: old=" + user.getMobileNumber() + " new=" + mobileNumber + " ";
+                user.setMobileNumber(mobileNumber);
             }
 
+
+            if (password.length() > 0) {
+                String encryptedOldPassword = passwordEncryptor.passwordEncryption(oldPassword);
+                if (encryptedOldPassword.equals(user.getPassword())) {
+                    info += "Password: old=" + oldPassword + " new=" + password + " ";
+                    user.setPassword(passwordEncryptor.passwordEncryption(password));
+                } else {
+
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Wrong old password");
+                    RequestContext.getCurrentInstance().showMessageInDialog(message);
+                    return "account";
+                }
+
+            }
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
         if (roleString != null) {
         info+="1";

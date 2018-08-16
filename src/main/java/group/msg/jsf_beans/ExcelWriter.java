@@ -9,8 +9,11 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.inject.Inject;
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ExcelWriter implements Serializable{
 
@@ -19,6 +22,9 @@ public class ExcelWriter implements Serializable{
 
     private FileOutputStream fileOut;
     private File excelPath;
+
+    @Inject
+    private Logger logger;
 
     public void createExcel(List<Bug> bugs, String filename) throws IOException {
         // Create a Workbook
@@ -77,7 +83,7 @@ public class ExcelWriter implements Serializable{
                 row.createCell(9).setCellValue(bug.getStatusType().toString());
                 row.createCell(10).setCellValue(bug.getNotification().getNotificationType().toString());
             }catch (NullPointerException e){
-                e.printStackTrace();
+                logger.info(Arrays.toString(e.getStackTrace()));
             }
 
         }
@@ -87,8 +93,16 @@ public class ExcelWriter implements Serializable{
         }
 
         // Write the output to a file
-        excelPath = new File(filename +".xlsx");
-        fileOut = new FileOutputStream(excelPath);
+        try {
+            try {
+                excelPath = new File(filename + ".xlsx");
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+            fileOut = new FileOutputStream(excelPath);
+        }catch (FileNotFoundException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
         workbook.write(fileOut);
         fileOut.close();
 

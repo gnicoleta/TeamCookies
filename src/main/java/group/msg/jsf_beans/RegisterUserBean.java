@@ -14,8 +14,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Data
 @Named
@@ -42,6 +44,9 @@ public class RegisterUserBean implements Serializable {
     private List<User> users;
 
     @Inject
+    private Logger logger;
+
+    @Inject
     RightsForRoleGetterAndSetter rightsForRoleGetterAndSetter;
 
     @EJB
@@ -62,78 +67,91 @@ public class RegisterUserBean implements Serializable {
     }
 
     public String getRegisterInfo(String username) {
-        String temp = "Welcome " + firstName + " " + lastName + "\n";
-        temp += "Username=" + username + "\n";
-        temp += "Email=" + email + "\n";
-        temp += "Mobile number=" + mobileNumber + "\n";
-        temp += "Roles: ";
-        for (String s : selectedRolesStrings) {
-            temp += s + " ";
+        try {
+            String temp = "Welcome " + firstName + " " + lastName + "\n";
+            temp += "Username=" + username + "\n";
+            temp += "Email=" + email + "\n";
+            temp += "Mobile number=" + mobileNumber + "\n";
+            temp += "Roles: ";
+            for (String s : selectedRolesStrings) {
+                temp += s + " ";
+            }
+            temp += "\n";
+            return temp;
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
-        temp += "\n";
-        return temp;
+
+        return null;
 
     }
 
     public String registerUser() {
 
-
-        String notificationInfo = "";
-        service.clear();
-        User user1 = new User();
-        user1.setFirstName(firstName);
-        user1.setLastName(lastName);
-        user1.setUsername(service.generateUsername(firstName, lastName));
-        user1.setEmail(email);
-        user1.setMobileNumber(mobileNumber);
-        user1.setPassword(passwordEncryptor.passwordEncryption(password));
-
-
-        for (String roleString : selectedRolesStrings) {
-
-            Role role = roleServiceEJB.findRoleByType(roleString);
-
-            List<RightType> rightTypes = new ArrayList<>();
-            rightTypes = rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
-
-            List<Rights> rightList = new LinkedList<>();
-            Rights right;
-            for (RightType rightType : rightTypes) {
-
-                right=service.findRightByType(rightType.toString());
+        try {
+            try {
+                String notificationInfo = "";
+                service.clear();
+                User user1 = new User();
+                user1.setFirstName(firstName);
+                user1.setLastName(lastName);
+                user1.setUsername(service.generateUsername(firstName, lastName));
+                user1.setEmail(email);
+                user1.setMobileNumber(mobileNumber);
+                user1.setPassword(passwordEncryptor.passwordEncryption(password));
 
 
-                rightList.add(right);
+                for (String roleString : selectedRolesStrings) {
 
+                    Role role = roleServiceEJB.findRoleByType(roleString);
+
+                    List<RightType> rightTypes = new ArrayList<>();
+                    rightTypes = rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
+
+                    List<Rights> rightList = new LinkedList<>();
+                    Rights right;
+                    for (RightType rightType : rightTypes) {
+
+                        right = service.findRightByType(rightType.toString());
+
+
+                        rightList.add(right);
+
+                    }
+
+                    role.setRoleRights(rightList);
+
+
+                    selectedRoles.add(role);
+
+
+                }
+
+                Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
+                notificationInfo = this.getRegisterInfo(user1.getUsername());
+                notification.setInfo(notificationInfo);
+
+                List<Notification> notifications = new LinkedList<>();
+
+                notificationServiceEJB.save(notification);
+                notifications.add(notification);
+
+                user1.setNotifications(notifications);
+
+
+                user1.setUserRoles(selectedRoles);
+
+                service.save(user1);
+
+                return "register";
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
             }
-
-            role.setRoleRights(rightList);
-
-
-            selectedRoles.add(role);
-
-
+        }catch (Exception e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
 
-        Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
-        notificationInfo = this.getRegisterInfo(user1.getUsername());
-        notification.setInfo(notificationInfo);
-
-        List<Notification> notifications = new LinkedList<>();
-
-        notificationServiceEJB.save(notification);
-        notifications.add(notification);
-
-        user1.setNotifications(notifications);
-
-
-        user1.setUserRoles(selectedRoles);
-
-        service.save(user1);
-
-        return "register";
-
-
+        return null;
     }
 
 

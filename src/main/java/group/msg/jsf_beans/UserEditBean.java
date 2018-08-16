@@ -17,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
@@ -25,6 +26,7 @@ import javax.persistence.Query;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Data
@@ -60,34 +62,41 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     private String rghtTypeStr;
     private String roleTypeStr;
 
+    @Inject
+    private Logger logger;
+
     @PostConstruct
     public void init() {
         usersList = service.getAllUsers();
     }
 
     public void navigate() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        NavigationHandler navigationHandler = context.getApplication()
-                .getNavigationHandler();
-        User user = (User) WebHelper.getSession().getAttribute("currentUser");
-        boolean hasRight = false;
-        String requiredRight = "";
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            NavigationHandler navigationHandler = context.getApplication()
+                    .getNavigationHandler();
+            User user = (User) WebHelper.getSession().getAttribute("currentUser");
+            boolean hasRight = false;
+            String requiredRight = "";
 
-        if (outcome.equals("register") || outcome.equals("editUser")) {
-            hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
-            requiredRight = RightType.USER_MANAGEMENT.toString();
-        }
-        if (outcome.equals("bugManagement") || outcome.equals("AddBug")) {
-            hasRight = service.userHasRight(user, RightType.BUG_MANAGEMENT);
-            requiredRight = RightType.BUG_MANAGEMENT.toString();
-        }
+            if (outcome.equals("register") || outcome.equals("editUser")) {
+                hasRight = service.userHasRight(user, RightType.USER_MANAGEMENT);
+                requiredRight = RightType.USER_MANAGEMENT.toString();
+            }
+            if (outcome.equals("bugManagement") || outcome.equals("AddBug")) {
+                hasRight = service.userHasRight(user, RightType.BUG_MANAGEMENT);
+                requiredRight = RightType.BUG_MANAGEMENT.toString();
+            }
 
-        if (hasRight) {
-            navigationHandler.handleNavigation(context, null, outcome
-                    + "?faces-redirect=true");
-        } else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + requiredRight);
-            RequestContext.getCurrentInstance().showMessageInDialog(message);
+            if (hasRight) {
+                navigationHandler.handleNavigation(context, null, outcome
+                        + "?faces-redirect=true");
+            } else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "No Rights", "Required right: " + requiredRight);
+                RequestContext.getCurrentInstance().showMessageInDialog(message);
+            }
+        }catch (Exception e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -114,13 +123,25 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
     @Override
     public User getRowData(String rowKey) {
-        Integer id = Integer.parseInt(rowKey);
-        return usersList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+        try {
+            Integer id = Integer.parseInt(rowKey);
+            return usersList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
     @Override
     public Object getRowKey(User object) {
-        return object.getId();
+        try {
+            return object.getId();
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
     @Override
@@ -154,6 +175,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
                         }
                     } catch (Exception e) {
                         match = false;
+                        logger.info(Arrays.toString(e.getStackTrace()));
                     }
                 }
             }
@@ -173,7 +195,9 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
             try {
                 return filteredList.subList(first, first + pageSize);
             } catch (IndexOutOfBoundsException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
                 return filteredList.subList(first, first + (dataSize % pageSize));
+
             }
         } else {
             return filteredList;
@@ -199,6 +223,7 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
 
                 return SortOrder.ASCENDING.equals(sortOrder) ? comparationResult : (-1) * comparationResult;
             } catch (Exception e) {
+                e.printStackTrace();
                 return 1;
             }
         }

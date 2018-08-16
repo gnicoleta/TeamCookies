@@ -1,4 +1,5 @@
 package group.msg.jsf_beans;
+
 import group.msg.entities.*;
 import lombok.Data;
 import org.apache.commons.io.FilenameUtils;
@@ -10,9 +11,13 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.logging.Logger;
+
 @Data
 @Named
 @ViewScoped
@@ -46,40 +51,50 @@ public class AddBugBean implements Serializable {
     private User assignedTo;
 
     // private Attachment attachment;
-    private Notification notification=new Notification();
+    private Notification notification = new Notification();
 
     private Bug bug;
 
+    @Inject
+    private Logger logger;
+
     public String addBug() {
-
-        bug = new Bug();
-        bug.setTitle(title);
-        bug.setDescription(description);
-        bug.setVersion(version);
-
-        bug.setTargetDate(targetDate);
-
-        SeverityType severityType=SeverityType.valueOf(severityTypeString);
-        bug.setSeverityType(severityType);
-
-        User user=null;
         try {
-          user = userServiceEJB.getUserByUsername(username);
-        }catch (Exception e){
+            bug = new Bug();
+            bug.setTitle(title);
+            bug.setDescription(description);
+            bug.setVersion(version);
+
+            bug.setTargetDate(targetDate);
+
+            SeverityType severityType = SeverityType.valueOf(severityTypeString);
+            bug.setSeverityType(severityType);
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+        User user = null;
+        try {
+            user = userServiceEJB.getUserByUsername(username);
+        } catch (Exception e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Assigned user does not exist!!");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
             return "AddBug";
         }
-        bug.setCreatedBy((User)WebHelper.getSession().getAttribute("currentUser"));
-        bug.setAssignedTo(user);
-        String data = "NEW BUG!   " + "\n Title:" + title + ". Description:" + description + ". Version:" + version + ". Target date:" + targetDate + ". Severity type:" + severityTypeString;
-        notification.setInfo(data);
-        notification.setNotificationType(NotificationType.BUG_UPDATED);
-        notificationServiceEJB.save(notification);
-        user.getNotifications().add(notification);
-        if(attachment!=null) {
-            attachmentServiceEJB.save(attachment);
-            bug.setAttachment(attachment);
+        try {
+            bug.setCreatedBy((User) WebHelper.getSession().getAttribute("currentUser"));
+            bug.setAssignedTo(user);
+            String data = "NEW BUG!   " + "\n Title:" + title + ". Description:" + description + ". Version:" + version + ". Target date:" + targetDate + ". Severity type:" + severityTypeString;
+            notification.setInfo(data);
+            notification.setNotificationType(NotificationType.BUG_UPDATED);
+            notificationServiceEJB.save(notification);
+            user.getNotifications().add(notification);
+            if (attachment != null) {
+                attachmentServiceEJB.save(attachment);
+                bug.setAttachment(attachment);
+            }
+        }catch (Exception e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
         ((User) WebHelper.getSession().getAttribute("currentUser")).getNotifications().add(notification);
         bugServiceEJB.save(bug);
@@ -87,13 +102,21 @@ public class AddBugBean implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        byte[] b = event.getFile().getContents();
-        attachment=new Attachment();
-        attachment.setAttachmentByte(b);
-        attachment.setAttachmentType(event.getFile().getContentType());
-        attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
-        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        try {
+            try {
+                byte[] b = event.getFile().getContents();
+                attachment = new Attachment();
+                attachment.setAttachmentByte(b);
+                attachment.setAttachmentType(event.getFile().getContentType());
+                attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
+                FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (Exception e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
 
     }
 

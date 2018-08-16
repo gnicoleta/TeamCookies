@@ -6,10 +6,13 @@ import group.msg.entities.Bug;
 
 import javax.ejb.Stateless;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @Stateless
@@ -18,23 +21,46 @@ public class BugServiceEJB {
     @PersistenceContext
     private EntityManager em;
 
+    @Inject
+    private Logger logger;
+
     public void save(Bug bug) {
-        em.persist(bug);
+        try {
+            em.persist(bug);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void update(Bug bug) {
-        em.merge(bug);
+        try {
+            em.merge(bug);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public List<Bug> getAllBugs() {
-        Query q = em.createNamedQuery("Bug.findAll", Bug.class);
-        List<Bug> result = q.getResultList();
-        return result;
+        try {
+            Query q = em.createNamedQuery("Bug.findAll", Bug.class);
+            List<Bug> result = q.getResultList();
+            return result;
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
     public Bug findBugByTitle(String bugTitle) {
-        Query q = em.createNamedQuery("Bug.findBugByTitle");
-        q.setParameter(1, bugTitle);
-        return (Bug) q.getSingleResult();
+        try {
+            Query q = em.createNamedQuery("Bug.findBugByTitle");
+            q.setParameter(1, bugTitle);
+            return (Bug) q.getSingleResult();
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
 }

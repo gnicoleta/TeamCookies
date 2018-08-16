@@ -7,10 +7,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
@@ -21,8 +24,16 @@ public class UserDBOperationsBean {
     @PersistenceContext
     private EntityManager em;
 
+    @Inject
+    private Logger logger;
+
     public void startDB(int id) {
-        em.find(User.class, id);
+        try {
+
+            em.find(User.class, id);
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void insertUser(String firstName, String lastName) {
@@ -30,6 +41,7 @@ public class UserDBOperationsBean {
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        logger.info("User added: " + user.getFirstName() + " " + user.getLastName());
         em.persist(user);
         em.flush();
     }
@@ -46,17 +58,24 @@ public class UserDBOperationsBean {
         User user = em.find(User.class, userId);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        logger.info("User updated: id: " + user.getId() + System.lineSeparator() + user.getFirstName() + " " + user.getFirstName());
     }
 
     public void deleteUser(int userId) {
         User user = em.find(User.class, userId);
         em.remove(user);
+        logger.info("User deleted: id: " + user.getId() + System.lineSeparator() + user.getFirstName() + " " + user.getFirstName());
     }
 
     public boolean findUserByUsername(String username) {
-        Query q = em.createNamedQuery("User.findByUsername", String.class);
-        q.setParameter(1, username);
-        String result = (String) q.getSingleResult();
+        String result = null;
+        try {
+            Query q = em.createNamedQuery("User.findByUsername", String.class);
+            q.setParameter(1, username);
+            result = (String) q.getSingleResult();
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
 
         if (result.isEmpty()) {
             return false;

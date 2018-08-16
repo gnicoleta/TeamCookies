@@ -5,10 +5,13 @@ import group.msg.entities.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 @Stateless
 public class RoleServiceEJB {
@@ -18,18 +21,35 @@ public class RoleServiceEJB {
     @EJB
     private RightServiceEJB rightServiceEJB;
 
+    @Inject
+    private Logger logger;
+
     public void save(Role role) {
-        em.persist(role);
+        try {
+            em.persist(role);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void update(Role role) {
-        em.merge(role);
+        try {
+            em.merge(role);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public Role findRoleByType(String type) {
-        Query q = em.createNamedQuery("Role.findByRoleType", Role.class);
-        q.setParameter(1, type);
-        Role result = (Role) q.getSingleResult();
-        return result;
+        try {
+            Query q = em.createNamedQuery("Role.findByRoleType", Role.class);
+            q.setParameter(1, type);
+            Role result = (Role) q.getSingleResult();
+            return result;
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 }

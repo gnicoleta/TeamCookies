@@ -1,7 +1,7 @@
 package group.msg.jsf_beans;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 import group.msg.entities.*;
 import group.msg.validator.bugInfoValidator.revisionValidation;
@@ -29,10 +29,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @ManagedBean
@@ -67,6 +64,9 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     private int defaultValue;
 
+    @Inject
+    private Logger logger;
+
     private String fixedInVersion;
     private LocalDateTime targetDate;
     private SeverityType severityType = null;
@@ -87,13 +87,25 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     @Override
     public Bug getRowData(String rowKey) {
-        Integer id = Integer.parseInt(rowKey);
-        return bugList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+        try {
+            Integer id = Integer.parseInt(rowKey);
+            return bugList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
     @Override
     public Object getRowKey(Bug object) {
-        return object.getId();
+        try {
+            return object.getId();
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
     @Override
@@ -131,6 +143,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                         }
                     } catch (Exception e) {
                         match = false;
+                        logger.info(Arrays.toString(e.getStackTrace()));
                     }
                 }
             }
@@ -152,6 +165,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
             try {
                 return filteredList.subList(first, first + pageSize);
             } catch (IndexOutOfBoundsException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
                 return filteredList.subList(first, first + (dataSize % pageSize));
             }
         } else {
@@ -191,6 +205,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
                 return SortOrder.ASCENDING.equals(sortOrder) ? comparisionResult : (-1) * comparisionResult;
             } catch (Exception e) {
+                e.printStackTrace();
                 return 1;
             }
         }
@@ -205,18 +220,30 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     }
 
     public void rowSelected(SelectEvent event) {
-        this.updateBugTitle(selectedBugs.get(0).getTitle());
-        this.updateBugDescription(selectedBugs.get(0).getDescription());
+        try {
+            this.updateBugTitle(selectedBugs.get(0).getTitle());
+            this.updateBugDescription(selectedBugs.get(0).getDescription());
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void updateBugTitle(String newTitle) {
-        selectedBugs.get(0).setTitle(newTitle);
-        bugService.update(selectedBugs.get(0));
+        try {
+            selectedBugs.get(0).setTitle(newTitle);
+            bugService.update(selectedBugs.get(0));
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void updateBugDescription(String newDescription) {
-        selectedBugs.get(0).setDescription(newDescription);
-        bugService.update(selectedBugs.get(0));
+        try {
+            selectedBugs.get(0).setDescription(newDescription);
+            bugService.update(selectedBugs.get(0));
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     /**Might be useful someday*/
@@ -239,7 +266,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
             stream = new FileOutputStream(file);
             stream.write(byteFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
 
         return file;
@@ -248,15 +275,23 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
 
     public void handleFileUpload(FileUploadEvent event) {
-        byte[] b = event.getFile().getContents();
-        Attachment attachment = new Attachment();
-        attachment.setAttachmentByte(b);
-        attachment.setAttachmentType(event.getFile().getContentType());
-        attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
-        selectedBugs.get(0).setAttachment(attachment);
-        bugService.save(selectedBugs.get(0));
-        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        try {
+            try {
+                byte[] b = event.getFile().getContents();
+                Attachment attachment = new Attachment();
+                attachment.setAttachmentByte(b);
+                attachment.setAttachmentType(event.getFile().getContentType());
+                attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
+                selectedBugs.get(0).setAttachment(attachment);
+                bugService.save(selectedBugs.get(0));
+                FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (Exception e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
 
     }
 
@@ -266,6 +301,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
             selectedBugs.get(0).setAttachment(null);
             attachmentServiceEJB.delete(attachment);
         } catch (Exception e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
@@ -286,6 +322,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
             return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment." + extension);
         } catch (Exception e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
@@ -306,6 +343,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
             return pdfWriter.getFile();
         } catch (Exception e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid bug");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
@@ -324,6 +362,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
             return excelWriter.downloadAttachment();
         } catch (Exception e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid bug");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
@@ -358,6 +397,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
                         selectedBugs.get(0).setAssignedTo(user);
                     }
                 } catch (Exception e) {
+                    logger.info(Arrays.toString(e.getStackTrace()));
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Assigned user does not exist!!");
                     RequestContext.getCurrentInstance().showMessageInDialog(message);
                 }
@@ -428,20 +468,23 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public void navigate(String s){
         Bug bug =  bugService.findBugByTitle(s);
-        if (!bugList.isEmpty()) {
-            bugList.clear();
-        }
-        bugList.add(bug);
-        if (!bugList.isEmpty()) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            NavigationHandler navigationHandler = context.getApplication()
-                    .getNavigationHandler();
-            navigationHandler.handleNavigation(context, null, "bugPage"
-                    + "?faces-redirect=true");
-        }
-        else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "List is empty!!");
-            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        try {
+            if (!bugList.isEmpty()) {
+                bugList.clear();
+            }
+            bugList.add(bug);
+            if (!bugList.isEmpty()) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                NavigationHandler navigationHandler = context.getApplication()
+                        .getNavigationHandler();
+                navigationHandler.handleNavigation(context, null, "bugPage"
+                        + "?faces-redirect=true");
+            } else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "List is empty!!");
+                RequestContext.getCurrentInstance().showMessageInDialog(message);
+            }
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
 }

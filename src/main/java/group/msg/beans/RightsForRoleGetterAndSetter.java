@@ -4,14 +4,16 @@ import group.msg.entities.RightType;
 import group.msg.entities.RoleType;
 import lombok.Data;
 
+import javax.inject.Inject;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
 
 
 public class RightsForRoleGetterAndSetter implements Serializable {
+
+    @Inject
+    private Logger logger;
 
     private List<RightType> admRights = new ArrayList<>();
     private List<RightType> pmRights = new ArrayList<>();
@@ -50,21 +52,32 @@ public class RightsForRoleGetterAndSetter implements Serializable {
 
 
     private int findRightIndex(RightType rightType, List<RightType> list) {
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-            if (list.get(i).equals(rightType)) {
-                return i;
+        try {
+            try {
+                int size = list.size();
+                for (int i = 0; i < size; i++) {
+                    if (list.get(i).equals(rightType)) {
+                        return i;
+                    }
+                }
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
             }
+        } catch (Exception e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
         return -1;
-
 
     }
 
     public boolean addRight(RightType rightType, int listIndex) {
+        int index = 0;
 
-
-        int index = findRightIndex(rightType, listOfLists.get(listIndex));
+        try {
+            index = findRightIndex(rightType, listOfLists.get(listIndex));
+        } catch (IndexOutOfBoundsException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
         if (index == -1) {
             listOfLists.get(listIndex).add(rightType);
             return true;
@@ -76,7 +89,12 @@ public class RightsForRoleGetterAndSetter implements Serializable {
 
     public boolean deleteADMright(RightType rightType, int listIndex) {
 
-        int index = findRightIndex(rightType, listOfLists.get(listIndex));
+        int index = -1;
+        try {
+            index = findRightIndex(rightType, listOfLists.get(listIndex));
+        } catch (IndexOutOfBoundsException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
         if (index == -1) {
             return false;
         } else {
@@ -86,24 +104,28 @@ public class RightsForRoleGetterAndSetter implements Serializable {
     }
 
     public List<RightType> getRights(RoleType roleType) {
-        if (roleType.equals(RoleType.ADM)) {
-            return admRights;
-        }
+        try {
+            if (roleType.equals(RoleType.ADM)) {
+                return admRights;
+            }
 
-        if (roleType.equals(RoleType.PM)) {
-            return pmRights;
-        }
-        if (roleType.equals(RoleType.TM)) {
+            if (roleType.equals(RoleType.PM)) {
+                return pmRights;
+            }
+            if (roleType.equals(RoleType.TM)) {
 
-            return tmRights;
+                return tmRights;
+            }
+            if (roleType.equals(RoleType.DEV)) {
+                return devRights;
+            }
+            if (roleType.equals(RoleType.TEST)) {
+                return testRights;
+            }
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
-        if (roleType.equals(RoleType.DEV)) {
-            return devRights;
-        }
-        if (roleType.equals(RoleType.TEST)) {
-            return testRights;
-        }
-        return  null;
+        return null;
     }
 
 

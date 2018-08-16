@@ -8,12 +8,15 @@ import javax.ejb.Stateless;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 public class UserServiceEJB {
@@ -25,8 +28,14 @@ public class UserServiceEJB {
     @EJB
     RoleServiceEJB roleServiceEJB;
 
+    @Inject
+    private User user;
+
     @PersistenceContext
     private EntityManager em;
+
+    @Inject
+    private Logger logger;
 
     public String generateUsername(String firstname, String lastName) {
         return usernameGenerator.generateUsername(firstname, lastName, em);
@@ -37,7 +46,11 @@ public class UserServiceEJB {
     }
 
     public void save(User user) {
-        em.persist(user);
+        try {
+            em.persist(user);
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
 
     }
 
@@ -47,28 +60,51 @@ public class UserServiceEJB {
     }
 
     public void update(User user) {
-        em.merge(user);
+        try {
+            em.merge(user);
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void updateBug(Bug bug) {
-        em.merge(bug);
+        try {
+            em.merge(bug);
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void delete(User user) {
-        em.remove(em.contains(user) ? user : em.merge(user));
+        try {
+            em.remove(em.contains(user) ? user : em.merge(user));
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public User getUserByUsername(String username) {
-        Query q = em.createNamedQuery("User.findByUsername", User.class);
-        q.setParameter(1, username);
-        User result = (User) q.getSingleResult();
-        return result;
+        try {
+            Query q = em.createNamedQuery("User.findByUsername", User.class);
+            q.setParameter(1, username);
+            User result = (User) q.getSingleResult();
+            return result;
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
     public boolean findUserByUsername(String username) {
-        Query q = em.createNamedQuery("User.findByUsername", User.class);
-        q.setParameter(1, username);
-        List<User> result = q.getResultList();
+        List<User> result = null;
+        try {
+            Query q = em.createNamedQuery("User.findByUsername", User.class);
+            q.setParameter(1, username);
+            result = q.getResultList();
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
         if (result.isEmpty()) {
             return false;
         } else if (result.get(0).getUsername().equals(username)) {
@@ -80,33 +116,53 @@ public class UserServiceEJB {
     }
 
     public Collection<Role> deleteRoleFromUser(Role role, String username) {
-        Query q = em.createNamedQuery("User.findByUsername", User.class);
-        q.setParameter(1, username);
-        List<User> result = q.getResultList();
-        if (result.isEmpty()) {
-            return null;
-        } else if (result.get(0).getUsername().equals(username) && result.get(0).getUserRoles().contains(role)) {
-            result.get(0).getUserRoles().remove(role);
-            update(result.get(0));
-            return result.get(0).getUserRoles();
-        } else {
-            return null;
+        try {
+            Query q = em.createNamedQuery("User.findByUsername", User.class);
+            q.setParameter(1, username);
+            List<User> result = q.getResultList();
+            if (result.isEmpty()) {
+                return null;
+            } else if (result.get(0).getUsername().equals(username) && result.get(0).getUserRoles().contains(role)) {
+                result.get(0).getUserRoles().remove(role);
+                update(result.get(0));
+                return result.get(0).getUserRoles();
+            } else {
+                return null;
+            }
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
+
+        return null;
     }
 
     public List<User> getAllUsers() {
-        Query q = em.createNamedQuery("User.findAll", User.class);
-        List<User> result = q.getResultList();
-        return result;
+        try {
+            Query q = em.createNamedQuery("User.findAll", User.class);
+            List<User> result = q.getResultList();
+            return result;
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
+    @SuppressWarnings("Duplicates")
     public List<Bug> getAllBugs() {
-        Query q = em.createNamedQuery("Bug.findAll", Bug.class);
-        List<Bug> result = q.getResultList();
-        return result;
+        try {
+            Query q = em.createNamedQuery("Bug.findAll", Bug.class);
+            List<Bug> result = q.getResultList();
+            return result;
+        } catch (NullPointerException e) {
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
     }
 
     public boolean ifExistsDelete(String username) {
+
         Query q = em.createNamedQuery("User.findByUsername", User.class);
         q.setParameter(1, username);
         User result = (User) q.getSingleResult();
@@ -117,6 +173,7 @@ public class UserServiceEJB {
         } else {
             return false;
         }
+
     }
 
     public boolean ifExistsActivate(String username) {
@@ -134,55 +191,86 @@ public class UserServiceEJB {
 
 
     public boolean userHasRight(User user, RightType rightType) {
-        List<Role> roles = (List<Role>) user.getUserRoles();
-        for (Role role : roles) {
-            List<Rights> rights = (List<Rights>) role.getRoleRights();
-            for (Rights right : rights) {
-                if (right.getType().equals(rightType)) {
-                    return true;
+        try {
+            List<Role> roles = (List<Role>) user.getUserRoles();
+            for (Role role : roles) {
+                List<Rights> rights = (List<Rights>) role.getRoleRights();
+                for (Rights right : rights) {
+                    if (right.getType().equals(rightType)) {
+                        return true;
+                    }
                 }
             }
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
         return false;
 
     }
 
     public void save(Rights right) {
-        em.persist(right);
+        try {
+            em.persist(right);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
+    @SuppressWarnings("Duplicates")
     public Rights findRightByType(String type) {
-        Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
-        q.setParameter(1, type);
-        Rights result = (Rights) q.getSingleResult();
-        return result;
+        try {
+            Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
+            q.setParameter(1, type);
+            Rights result = (Rights) q.getSingleResult();
+            return result;
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+        return null;
     }
 
     public String getUserInfo(User user) {
         String s = "";
-        s += "Username=" + user.getUsername() +
-                "\n" + "First Name=" + user.getFirstName() +
-                "\n" + "Last Name=" + user.getLastName() +
-                "\n" + "Email=" + user.getEmail() +
-                "\n" + "Phone=" + user.getMobileNumber();
+        try {
+            s += "Username=" + user.getUsername() +
+                    "\n" + "First Name=" + user.getFirstName() +
+                    "\n" + "Last Name=" + user.getLastName() +
+                    "\n" + "Email=" + user.getEmail() +
+                    "\n" + "Phone=" + user.getMobileNumber();
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
         return s;
 
     }
 
     public List<User> getUsersWithCertainRight(RightType rightType) {
+        try {
+            try {
 
-        Query query1 = em.createQuery("select distinct u from User u,u.userRoles ur join Rights rr where rr.typeString='USER_MANAGEMENT'");
+                Query query1 = em.createQuery("select distinct u from User u,u.userRoles ur join Rights rr where rr.typeString='USER_MANAGEMENT'");
 
-        return query1.getResultList();
+                return query1.getResultList();
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
 
+        return null;
     }
 
     public void addRole(RoleType roleType, User user) {
-        Role role = new Role();
-        role.setRole(roleType);
-        if (!user.getUserRoles().contains(role)) {
-            Role role1 = roleServiceEJB.findRoleByType(roleType.toString());
-            user.getUserRoles().add(role1);
+        try {
+            Role role = new Role();
+            role.setRole(roleType);
+            if (!user.getUserRoles().contains(role)) {
+                Role role1 = roleServiceEJB.findRoleByType(roleType.toString());
+                user.getUserRoles().add(role1);
+            }
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
 

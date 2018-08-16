@@ -18,6 +18,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Data
@@ -29,6 +30,9 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
     private String outputMessage;
     private int id;
     private int bugId;
+
+    @Inject
+    private Logger logger;
 
     private List<Notification> notificationList;
     @EJB
@@ -52,13 +56,23 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
 
     @Override
     public Notification getRowData(String rowKey) {
-        Integer id = Integer.parseInt(rowKey);
-        return notificationList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+        try {
+            Integer id = Integer.parseInt(rowKey);
+            return notificationList.stream().filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+        return null;
     }
 
     @Override
     public Object getRowKey(Notification object) {
-        return object.getId();
+        try {
+            return object.getId();
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
+        return null;
     }
 
     @Override
@@ -95,6 +109,7 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
                         }
                     } catch (Exception e) {
                         match = false;
+                        logger.info(Arrays.toString(e.getStackTrace()));
                     }
                 }
             }
@@ -114,6 +129,7 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
             try {
                 return filteredList.subList(first, first + pageSize);
             } catch (IndexOutOfBoundsException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
                 return filteredList.subList(first, first + (dataSize % pageSize));
             }
         } else {
@@ -155,6 +171,7 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
 
                 return SortOrder.ASCENDING.equals(sortOrder) ? comparisonResult : (-1) * comparisonResult;
             } catch (Exception e) {
+                e.printStackTrace();
                 return 1;
             }
         }
@@ -165,8 +182,12 @@ public class NotificationsBean  extends LazyDataModel<Notification> implements S
     private BugBean bugs;
 
     public void onRowDblClickSelect(final SelectEvent event) {
-        Notification obj = (Notification) event.getObject();
-        String aux = obj.getBugTitle();
-        bugs.navigate(aux);
+        try {
+            Notification obj = (Notification) event.getObject();
+            String aux = obj.getBugTitle();
+            bugs.navigate(aux);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 }

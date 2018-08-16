@@ -18,8 +18,10 @@ import javax.inject.Named;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Data
 @Named
@@ -49,6 +51,7 @@ public class LoginBackingBean implements Serializable {
     @Inject
     RightsForRoleGetterAndSetter rightsForRoleGetterAndSetter;
 
+
     @PostConstruct
     public void init() {
         user = new User();
@@ -67,6 +70,7 @@ public class LoginBackingBean implements Serializable {
             user1 = service.getUserByUsername(username);
         } catch (Exception e) {
             userPresentInDB = false;
+            e.printStackTrace();
         }
 
 

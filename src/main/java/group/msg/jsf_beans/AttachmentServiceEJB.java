@@ -4,8 +4,11 @@ import group.msg.entities.Attachment;
 import group.msg.entities.User;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 @Stateless
 public class AttachmentServiceEJB {
@@ -13,11 +16,22 @@ public class AttachmentServiceEJB {
     @PersistenceContext
     private EntityManager em;
 
+    @Inject
+    private Logger logger;
+
     public void save(Attachment attachment) {
-        em.persist(attachment);
+        try {
+            em.persist(attachment);
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void delete(Attachment attachment) {
-        em.remove(em.contains(attachment) ? attachment : em.merge(attachment));
+        try {
+            em.remove(em.contains(attachment) ? attachment : em.merge(attachment));
+        }catch (NullPointerException e){
+            logger.info(Arrays.toString(e.getStackTrace()));
+        }
     }
 }
