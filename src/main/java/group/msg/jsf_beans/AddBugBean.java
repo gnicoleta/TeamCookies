@@ -36,10 +36,6 @@ public class AddBugBean implements Serializable {
     private Date targetDate;
     private SeverityType severityType;
     private String username;
-
-
-
-    //private User createdBy;
     private User assignedTo;
 
      private Attachment attachment;

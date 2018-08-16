@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
-<f:view id="view">
+<f:view id="view"  locale="#{langChange.getLocale()}">
     <h:head>
         <h:outputStylesheet library="css" name="addpages.css"/>
     </h:head>
@@ -16,21 +16,22 @@
             <h:form>
                 <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
                 <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="Home" action="homepage" styleClass="aButton"/>
+
+                    <p:toolbarGroup align="left" >
+                        <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"/>
                         <p:selectOneMenu id="selectOneMenuUser" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="User Management" itemDisabled="true"/>
-                            <f:selectItem itemValue="editUser" itemLabel="Edit User"/>
-                            <f:selectItem itemValue="register" itemLabel="Add User"/>
+                            <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
+                            <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                         </p:selectOneMenu>
                         <p:selectOneMenu id="selectOneMenuBug" value="#{userEditBean.outcome}" ajax="false">
-                            <f:selectItem itemLabel="Bug Management" itemDisabled="true"/>
-                            <f:selectItem itemValue="bugManagement" itemLabel="Edit bug"/>
-                            <f:selectItem itemValue="AddBug" itemLabel="Add bug"/>
+                            <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
+                            <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
                             <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
                         </p:selectOneMenu>
-                        <p:commandButton value="Account" action="homepage" styleClass="aButton"/>
+                        <p:commandButton value="#{msg.account}" action="account" styleClass="aButton"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Logout" action="#{userEditBean.logout}"
@@ -203,9 +204,7 @@
             </p:dataTable>
             <br/>
 
-        </h:form>
 
-        <h:form id="form">
             <p:toolbar>
                 <p:toolbarGroup align="left">
                     <p:commandButton value="Download excel" ajax="false"
@@ -222,6 +221,23 @@
                         <p:commandButton value="Add bug" action="AddBug" ajax="false" icon="ui-icon-plusthick"/>
                 </p:toolbarGroup>
             </p:toolbar>
+        </h:form>
+        <h:form>
+            <br/>
+
+            <h:outputText styleClass="myFont" value="#{msg.select_language}" style="display:block;"/>
+            <h:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                             valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                <f:selectItems value="#{langChange.countries}"/>
+
+
+            </h:selectOneMenu>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </h:form>
         <div class="footer">
             <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
