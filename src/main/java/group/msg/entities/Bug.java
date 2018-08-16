@@ -3,13 +3,8 @@ package group.msg.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.swing.text.Document;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
-
-import group.msg.validator.bugInfoValidator.descriptionValidation;
-import group.msg.validator.bugInfoValidator.revisionValidation;
 
 @Data
 @Entity
@@ -66,8 +61,8 @@ public class Bug implements Serializable {
 
 
     @Override
-    public String toString(){
-        StringBuilder result=new StringBuilder();
+    public String toString() {
+        StringBuilder result = new StringBuilder();
         result.append("ID: ").append(id).append(System.lineSeparator());
         result.append("Title: ").append(title).append(System.lineSeparator());
         result.append("Description: ").append(description).append(System.lineSeparator());

@@ -56,7 +56,7 @@ public class RightsForRoleGetterAndSetter implements Serializable {
                     }
                 }
             } catch (NullPointerException e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class RightsForRoleGetterAndSetter implements Serializable {
         try {
             index = findRightIndex(rightType, listOfLists.get(listIndex));
         } catch (IndexOutOfBoundsException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
         if (index == -1) {
             listOfLists.get(listIndex).add(rightType);

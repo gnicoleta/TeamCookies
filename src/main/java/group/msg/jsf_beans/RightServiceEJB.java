@@ -23,7 +23,7 @@ public class RightServiceEJB {
     public void update(Rights right) {
         try {
             em.merge(right);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
@@ -31,7 +31,7 @@ public class RightServiceEJB {
     public void save(Rights right) {
         try {
             em.persist(right);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
@@ -43,7 +43,7 @@ public class RightServiceEJB {
             q.setParameter(1, type);
             Rights result = (Rights) q.getSingleResult();
             return result;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 

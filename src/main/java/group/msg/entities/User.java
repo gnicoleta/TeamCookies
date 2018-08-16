@@ -1,17 +1,12 @@
 package group.msg.entities;
 
-import group.msg.validator.emailValidation.emailValidation;
-import group.msg.validator.mobileNumberValidation.mobileNumberValidation;
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.io.BufferedReader;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedList;
 
 @Data
 @Entity
@@ -75,7 +70,7 @@ public class User implements Serializable {
     private String password;
 
     @Column(name = "COUNT")
-    private int loginAttemptsCount=0;
+    private int loginAttemptsCount = 0;
 
     @Transient
     private RoleType roleType;
@@ -98,10 +93,9 @@ public class User implements Serializable {
 
     }
 
-    public String toString(){
+    public String toString() {
         return username;
     }
-
 
 
 }

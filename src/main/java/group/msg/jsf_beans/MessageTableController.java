@@ -94,13 +94,14 @@ public class MessageTableController implements Serializable {
         this.currentDate = currentDate;
     }
 
-    public boolean getCheckValue(){
+    public boolean getCheckValue() {
         return checkValue;
     }
 
     public void setCheckValue(boolean checkValue) {
         this.checkValue = checkValue;
     }
+
     public String addMessage() {
         doSomething();
 

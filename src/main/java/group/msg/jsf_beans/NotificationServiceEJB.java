@@ -1,6 +1,5 @@
 package group.msg.jsf_beans;
 
-import group.msg.entities.Bug;
 import group.msg.entities.Notification;
 
 import javax.ejb.Stateless;
@@ -22,7 +21,7 @@ public class NotificationServiceEJB {
     public void save(Notification notification) {
         try {
             em.persist(notification);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
@@ -30,18 +29,18 @@ public class NotificationServiceEJB {
     public void update(Notification notification) {
         try {
             em.merge(notification);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
 
-    public Notification findNotificationByRtype(String type){
+    public Notification findNotificationByRtype(String type) {
         try {
             Query q = em.createNamedQuery("Role.findByRoleType", Notification.class);
             q.setParameter(1, type);
             Notification result = (Notification) q.getSingleResult();
             return result;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 

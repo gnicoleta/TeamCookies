@@ -3,7 +3,6 @@ package group.msg.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.swing.text.Document;
 import java.util.Collection;
 
 @Data

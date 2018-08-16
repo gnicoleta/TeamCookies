@@ -1,10 +1,9 @@
 package group.msg.beans;
 
-import javax.inject.Inject;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.logging.Logger;
 
 
 public class UsernameGenerator implements Serializable {
@@ -16,7 +15,7 @@ public class UsernameGenerator implements Serializable {
     public String generateUsername(String firstName, String lastName, EntityManager entityManager) {
         try {
             em = entityManager;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         StringBuilder result = new StringBuilder();
@@ -38,7 +37,7 @@ public class UsernameGenerator implements Serializable {
                 }
                 result.append(firstName.charAt(0));
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 

@@ -5,16 +5,13 @@ import group.msg.entities.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -201,7 +198,7 @@ public class UserServiceEJB {
                     }
                 }
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
         return false;
@@ -211,7 +208,7 @@ public class UserServiceEJB {
     public void save(Rights right) {
         try {
             em.persist(right);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
@@ -223,7 +220,7 @@ public class UserServiceEJB {
             q.setParameter(1, type);
             Rights result = (Rights) q.getSingleResult();
             return result;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
         return null;
@@ -237,7 +234,7 @@ public class UserServiceEJB {
                     "\n" + "Last Name=" + user.getLastName() +
                     "\n" + "Email=" + user.getEmail() +
                     "\n" + "Phone=" + user.getMobileNumber();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
         return s;
@@ -254,7 +251,7 @@ public class UserServiceEJB {
             } catch (NullPointerException e) {
                 logger.info(Arrays.toString(e.getStackTrace()));
             }
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 
@@ -269,7 +266,7 @@ public class UserServiceEJB {
                 Role role1 = roleServiceEJB.findRoleByType(roleType.toString());
                 user.getUserRoles().add(role1);
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }

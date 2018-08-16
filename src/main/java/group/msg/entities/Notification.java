@@ -46,6 +46,6 @@ public class Notification implements Serializable {
 
     public Notification(NotificationType notificationType) {
         this.notificationType = notificationType;
-        notificationTypeString=notificationType.toString();
+        notificationTypeString = notificationType.toString();
     }
 }

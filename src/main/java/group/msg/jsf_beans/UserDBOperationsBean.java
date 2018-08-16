@@ -4,18 +4,12 @@ import group.msg.entities.User;
 import lombok.Data;
 
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
-
-import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 @Data
 @Stateless

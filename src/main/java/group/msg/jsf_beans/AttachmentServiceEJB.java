@@ -1,7 +1,6 @@
 package group.msg.jsf_beans;
 
 import group.msg.entities.Attachment;
-import group.msg.entities.User;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -22,7 +21,7 @@ public class AttachmentServiceEJB {
     public void save(Attachment attachment) {
         try {
             em.persist(attachment);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
@@ -30,7 +29,7 @@ public class AttachmentServiceEJB {
     public void delete(Attachment attachment) {
         try {
             em.remove(em.contains(attachment) ? attachment : em.merge(attachment));
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }

@@ -36,9 +36,11 @@ public class Rights implements Serializable {
 
     public Rights(RightType type) {
         this.type = type;
-        this.typeString=type.toString();
+        this.typeString = type.toString();
     }
-    public Rights(){}
+
+    public Rights() {
+    }
 
     @Override
     public boolean equals(Object otherObject) {

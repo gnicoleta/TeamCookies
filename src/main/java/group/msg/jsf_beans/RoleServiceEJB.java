@@ -1,7 +1,7 @@
 package group.msg.jsf_beans;
 
 
-import group.msg.entities.*;
+import group.msg.entities.Role;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 @Stateless
@@ -27,7 +26,7 @@ public class RoleServiceEJB {
     public void save(Role role) {
         try {
             em.persist(role);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
@@ -35,7 +34,7 @@ public class RoleServiceEJB {
     public void update(Role role) {
         try {
             em.merge(role);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
     }
@@ -46,7 +45,7 @@ public class RoleServiceEJB {
             q.setParameter(1, type);
             Role result = (Role) q.getSingleResult();
             return result;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 

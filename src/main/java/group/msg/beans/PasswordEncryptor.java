@@ -19,9 +19,9 @@ public class PasswordEncryptor implements Serializable {
                 return DatatypeConverter.printHexBinary(digest).toUpperCase();
 
             } catch (NoSuchAlgorithmException e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return password;
