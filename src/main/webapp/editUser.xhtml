@@ -13,36 +13,39 @@
         <h:outputStylesheet library="css" name="addpages.css"/>
     </h:head>
     <h:body>
-        <div class="menu" >
-        <h:form>
-            <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
-            <p:toolbar>
+        <div class="menu">
+            <h:form>
+                <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
+                <p:toolbar>
 
-                <p:toolbarGroup align="left" >
-                    <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton" icon="ui-icon-home"/>
-                    <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}" ajax="false">
-                        <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
-                        <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
-                        <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
-                        <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                    </p:selectOneMenu>
-                    <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}" ajax="false">
-                        <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
-                        <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
-                        <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
-                        <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                    </p:selectOneMenu>
-                    <p:commandButton value="#{msg.account}" action="account" styleClass="aButton"/>
-                </p:toolbarGroup>
-                <p:toolbarGroup align="right">
-                    <p:commandButton value="Logout" action="#{userEditBean.logout}"
-                                     ajax="false"
-                                     styleClass="aButton"/>
-                </p:toolbarGroup>
-                <br/>
-            </p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"
+                                         icon="ui-icon-home"/>
+                        <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}"
+                                         ajax="false">
+                            <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
+                            <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}"
+                                         ajax="false">
+                            <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
+                            <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="#{msg.account}" action="account" styleClass="aButton"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Logout" action="#{userEditBean.logout}"
+                                         ajax="false"
+                                         styleClass="aButton"/>
+                    </p:toolbarGroup>
+                    <br/>
+                </p:toolbar>
 
-        </h:form>
+            </h:form>
         </div>
         <h:form id="form1">
             <div>
@@ -199,7 +202,7 @@
                                 <f:selectItem itemLabel="TEST" itemValue="TEST"/>
                                 <f:selectItem itemLabel="TM" itemValue="TM"/>
                             </h:selectOneMenu>
-                            
+
                         </h:panelGrid>
                     </p:panel>
 
@@ -239,14 +242,13 @@
                     </p:panel>
 
                     <h:panelGrid columns="2">
-                        <p:commandButton value="#{msg.delete_right}" action="#{userEditBean.deleteRight()}" update="growl"/>
+                        <p:commandButton value="#{msg.delete_right}" action="#{userEditBean.deleteRight()}"
+                                         update="growl"/>
                         <br/>
                         <p:commandButton value="#{msg.add_right}" action="#{userEditBean.addRight()}" update="growl"/>
                     </h:panelGrid>
 
                 </h:form>
-
-                <h:commandButton value="Back" action="homepage" ajax="false"/>
 
                 <br/>
                 <br/>
@@ -275,8 +277,8 @@
             <br/>
         </h:form>
         <div class="footer">
-        <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
-    </div>
+            <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
+        </div>
 
     </h:body>
 
