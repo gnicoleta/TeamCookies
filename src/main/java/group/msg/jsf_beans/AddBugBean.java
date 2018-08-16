@@ -48,7 +48,7 @@ public class AddBugBean implements Serializable {
     private String username;
 
     private Attachment attachment;
-    
+
     private User assignedTo;
 
     private Notification notification = new Notification();

@@ -2,6 +2,7 @@ package group.msg.jsf_beans;
 
 
 import group.msg.entities.*;
+import group.msg.validator.bugInfoValidator.descriptionValidation;
 import group.msg.validator.bugInfoValidator.revisionValidation;
 import lombok.Data;
 import org.primefaces.context.RequestContext;
@@ -49,6 +50,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
     private StatusType statusType = null;
     private Attachment attachment;
     private String title = null;
+    @descriptionValidation
     private String description = null;
     @revisionValidation
     private String version = null;
