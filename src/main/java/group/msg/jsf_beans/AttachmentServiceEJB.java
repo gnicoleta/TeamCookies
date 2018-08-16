@@ -13,6 +13,9 @@ public class AttachmentServiceEJB {
     @PersistenceContext
     private EntityManager em;
 
+    public void save(Attachment attachment) {
+        em.persist(attachment);
+    }
 
     public void delete(Attachment attachment) {
         em.remove(em.contains(attachment) ? attachment : em.merge(attachment));
