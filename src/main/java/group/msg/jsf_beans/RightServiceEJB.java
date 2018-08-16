@@ -6,6 +6,7 @@ import group.msg.entities.Rights;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Arrays;
@@ -39,11 +40,15 @@ public class RightServiceEJB {
     @SuppressWarnings("Duplicates")
     public Rights findRightByType(String type) {
         try {
-            Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
-            q.setParameter(1, type);
-            Rights result = (Rights) q.getSingleResult();
-            return result;
-        } catch (NullPointerException e) {
+            try {
+                Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
+                q.setParameter(1, type);
+                Rights result = (Rights) q.getSingleResult();
+                return result;
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 

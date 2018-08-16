@@ -5,6 +5,7 @@ import group.msg.entities.Notification;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Arrays;
@@ -36,11 +37,15 @@ public class NotificationServiceEJB {
 
     public Notification findNotificationByRtype(String type) {
         try {
-            Query q = em.createNamedQuery("Role.findByRoleType", Notification.class);
-            q.setParameter(1, type);
-            Notification result = (Notification) q.getSingleResult();
-            return result;
-        } catch (NullPointerException e) {
+            try {
+                Query q = em.createNamedQuery("Role.findByRoleType", Notification.class);
+                q.setParameter(1, type);
+                Notification result = (Notification) q.getSingleResult();
+                return result;
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 

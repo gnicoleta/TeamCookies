@@ -82,11 +82,15 @@ public class UserServiceEJB {
 
     public User getUserByUsername(String username) {
         try {
-            Query q = em.createNamedQuery("User.findByUsername", User.class);
-            q.setParameter(1, username);
-            User result = (User) q.getSingleResult();
-            return result;
-        } catch (NullPointerException e) {
+            try {
+                Query q = em.createNamedQuery("User.findByUsername", User.class);
+                q.setParameter(1, username);
+                User result = (User) q.getSingleResult();
+                return result;
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 
@@ -135,10 +139,14 @@ public class UserServiceEJB {
 
     public List<User> getAllUsers() {
         try {
-            Query q = em.createNamedQuery("User.findAll", User.class);
-            List<User> result = q.getResultList();
-            return result;
-        } catch (NullPointerException e) {
+            try {
+                Query q = em.createNamedQuery("User.findAll", User.class);
+                List<User> result = q.getResultList();
+                return result;
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 
@@ -148,10 +156,14 @@ public class UserServiceEJB {
     @SuppressWarnings("Duplicates")
     public List<Bug> getAllBugs() {
         try {
-            Query q = em.createNamedQuery("Bug.findAll", Bug.class);
-            List<Bug> result = q.getResultList();
-            return result;
-        } catch (NullPointerException e) {
+            try {
+                Query q = em.createNamedQuery("Bug.findAll", Bug.class);
+                List<Bug> result = q.getResultList();
+                return result;
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 
@@ -216,11 +228,15 @@ public class UserServiceEJB {
     @SuppressWarnings("Duplicates")
     public Rights findRightByType(String type) {
         try {
-            Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
-            q.setParameter(1, type);
-            Rights result = (Rights) q.getSingleResult();
-            return result;
-        } catch (NullPointerException e) {
+            try {
+                Query q = em.createNamedQuery("Rights.findByRightType", Rights.class);
+                q.setParameter(1, type);
+                Rights result = (Rights) q.getSingleResult();
+                return result;
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }
         return null;

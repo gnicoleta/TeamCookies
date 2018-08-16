@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Arrays;
@@ -41,11 +42,15 @@ public class RoleServiceEJB {
 
     public Role findRoleByType(String type) {
         try {
-            Query q = em.createNamedQuery("Role.findByRoleType", Role.class);
-            q.setParameter(1, type);
-            Role result = (Role) q.getSingleResult();
-            return result;
-        } catch (NullPointerException e) {
+            try {
+                Query q = em.createNamedQuery("Role.findByRoleType", Role.class);
+                q.setParameter(1, type);
+                Role result = (Role) q.getSingleResult();
+                return result;
+            } catch (NullPointerException e) {
+                logger.info(Arrays.toString(e.getStackTrace()));
+            }
+        }catch (NoResultException e){
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 
