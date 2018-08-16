@@ -390,7 +390,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
         ExcelWriter excelWriter = null;
         try {
-            
+
             excelWriter = downloadBean.getExcelWriter();
             excelWriter.createExcel(selectedBugs, "Bug_Info");
 
