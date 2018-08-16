@@ -49,39 +49,42 @@
 
 
                 <h:panelGrid columns="4">
-                <h:outputText styleClass="myFont" value="      Title" />
+                <h:outputText styleClass="myFont" value="      #{msg.title}" />
                 <p:inputText id="Title" value="#{addBugBean.title}" required="true" label="Title"/>
                     <p:watermark for="Title"  value=" " id="watermark3"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Description" />
+                <h:outputText styleClass="myFont" value="      #{msg.description}" />
                 <p:inputText id="description" value="#{addBugBean.description}" required="true" label="description"/>
                     <p:watermark  for="description" value=" " id="watermark4"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Version" />
+                <h:outputText styleClass="myFont" value="      #{msg.version}" />
                 <p:inputText id="version" value="#{addBugBean.version}" required="true" label="version"/>
                     <p:watermark  for="version"  value=" " id="watermark5"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Assigned to user" />
+                <h:outputText styleClass="myFont" value="      #{msg.assigned_to_user}" />
                 <p:inputText id="assignedTo" value="#{addBugBean.username}" required="true" label="assignedTo"/>
                     <p:watermark  for="assignedTo" value=" " id="watermark6"/>
                 <br/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Target Date"/>
+                <h:outputText styleClass="myFont" value="      #{msg.target_date}"/>
                 <p:calendar id="inline" navigator="true"  style="width:220px" value="#{addBugBean.targetDate}" mode="inline"/>
                     <p:watermark for="inline" value=" " id="watermark7"/>
                 <br/>
                 <h:outputText styleClass="myFont" value="      Severity Type"/>
 
                 <p:selectOneMenu id="console" value="#{addBugBean.severityTypeString}" style="width:220px">
-                    <f:selectItem itemLabel="Choose severity type" itemDisabled="true"/>
+                    <f:selectItem itemLabel="#{msg.choose_severity_type}" itemDisabled="true"/>
                     <f:selectItem itemLabel="CRITICAL" itemValue="CRITICAL"/>
                     <f:selectItem itemLabel="HIGH" itemValue="HIGH"/>
                     <f:selectItem itemLabel="MEDIUM" itemValue="MEDIUM"/>
                     <f:selectItem itemLabel="LOW" itemValue="LOW"/>
                 </p:selectOneMenu>
-                    <h:outputText styleClass="myFont" value="      Attachment"/>
+                    <p:watermark for="console" value=" " id="watermark9"/>
+                <br/>
+                    <h:outputText styleClass="myFont" value="      #{msg.attachment}"/>
                     <p:fileUpload fileUploadListener="#{addBugBean.handleFileUpload}" mode="advanced"
                                   dragDropSupport="false"
+                                  style="width:140px"
                                   update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
                                   allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
                     <p:growl id="messages" showDetail="true"/>

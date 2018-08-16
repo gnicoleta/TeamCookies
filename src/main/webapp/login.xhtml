@@ -48,12 +48,12 @@
             <h:form>
                 <br/>
                 <h:outputText styleClass="myFont" value="#{msg.select_language}" style="display:block;"/>
-                <h:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
                                  valueChangeListener="#{langChange.countryLocaleCodeChanged}">
                     <f:selectItems value="#{langChange.countries}"/>
 
 
-                </h:selectOneMenu>
+                </p:selectOneMenu>
             </h:form>
             <br/>
 

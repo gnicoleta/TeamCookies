@@ -50,15 +50,15 @@
 
                 <h:panelGrid columns="4">
 
-                <h:outputText styleClass="myFont" value="      First Name" />
+                <h:outputText styleClass="myFont" value="      #{msg.first_name}" />
                 <p:inputText id="firsName" value="#{registerUserBean.firstName}" required="true" label="first name"/>
                     <p:watermark for="firsName" value=" " id="watermark1"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Last Name" />
+                <h:outputText styleClass="myFont" value="      #{msg.last_name}" />
                 <p:inputText id="lastName" value="#{registerUserBean.lastName}" required="true" label="last name"/>
                     <p:watermark for="lastName" value=" " id="watermark2"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Password" />
+                <h:outputText styleClass="myFont" value="      #{msg.password}" />
                 <p:password id="password" required="true" value="#{registerUserBean.password}"/>
                     <p:watermark for="password" value=" " id="watermark3"/>
                 <br/>
@@ -66,11 +66,11 @@
                 <p:inputText id="email" required="true" value="#{registerUserBean.email}"/>
                     <p:watermark for="email" value=" " id="watermark4"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Phone Number" />
+                <h:outputText styleClass="myFont" value="      #{msg.mobile_number}" />
                 <p:inputText id="phone_number" required="true" value="#{registerUserBean.mobileNumber}"/>
                     <p:watermark for="phone_number" value=" " id="watermark5"/>
                 <br/>
-                <h:outputText styleClass="myFont" value="      Select User Roles" />
+                <h:outputText styleClass="myFont" value="      #{msg.select_user_roles}" />
                 <p:selectManyMenu showCheckbox="true" style="width:220px" id="select_roles" required="true" value="#{registerUserBean.selectedRolesStrings}">
                     <f:selectItem itemLabel="Administrator(ADM)" styleClass="myFont" itemValue="ADM"/>
                     <f:selectItem itemLabel="Project manager(PM)" styleClass="myFont" itemValue="PM"/>
@@ -89,7 +89,7 @@
                 <br/>
                 <br/>
                 <br/>
-                <p:commandButton value="Add User" action="#{registerUserBean.registerUser}"
+                <p:commandButton value="#{msg.add_user}" action="#{registerUserBean.registerUser}"
                                  ajax="false"
                                  styleClass="aButton"/>
                 <br/>
