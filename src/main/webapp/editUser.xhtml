@@ -189,18 +189,18 @@
                         <p:messages id="messages"/>
                         <h:panelGrid columns="4" cellpadding="5">
                             <h:outputLabel for="txt1" value="Insert Username"/>
-                            <p:inputText id="txt1" value="#{userEditBean.userName}" required="true" label="Text 1">
+                            <p:inputText id="txt1" value="#{userEditBean.userName}" label="Username ">
                                 <f:validateLength minimum="2"/>
                             </p:inputText>
 
                             <h:outputLabel for="txt2" value="Choose role to delete: "/>
-                            <h:selectOneMenu id="txt2" value="#{userEditBean.roleTypeDelete}" required="true"
-                                             label="Text 2">
+                            <h:selectOneMenu id="txt2" value="#{userEditBean.roleTypeDelete}" label="Role ">
                                 <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                 <f:selectItem itemLabel="PM" itemValue="PM"/>
                                 <f:selectItem itemLabel="DEV" itemValue="DEV"/>
                                 <f:selectItem itemLabel="ADM" itemValue="ADM"/>
                                 <f:selectItem itemLabel="TEST" itemValue="TEST"/>
+                                <f:selectItem itemLabel="TM" itemValue="TM"/>
                             </h:selectOneMenu>
                             
                         </h:panelGrid>
@@ -216,17 +216,18 @@
                     <p:panel id="panelRole" header="Remove right from role" style="margin-bottom:10px;">
                         <h:panelGrid columns="4" cellpadding="5">
                             <h:outputLabel for="txt2" value="Choose role: "/>
-                            <h:selectOneMenu value="#{userEditBean.roleTypeStr}" required="true"
+                            <h:selectOneMenu value="#{userEditBean.roleTypeStr}" required="false"
                                              label="Role ">
-                                <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
+                                <f:selectItem itemLabel="Choose type" itemDisabled="false"/>
                                 <f:selectItem itemLabel="PM" itemValue="PM"/>
                                 <f:selectItem itemLabel="DEV" itemValue="DEV"/>
                                 <f:selectItem itemLabel="ADM" itemValue="ADM"/>
                                 <f:selectItem itemLabel="TEST" itemValue="TEST"/>
+                                <f:selectItem itemLabel="TM" itemValue="TM"/>
                             </h:selectOneMenu>
 
                             <h:outputLabel for="txt2" value="Right: "/>
-                            <h:selectOneMenu value="#{userEditBean.rghtTypeStr}" required="true"
+                            <h:selectOneMenu value="#{userEditBean.rghtTypeStr}" required="false"
                                              label="Rights ">
                                 <f:selectItem itemLabel="Choose type" itemDisabled="true"/>
                                 <f:selectItem itemLabel="PERMISSION_MANAGEMENT" itemValue="PERMISSION_MANAGEMENT"/>

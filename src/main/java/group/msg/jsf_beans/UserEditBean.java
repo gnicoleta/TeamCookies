@@ -192,12 +192,25 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
         @Override
         public int compare(User user, User t1) {
             try {
-                Object val1 = User.class.getField(sortField).get(user);
-                Object val2 = User.class.getField(sortField).get(t1);
+                Field fieldToSort = null;
+                for (Field field : User.class.getDeclaredFields()) {
+                    if (field.getName().equals(sortField)) {
+                        fieldToSort = field;
+                    }
+                }
 
-                int comparationResult = ((Comparable) val1).compareTo(val2);
+                if (fieldToSort != null) {
+                    fieldToSort.setAccessible(true);
+                } else {
+                    return 1;
+                }
 
-                return SortOrder.ASCENDING.equals(sortOrder) ? comparationResult : (-1) * comparationResult;
+                Object val1 = fieldToSort.get(user);
+                Object val2 = fieldToSort.get(t1);
+
+                int comparisonResult = ((Comparable) val1).compareTo(val2);
+
+                return SortOrder.ASCENDING.equals(sortOrder) ? comparisonResult : (-1) * comparisonResult;
             } catch (Exception e) {
                 return 1;
             }
