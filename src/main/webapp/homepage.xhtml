@@ -40,6 +40,11 @@
                     <p:commandButton value="Logout" action="#{userEditBean.logout}"
                                      ajax="false"
                                      styleClass="aButton"/>
+                    <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                     valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                        <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                        <f:selectItems value="#{langChange.countries}"/>
+                    </p:selectOneMenu>
                 </p:toolbarGroup>
                 <br/>
             </p:toolbar>
@@ -78,14 +83,7 @@
 
         </h:form>
 
-        <h:form>
-            <br/>
-            <h:outputText styleClass="myFont" value="#{msg.select_language}" style="display:block;"/>
-            <h:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
-                             valueChangeListener="#{langChange.countryLocaleCodeChanged}">
-                <f:selectItems value="#{langChange.countries}"/>
-            </h:selectOneMenu>
-        </h:form>
+
 
         <div class="footer">
             <img align="middle" src="resources/images/msgckft.png" alt="The ENIAC"/>
