@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import group.msg.validator.bugInfoValidator.descriptionValidation;
-import group.msg.validator.bugInfoValidator.revisionValidation;
 
 @Data
 @Entity
