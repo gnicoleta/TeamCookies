@@ -52,7 +52,7 @@ public class AccountJSFBean implements Serializable {
         String info = "";
 
         if (firstName.length() > 0) {
-            info += "First Name changed to: (new)" + firstName + " from (old)" + user.getFirstName();
+            info += "First Name changed to: (new)" + firstName + " from (old)" + user.getFirstName() + "\n";
             user.setFirstName(firstName);
 
         }
@@ -84,7 +84,7 @@ public class AccountJSFBean implements Serializable {
 
         }
         if (roleString != null) {
-            info += "1";
+            info += "Added new role: (new)" + roleString;
 
             if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
                 userServiceEJB.addRole(RoleType.valueOf(roleString), user);
@@ -95,7 +95,7 @@ public class AccountJSFBean implements Serializable {
 
         }
         if (deleteRoleString != null) {
-            info += "1";
+            info += "Role: " + deleteRoleString + " was deleted";
             if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
 
                 Role role1 = null;
