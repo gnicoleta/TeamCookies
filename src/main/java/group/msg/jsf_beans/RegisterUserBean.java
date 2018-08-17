@@ -86,11 +86,11 @@ public class RegisterUserBean implements Serializable {
         user1.setFirstName(firstName);
         user1.setLastName(lastName);
         user1.setUsername(service.generateUsername(firstName, lastName));
-        if(email.endsWith("@msggroup.com")&&email!=null) {
+        if(email.endsWith("@msggroup.com")&&email!=null&&email.length()>13) {
             user1.setEmail(email);
         }
         else{
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Wrong email (not @msg.com)");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Wrong email (not @msggroup.com)");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return "register";
         }

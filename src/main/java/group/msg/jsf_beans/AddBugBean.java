@@ -42,7 +42,24 @@ public class AddBugBean implements Serializable {
     private Notification notification;
 
     private Bug bug;
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            try {
+                byte[] b = event.getFile().getContents();
+                attachment = new Attachment();
+                attachment.setAttachmentByte(b);
+                attachment.setAttachmentType(event.getFile().getContentType());
+                attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
+                FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
     public String addBug() {
         notification=new Notification();
         bug = new Bug();
@@ -65,6 +82,7 @@ public class AddBugBean implements Serializable {
         }
         bug.setCreatedBy((User)WebHelper.getSession().getAttribute("currentUser"));
         bug.setAssignedTo(user);
+        bug.setAttachment(attachment);
         String data = "NEW BUG!   " + "\n Title:" + title + ". Description:" + description + ". Version:" + version + ". Target date:" + targetDate + ". Severity type:" + severityTypeString;
         notification.setInfo(data);
         notification.setNotificationType(NotificationType.BUG_UPDATED);
@@ -76,22 +94,5 @@ public class AddBugBean implements Serializable {
         notificationServiceEJB.update(notification);
         return "bugManagement";
     }
-    public void handleFileUpload(FileUploadEvent event) {
-        try {
-            try {
-                byte[] b = event.getFile().getContents();
-                attachment = new Attachment();
-                attachment.setAttachmentByte(b);
-                attachment.setAttachmentType(event.getFile().getContentType());
-                attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
-                FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-                FacesContext.getCurrentInstance().addMessage(null, message);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-    }
 }
