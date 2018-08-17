@@ -64,11 +64,11 @@ public class RegisterUserBean implements Serializable {
     }
 
     public String getRegisterInfo(String username) {
-        String temp = "Welcome " + firstName + " " + lastName + "\n";
-        temp += "Username=" + username + "\n";
-        temp += "Email=" + email + "\n";
-        temp += "Mobile number=" + mobileNumber + "\n";
-        temp += "Roles: ";
+        String temp = "Welcome " + firstName + " " + lastName + ", ";
+        temp += "username: " + username + ", ";
+        temp += "email: " + email + ", ";
+        temp += "mobile number: " + mobileNumber + ", ";
+        temp += "roles: ";
         for (String s : selectedRolesStrings) {
             temp += s + " ";
         }
