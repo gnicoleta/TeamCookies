@@ -1,4 +1,4 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 
 import group.msg.entities.User;
@@ -7,7 +7,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.List;
-import java.util.Locale;
 
 @Stateless
 @LocalBean

@@ -1,4 +1,4 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 
 import javax.faces.annotation.FacesConfig;
@@ -6,7 +6,7 @@ import javax.faces.annotation.FacesConfig;
 import static javax.faces.annotation.FacesConfig.Version.JSF_2_3;
 
 @FacesConfig(
-        // Activates CDI build-in beans
+        // Activates CDI build-in blogic
         version = JSF_2_3
 )
 public class ConfigurationBean {

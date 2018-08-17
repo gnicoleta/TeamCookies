@@ -1,7 +1,6 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 import group.msg.entities.Attachment;
-import group.msg.entities.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

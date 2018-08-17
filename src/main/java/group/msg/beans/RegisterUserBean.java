@@ -1,8 +1,8 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
-import group.msg.beans.PasswordEncryptor;
-import group.msg.beans.RightsForRoleGetterAndSetter;
-import group.msg.beans.UsernameGenerator;
+import group.msg.blogic.PasswordEncryptor;
+import group.msg.blogic.RightsForRoleGetterAndSetter;
+import group.msg.blogic.UsernameGenerator;
 import group.msg.entities.*;
 import lombok.Data;
 import org.jboss.weld.context.ejb.Ejb;

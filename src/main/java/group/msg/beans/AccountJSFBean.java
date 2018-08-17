@@ -1,7 +1,7 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 
-import group.msg.beans.PasswordEncryptor;
+import group.msg.blogic.PasswordEncryptor;
 import group.msg.entities.*;
 import lombok.Data;
 

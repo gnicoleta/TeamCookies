@@ -1,18 +1,12 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 import group.msg.entities.User;
 import lombok.Data;
 
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import java.util.List;
-
-import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 @Data
 @Stateless

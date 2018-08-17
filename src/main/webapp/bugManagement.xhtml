@@ -197,7 +197,7 @@
                     <p:commandButton value="#{msg.delete_attachment}" ajax="true" action="#{bugBean.deleteAttachment}" icon="ui-icon-minusthick"/>
 
                     <p:fileUpload fileUploadListener="#{bugBean.handleFileUpload}" mode="advanced"
-                                  dragDropSupport="false" oncomplete="javascript:window.location.reload()" update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
+                                  dragDropSupport="false"  update="messages" auto="true" sizeLimit="26214400" fileLimit="1"
                                   allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx|xls|doc|odf)$/"/>
                     <p:growl id="messages" showDetail="true"/>
                 </p:column>

@@ -1,13 +1,10 @@
-package group.msg.beans;
+package group.msg.blogic;
 
 import group.msg.entities.RightType;
 import group.msg.entities.RoleType;
-import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 

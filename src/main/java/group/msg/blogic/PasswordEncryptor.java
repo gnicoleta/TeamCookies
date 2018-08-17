@@ -1,4 +1,4 @@
-package group.msg.beans;
+package group.msg.blogic;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.Serializable;

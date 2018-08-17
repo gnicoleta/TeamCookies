@@ -1,4 +1,4 @@
-package group.msg.beans;
+package group.msg.blogic;
 
 import javax.persistence.*;
 import java.io.Serializable;

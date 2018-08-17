@@ -1,4 +1,4 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 
 import group.msg.entities.*;
@@ -8,7 +8,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Collection;
 
 @Stateless
 public class RoleServiceEJB {

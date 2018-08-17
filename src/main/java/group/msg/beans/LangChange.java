@@ -1,9 +1,8 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 import lombok.Data;
 
 import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;

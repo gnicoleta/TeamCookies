@@ -1,18 +1,13 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 import group.msg.entities.*;
 import lombok.Data;
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.FileUploadEvent;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.validation.ConstraintValidatorContext;
 import java.io.Serializable;
 import java.util.Date;
 

@@ -1,6 +1,6 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
-import group.msg.beans.UsernameGenerator;
+import group.msg.blogic.UsernameGenerator;
 import group.msg.entities.*;
 
 import javax.ejb.EJB;
@@ -12,7 +12,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Stateless

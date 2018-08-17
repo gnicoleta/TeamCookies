@@ -1,9 +1,9 @@
 package group.msg.test.jpa;
 
-import group.msg.beans.PasswordEncryptor;
-import group.msg.beans.UsernameGenerator;
+import group.msg.blogic.PasswordEncryptor;
+import group.msg.blogic.UsernameGenerator;
 import group.msg.entities.*;
-import group.msg.jsf_beans.DownloadBean;
+import group.msg.beans.DownloadBean;
 import group.msg.test.MavenArtifactResolver;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -32,7 +32,7 @@ public class UserCRUDTest extends JPABaseTest {
                 .addAsLibraries(MavenArtifactResolver.resolve(
                         "mysql:mysql-connector-java:5.1.46"))
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-                .addAsResource("../classes/META-INF/beans.xml", "META-INF/beans.xml");
+                .addAsResource("../classes/META-INF/blogic.xml", "META-INF/beans.xml");
     }
 
     @Test

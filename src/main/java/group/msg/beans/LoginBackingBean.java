@@ -1,8 +1,8 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 
-import group.msg.beans.PasswordEncryptor;
-import group.msg.beans.RightsForRoleGetterAndSetter;
+import group.msg.blogic.PasswordEncryptor;
+import group.msg.blogic.RightsForRoleGetterAndSetter;
 import group.msg.entities.*;
 import lombok.Data;
 import org.jboss.weld.context.ejb.Ejb;
@@ -17,8 +17,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Data

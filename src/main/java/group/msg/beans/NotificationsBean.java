@@ -1,4 +1,4 @@
-package group.msg.jsf_beans;
+package group.msg.beans;
 
 import group.msg.entities.Notification;
 
