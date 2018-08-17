@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <body>
-<f:view locale="#{langChange.getLocale()}" >
+<f:view locale="#{langChange.getLocale()}">
     <h:head>
         <title>Homepage</title>
         <h:outputStylesheet library="css" name="addpages.css"/>
@@ -14,45 +14,47 @@
 
     <h:body>
 
-        <div class="menu" >
-        <h:form>
+        <div class="menu">
+            <h:form>
 
-            <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
-            <p:toolbar>
+                <img align="middle" src="resources/images/headdd.png" alt="wut"/><br/>
+                <p:toolbar>
 
-                <p:toolbarGroup align="left">
-                    <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton" icon="ui-icon-home"/>
-                    <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}" ajax="false">
-                        <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
-                        <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
-                        <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
-                        <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                    </p:selectOneMenu>
-                    <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}" ajax="false">
-                        <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
-                        <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
-                        <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
-                        <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
-                    </p:selectOneMenu>
-                    <p:commandButton value="#{msg.account}" action="account" styleClass="aButton"/>
-                </p:toolbarGroup>
-                <p:toolbarGroup align="right">
-                    <p:commandButton value="Logout" action="#{userEditBean.logout}"
-                                     ajax="false"
-                                     styleClass="aButton"/>
-                    <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
-                                     valueChangeListener="#{langChange.countryLocaleCodeChanged}">
-                        <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
-                        <f:selectItems value="#{langChange.countries}"/>
-                    </p:selectOneMenu>
-                </p:toolbarGroup>
-                <br/>
-            </p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="#{msg.home}" action="homepage" styleClass="aButton"
+                                         icon="ui-icon-home"/>
+                        <p:selectOneMenu id="selectOneMenuUser" effect="drop" value="#{userEditBean.outcome}"
+                                         ajax="false">
+                            <f:selectItem itemLabel="#{msg.user_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="editUser" itemLabel="#{msg.edit_user}"/>
+                            <f:selectItem itemValue="register" itemLabel="#{msg.add_user}"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu id="selectOneMenuBug" effect="drop" value="#{userEditBean.outcome}"
+                                         ajax="false">
+                            <f:selectItem itemLabel="#{msg.bug_management}" itemDisabled="true"/>
+                            <f:selectItem itemValue="bugManagement" itemLabel="#{msg.edit_bug}"/>
+                            <f:selectItem itemValue="AddBug" itemLabel="#{msg.add_bug}"/>
+                            <p:ajax event="change" listener="#{userEditBean.navigate()}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="#{msg.account}" action="account" styleClass="aButton"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Logout" action="#{userEditBean.logout}"
+                                         ajax="false"
+                                         styleClass="aButton"/>
+                        <p:selectOneMenu value="#{langChange.languagecode}" onchange="submit()"
+                                         valueChangeListener="#{langChange.countryLocaleCodeChanged}">
+                            <f:selectItem itemLabel="#{msg.select_language}" itemDisabled="true"/>
+                            <f:selectItems value="#{langChange.countries}"/>
+                        </p:selectOneMenu>
+                    </p:toolbarGroup>
+                    <br/>
+                </p:toolbar>
 
-        </h:form>
-    </div>
+            </h:form>
+        </div>
         <br/>
-
 
 
         <h:form id="form">
@@ -64,7 +66,8 @@
                          rowsPerPageTemplate="5,10,15"
                          paginatorPosition="bottom">
 
-                <p:ajax event="rowDblselect" listener="#{notificationsBean.onRowDblClickSelect}"/>
+                <p:ajax event="rowDblselect" listener="#{notificationsBean.onRowDblClickSelect}"
+                        update=":form:notificationsTable"/>
 
                 <p:column sortBy="#{notification.notificationType}" filterBy="#{notification.notificationType}"
                           filterMatchMode="contains">

@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.List;
 
 import group.msg.entities.*;
-import group.msg.validator.bugInfoValidator.revisionValidation;
 import lombok.Data;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
@@ -59,7 +58,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private String title = null;
     private String description = null;
 
-   // @revisionValidation
+    // @revisionValidation
     private String version = null;
     private String fixedInVersion;
     private LocalDateTime targetDate;
@@ -72,7 +71,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
     private User user = null;
     private StatusType aux;
     private Bug selectedBug;
-    private List<Bug> bugList=new ArrayList<>();
+    private List<Bug> bugList = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -202,7 +201,6 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     }
 
-
     public void handleFileUpload(FileUploadEvent event) {
         byte[] b = event.getFile().getContents();
         Attachment attachment = new Attachment();
@@ -288,6 +286,7 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
         return null;
 
     }
+
     public void updateBug(CellEditEvent event) {
         if (service.userHasRight(((User) WebHelper.getSession().getAttribute("currentUser")), RightType.BUG_MANAGEMENT)) {
             if (title != null) {
@@ -362,10 +361,10 @@ public class BugBean extends LazyDataModel<Bug> implements Serializable {
 
     public void sendNotification() {
         bugService.update(selectedBug);
-        data = "BUG UPDATED!  Id:"+selectedBug.getId()+"  Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
+        data = "BUG UPDATED!  Id:" + selectedBug.getId() + "  Title:" + selectedBug.getTitle() + ". Description:" + selectedBug.getDescription() + ". Version:" + selectedBug.getVersion() + ". Target date:" + selectedBug.getTargetDate() + ". Severity type:" + selectedBug.getSeverityType() + ". Assigned to:" + selectedBug.getAssignedTo();
         Notification notification = new Notification(NotificationType.BUG_UPDATED);
         notification.setInfo(data);
-        int info=selectedBug.getId();
+        int info = selectedBug.getId();
         notification.setBugId(info);
         notificationServiceEJB.save(notification);
         selectedBug.getAssignedTo().getNotifications().add(notification);

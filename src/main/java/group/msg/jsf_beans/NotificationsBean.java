@@ -15,7 +15,6 @@ import javax.ejb.EJB;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -32,12 +31,11 @@ public class NotificationsBean extends LazyDataModel<Notification> implements Se
     private int id;
     private int bugId;
 
-    private List<Notification> notificationList;
+    private List<Notification> notificationList = new ArrayList<>();
     @EJB
     private NotificationServiceEJB notificationServiceEJB;
 
     public Notification getSelectedNotification() {
-        System.out.println("test");
         return selectedNotification;
     }
 
@@ -161,8 +159,6 @@ public class NotificationsBean extends LazyDataModel<Notification> implements Se
         }
 
     }
-
-
 
     public void onRowDblClickSelect(final SelectEvent event) {
         Notification obj = (Notification) event.getObject();
