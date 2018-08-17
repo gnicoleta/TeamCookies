@@ -1,8 +1,6 @@
 package group.msg.test.beans;
 
 import group.msg.entities.User;
-import group.msg.jsf_beans.BugBean;
-import group.msg.jsf_beans.UserEditBean;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,8 +13,6 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import org.meanbean.test.BeanTester;
 
 public class TestUser {
 

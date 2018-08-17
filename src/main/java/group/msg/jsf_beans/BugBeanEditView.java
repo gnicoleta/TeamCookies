@@ -2,16 +2,19 @@ package group.msg.jsf_beans;
 
 
 import group.msg.entities.*;
-import group.msg.validator.bugInfoValidator.revisionValidation;
 import lombok.Data;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.StreamedContent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,6 +37,9 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
     private NotificationServiceEJB notificationServiceEJB;
     @Inject
     private DownloadBean downloadBean;
+    @EJB
+    private AttachmentServiceEJB attachmentServiceEJB;
+
 
     private Integer id;
     private List<Bug> bugListForView = new ArrayList<>();
@@ -47,8 +53,9 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
     private Attachment attachment;
     private String title = null;
     private String description = null;
-    @revisionValidation
+    //@revisionValidation
     private String version = null;
+    private BugBean bugBean=new BugBean();
 
 
     @PostConstruct
@@ -70,6 +77,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
     public Object getRowKey(Bug object) {
         return object.getId();
     }
+
     @Override
     public java.util.List<Bug> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         java.util.List<Bug> filteredList = new ArrayList<>();
@@ -116,7 +124,7 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
 
         int dataSize = filteredList.size();
         if (sortField != null) {
-            filteredList.sort(new BugBeanEditView.BugSorter(sortField, sortOrder));
+            filteredList.sort(new BugSorter(sortField, sortOrder));
         }
         this.setRowCount(dataSize);
 
@@ -166,6 +174,63 @@ public class BugBeanEditView extends LazyDataModel<Bug> implements Serializable 
                 return 1;
             }
         }
+    }
+    public void handleFileUpload(FileUploadEvent event) {
+        byte[] b = event.getFile().getContents();
+        Attachment attachment = new Attachment();
+        attachment.setAttachmentByte(b);
+        attachment.setAttachmentType(event.getFile().getContentType());
+        attachment.setExtensionType(FilenameUtils.getExtension(event.getFile().getFileName()));
+        selectedBug.setAttachment(attachment);
+        bugService.save(selectedBug);
+        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+    }
+
+    public void deleteAttachment() {
+        try {
+            Attachment attachment = selectedBug.getAttachment();
+            selectedBug.setAttachment(null);
+            attachmentServiceEJB.delete(attachment);
+        } catch (Exception e) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
+    }
+
+    public StreamedContent downloadAttachment() throws IOException {
+        Attachment attachment = null;
+        try {
+            attachment = selectedBug.getAttachment();
+
+            File file = byteToFile(attachment.getAttachmentByte(), "MyAttachment");
+
+            InputStream stream = new FileInputStream(file.getAbsolutePath());
+
+
+            String contentType = attachment.getAttachmentType();
+            String extension = attachment.getExtensionType();
+
+            return new DefaultStreamedContent(stream, contentType, "downloaded_bug_attachment." + extension);
+        } catch (Exception e) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Missing attachment");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
+        return null;
+    }
+    public File byteToFile(byte[] byteFile, String filename) {
+        File file = new File(filename);
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(file);
+            stream.write(byteFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file;
+
     }
 
     public Bug getSelectedBug() {
