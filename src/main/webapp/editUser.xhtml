@@ -187,10 +187,6 @@
                     <p:panel id="panel" header="#{msg.delete_role_from_user}" style="margin-bottom:10px;">
                         <p:messages id="messages"/>
                         <h:panelGrid columns="4" cellpadding="5">
-                            <h:outputLabel for="txt1" value="Username"/>
-                            <p:inputText id="txt1" value="#{userEditBean.userName}" label="Username ">
-                                <f:validateLength minimum="2"/>
-                            </p:inputText>
 
                             <h:outputLabel for="txt2" value="#{msg.choose_role_to_delete}"/>
                             <h:selectOneMenu id="txt2" value="#{userEditBean.roleTypeDelete}" label="Role ">

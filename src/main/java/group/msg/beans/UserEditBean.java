@@ -308,9 +308,10 @@ public class UserEditBean extends LazyDataModel<User> implements Serializable {
     public void deleteRole() {
         Role role = new Role();
         role.setRole(roleTypeDelete);
-        if (service.deleteRoleFromUser(role, userName) != null) {
+        if (service.deleteRoleFromUser(role, selectedUser.getUsername()) != null) {
             Notification notification = new Notification(NotificationType.USER_UPDATED);
             String allInfo = "Role: " + roleTypeDelete + " was deleted";
+            userName=selectedUser.getUsername();
             selectedUser.setUserRoles(service.deleteRoleFromUser(role, userName));
             notification.setInfo(allInfo);
             notificationServiceEJB.save(notification);
