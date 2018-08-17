@@ -106,7 +106,7 @@ public class LoginBackingBean implements Serializable {
                             nr++;
                         }
                         notificationServiceEJB.save(notification);
-                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Attempt number 5" + "\n" + "acount deactivated " + nr);
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Attempt number 5" + "\n" + "acount deactivated ");
                         RequestContext.getCurrentInstance().showMessageInDialog(message);
 
 
