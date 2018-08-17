@@ -30,10 +30,7 @@ public class AccountJSFBean implements Serializable {
     private String password;
     private String roleString;
     private String deleteRoleString;
-    private String addRightRole;
-    private String addRight;
-    private String deleteRightRole;
-    private String deleteRight;
+
     private User user = (User) WebHelper.getSession().getAttribute("currentUser");
 
     @EJB
@@ -52,7 +49,7 @@ public class AccountJSFBean implements Serializable {
 
     public String update() {
 
-        String info ="";
+        String info = "";
 
         if (firstName.length() > 0) {
             info += "First name: old=" + user.getFirstName() + " new=" + firstName + " ";
@@ -87,7 +84,7 @@ public class AccountJSFBean implements Serializable {
 
         }
         if (roleString != null) {
-        info+="1";
+            info += "1";
 
             if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
                 userServiceEJB.addRole(RoleType.valueOf(roleString), user);
@@ -98,19 +95,19 @@ public class AccountJSFBean implements Serializable {
 
         }
         if (deleteRoleString != null) {
-            info+="1";
+            info += "1";
             if (userServiceEJB.userHasRight(user, RightType.USER_MANAGEMENT)) {
 
                 Role role1 = null;
-                boolean contains=false;
+                boolean contains = false;
                 Collection<Role> roles = user.getUserRoles();
                 for (Role role : roles) {
                     if (role.getRoleString().equals(deleteRoleString)) {
                         role1 = role;
-                        contains=true;
+                        contains = true;
                     }
                 }
-                if(contains){
+                if (contains) {
                     roles.remove(role1);
                 }
 
@@ -125,47 +122,7 @@ public class AccountJSFBean implements Serializable {
 
         }
 
-        if (addRightRole != null) {
-            if(addRight!=null){
-                Role role=roleServiceEJB.findRoleByType(addRightRole);
-                Collection<Rights> rights=role.getRoleRights();
-                rights.add(rightServiceEJB.findRightByType(addRight));
-                role.setRoleRights(rights);
-                roleServiceEJB.update(role);
-                info+=role.getRoleString()+"---"+addRight;
-
-
-            }
-
-
-        }
-
-        if (deleteRightRole != null) {
-            if(deleteRight!=null){
-                Role role=roleServiceEJB.findRoleByType(deleteRightRole);
-                Collection<Rights> rights=role.getRoleRights();
-                Rights rights1=null;
-                boolean contains=false;
-
-                info+=rights.size();
-
-                for(Rights right:rights){
-                    if(right.getTypeString().equals(RightType.valueOf(deleteRight))){
-                        rights1=right;
-                        contains=true;
-                        info+="kdosakdos";
-                    }
-                }
-                if(contains){
-                    rights.remove(rights1);
-                }
-                role.setRoleRights(rights);
-                roleServiceEJB.update(role);
-                info+=role.getRoleString()+"---"+deleteRight;
-
-            }
-        }
-        if(info.length()>0) {
+        if (info.length() > 0) {
             userServiceEJB.update(user);
             Notification notification = new Notification(NotificationType.USER_UPDATED);
             notification.setInfo(info);

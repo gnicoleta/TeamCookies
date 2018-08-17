@@ -9,6 +9,8 @@ import org.jboss.weld.context.ejb.Ejb;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,7 +36,7 @@ public class RegisterUserBean implements Serializable {
     private String password;
     private String email;
     private String mobileNumber;
-    private LinkedList<String> selectedRolesStrings;
+    private ArrayList<String> selectedRolesStrings;
     private LinkedList<Role> selectedRoles = new LinkedList<>();
 
 
@@ -84,8 +86,23 @@ public class RegisterUserBean implements Serializable {
         user1.setFirstName(firstName);
         user1.setLastName(lastName);
         user1.setUsername(service.generateUsername(firstName, lastName));
-        user1.setEmail(email);
-        user1.setMobileNumber(mobileNumber);
+        if(email.endsWith("@msggroup.com")&&email!=null) {
+            user1.setEmail(email);
+        }
+        else{
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Wrong email (not @msg.com)");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "register";
+        }
+
+        if(mobileNumber.startsWith("+40")||mobileNumber.startsWith("+49")&&mobileNumber.length()==12) {
+            user1.setMobileNumber(mobileNumber);
+        }
+        else{
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Wrong mobile number not german or romanian ");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "register";
+        }
         user1.setPassword(passwordEncryptor.passwordEncryption(password));
 
 
@@ -93,7 +110,7 @@ public class RegisterUserBean implements Serializable {
 
             Role role = roleServiceEJB.findRoleByType(roleString);
 
-            List<RightType> rightTypes = new ArrayList<>();
+            List<RightType> rightTypes;
             rightTypes = rightsForRoleGetterAndSetter.getRights(RoleType.valueOf(roleString));
 
             List<Rights> rightList = new LinkedList<>();
@@ -114,6 +131,7 @@ public class RegisterUserBean implements Serializable {
 
 
         }
+
 
         Notification notification = new Notification(NotificationType.WELCOME_NEW_USER);
         notificationInfo = this.getRegisterInfo(user1.getUsername());
