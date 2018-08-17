@@ -1,6 +1,5 @@
 package group.msg.jsf_beans;
 
-import group.msg.entities.Bug;
 import group.msg.entities.Notification;
 
 import group.msg.entities.NotificationType;
@@ -163,8 +162,7 @@ public class NotificationsBean extends LazyDataModel<Notification> implements Se
 
     }
 
-    @Inject
-    private BugBeanEditView bugs;
+
 
     public void onRowDblClickSelect(final SelectEvent event) {
         Notification obj = (Notification) event.getObject();
