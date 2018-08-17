@@ -61,7 +61,7 @@
                              lazy="true" paginator="true" rows="15"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="5,10,15" editable="true" editMode="cell" cellEditMode="lazy"
-                             paginatorPosition="bottom">
+                             paginatorPosition="bottom" editInitEvent="dblclick">
 
                     <p:ajax event="rowSelect" listener="#{userEditBean.rowSelected}"/>
 
@@ -81,7 +81,6 @@
                             <f:facet name="input">
                                 <p:inputText id="c3" value="#{userEditBean.newFirstName}"
                                              style="width:96%" required="true"/>
-                                #{userEditBean.updateFirstName()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -100,7 +99,6 @@
                                              style="width:96%" required="true"/>
 
                                 <h:outputText value="#{userEditBean.newLastName}"/>
-                                #{userEditBean.updateLastName()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -117,7 +115,6 @@
                             <f:facet name="input">
                                 <p:inputText id="c5" value="#{userEditBean.newMobileNumber}"
                                              style="width:96%" required="true"/>
-                                #{userEditBean.updateMobileNumber()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -133,7 +130,6 @@
                             <f:facet name="input">
                                 <p:inputText id="c6" value="#{userEditBean.newEmail}"
                                              style="width:96%" required="true"/>
-                                #{userEditBean.updateEmail()}
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -174,13 +170,11 @@
                                     <f:selectItem itemLabel="ADM" itemValue="ADM"/>
                                     <f:selectItem itemLabel="TEST" itemValue="TEST"/>
                                 </p:selectOneMenu>
-                                #{userEditBean.updateRoles()}
-
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:ajax event="cellEdit" listener="#{userEditBean.update()}" update=":form1:usersTable"/>
+                    <p:ajax event="cellEdit" listener="#{userEditBean.update()}" oncomplete="javascript:window.location.reload()" update=":form1:usersTable"/>
 
                     <br/>
                     <p:rowEditor/>
@@ -241,8 +235,6 @@
                                 <f:selectItem itemLabel="BUG_CLOSE" itemValue="BUG_CLOSE"/>
                                 <f:selectItem itemLabel="BUG_EXPORT_PDF" itemValue="BUG_EXPORT_PDF"/>
                             </h:selectOneMenu>
-
-
                         </h:panelGrid>
                     </p:panel>
 
