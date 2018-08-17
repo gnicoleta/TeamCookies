@@ -81,20 +81,12 @@ public class UserServiceEJB {
     }
 
     public User getUserByUsername(String username) {
-        try {
-            try {
-                Query q = em.createNamedQuery("User.findByUsername", User.class);
-                q.setParameter(1, username);
-                User result = (User) q.getSingleResult();
-                return result;
-            } catch (NullPointerException e) {
-                logger.info(Arrays.toString(e.getStackTrace()));
-            }
-        }catch (NoResultException e){
-            logger.info(Arrays.toString(e.getStackTrace()));
-        }
 
-        return null;
+        Query q = em.createNamedQuery("User.findByUsername", User.class);
+        q.setParameter(1, username);
+        User result = (User) q.getSingleResult();
+        return result;
+
     }
 
     public boolean findUserByUsername(String username) {
@@ -146,7 +138,7 @@ public class UserServiceEJB {
             } catch (NullPointerException e) {
                 logger.info(Arrays.toString(e.getStackTrace()));
             }
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 
@@ -163,7 +155,7 @@ public class UserServiceEJB {
             } catch (NullPointerException e) {
                 logger.info(Arrays.toString(e.getStackTrace()));
             }
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
 
@@ -236,7 +228,7 @@ public class UserServiceEJB {
             } catch (NullPointerException e) {
                 logger.info(Arrays.toString(e.getStackTrace()));
             }
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             logger.info(Arrays.toString(e.getStackTrace()));
         }
         return null;
