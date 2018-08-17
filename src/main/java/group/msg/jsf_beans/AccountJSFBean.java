@@ -52,28 +52,28 @@ public class AccountJSFBean implements Serializable {
         String info = "";
 
         if (firstName.length() > 0) {
-            info += "First name: old=" + user.getFirstName() + " new=" + firstName + " ";
+            info += "First Name changed to: (new)" + firstName + " from (old)" + user.getFirstName();
             user.setFirstName(firstName);
 
         }
         if (lastName.length() > 0) {
-            info += "Last name: old=" + user.getLastName() + " new=" + lastName + " ";
+            info += "Last Name changed to: (new)" + lastName + " from (old)" + user.getLastName();
             user.setLastName(lastName);
         }
         if (email.length() > 0) {
-            info += "Email: old=" + user.getEmail() + " new=" + email + " ";
+            info += "Email changed to: (new)" + email + " from (old)" + user.getEmail();
 
             user.setEmail(email);
         }
         if (mobileNumber.length() > 0) {
-            info += "Mobile Number: old=" + user.getMobileNumber() + " new=" + mobileNumber + " ";
+            info += "Mobile Number changed to: (new)" + mobileNumber + " from (old)" + user.getMobileNumber();
             user.setMobileNumber(mobileNumber);
         }
 
         if (password.length() > 0) {
             String encryptedOldPassword = passwordEncryptor.passwordEncryption(oldPassword);
             if (encryptedOldPassword.equals(user.getPassword())) {
-                info += "Password: old=" + oldPassword + " new=" + password + " ";
+                info += "Password changed to: (new)" + password + " from (old)"  + oldPassword;
                 user.setPassword(passwordEncryptor.passwordEncryption(password));
             } else {
 
